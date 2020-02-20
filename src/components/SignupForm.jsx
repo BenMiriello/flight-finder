@@ -1,16 +1,18 @@
 import React, { Component } from 'react'
 import { Button, Form } from 'semantic-ui-react'
 import { connect } from 'react-redux'
-import { userPostFetch } from '../Redux/actions/index'
+import { userPostFetch } from '../Redux/actions/userSession'
 
 class SignupForm extends Component {
 
-    state = {
+    defaultState = {
         username: '',
         password: '',
         avatar: '',
         bio: ''
     }
+
+    state = this.defaultState
 
     handleChange = e => {
         this.setState({
@@ -22,6 +24,7 @@ class SignupForm extends Component {
         e.preventDefault()
         // debugger
         this.props.userPostFetch(this.state)
+        this.setState(this.defaultState)
     }
 
     render() {
@@ -36,6 +39,7 @@ class SignupForm extends Component {
                         onChange={this.handleChange}
                     />
                 </Form.Field>
+                <p style={{"font-size": "12px", "text-indent": "20px", "position": "relative", "bottom": "10px"}}>Minimum length: 4 characters.</p>
                 <Form.Field>
                     <label>Password</label>
                     <input 
@@ -46,6 +50,7 @@ class SignupForm extends Component {
                         onChange={this.handleChange}
                     />
                 </Form.Field>
+                <p style={{"font-size": "12px", "text-indent": "20px", "position": "relative", "bottom": "10px"}}>Minimum length: 4 characters.</p>
                 <Button type='submit'>Submit</Button>
             </Form>
         )

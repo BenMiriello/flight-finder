@@ -1,16 +1,18 @@
 import React, { Component } from 'react'
 import { Button, Form } from 'semantic-ui-react'
 import { connect } from 'react-redux'
-import { fetchLoginUser } from '../Redux/actions/index'
+import { fetchLoginUser } from '../Redux/actions/userSession'
 
 class SignupForm extends Component {
 
-    state = {
+    defaultState = {
         username: '',
         password: '',
         avatar: '',
         bio: ''
     }
+
+    state = this.defaultState
 
     handleChange = e => {
         // e.preventDefault()
@@ -23,6 +25,7 @@ class SignupForm extends Component {
         e.preventDefault()
         console.log('submitted');
         this.props.fetchLoginUser(this.state)
+        this.setState(this.defaultState)
     }
 
     render() {

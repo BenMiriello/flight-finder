@@ -7,7 +7,7 @@ import SignupPage from './containers/SignupPage'
 import SearchPage from './containers/SearchPage'
 import MyFavoritesPage from './containers/MyFavoritesPage';
 import MyTripsPage from './containers/MyTripsPage';
-import { getProfileFetch } from './Redux/actions/index'
+import { getProfileFetch } from './Redux/actions/userSession'
 import { connect } from 'react-redux'
 
 class App extends Component {

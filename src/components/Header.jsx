@@ -3,7 +3,7 @@ import { Menu, Dropdown } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import LoginForm from './LoginForm'
 import { connect } from 'react-redux'
-import { getProfileFetch, logoutUser } from '../Redux/actions'
+import { getProfileFetch, logoutUser } from '../Redux/actions/userSession'
 
 class Header extends Component {
     state = {}
