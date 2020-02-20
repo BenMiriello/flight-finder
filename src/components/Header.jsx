@@ -3,11 +3,20 @@ import { Menu, Dropdown } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import LoginForm from './LoginForm'
 import { connect } from 'react-redux'
+import { getProfileFetch, logoutUser } from '../Redux/actions'
 
 class Header extends Component {
     state = {}
 
-    handleItemClick = (e, { name }) => this.setState({ activeItem: name })
+    handleItemClick = (e, { name }) => {
+        e.preventDefault()
+        if ( name === 'logout' ) {
+            localStorage.removeItem('token')
+            this.props.logoutUser()
+        } else {
+            this.setState({ activeItem: name })
+        }
+    }
 
     render() {
         debugger
@@ -68,11 +77,16 @@ class Header extends Component {
     }
 }
 
-const MSTP = state => {
-    return {
+const MSTP = state => (
+    {
         user: state.userInfo.user
     } 
-}
+)
 
-export default connect(MSTP)(Header)
+const MDTP = dispatch => ({
+    getProfileFetch: () => dispatch(getProfileFetch()),
+    logoutUser: () => dispatch(logoutUser())
+})
+
+export default connect(MSTP, MDTP)(Header)
 

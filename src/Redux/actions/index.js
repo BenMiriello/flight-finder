@@ -1,3 +1,5 @@
+const SLUG = 'http://localhost:3000/api/v1/'
+
 export const fetchAndInitializeFlights = () => {
     return (dispatch, getState) => {
         // run fetch to skyscanner API here
@@ -9,14 +11,6 @@ export const fetchUserTickets = () => {
         // run fetch to local API and get the user's tickets
     }
 }
-
-// // replaced with loginUser action
-// export const saveUserToState = (userInfo) => {
-//     return {
-//         type: "SAVE_USER_TO_STATE",
-//         payload: userInfo
-//     }
-// }
 
 export const saveFlightToUserTickets = (flight) => {
     return {
@@ -32,9 +26,14 @@ export const addBookedTicketFlightToUser = (flight) => {
     }
 }
 
+const loginUser = userObj => ({
+    type: 'LOGIN_USER',
+    payload: userObj
+})
+
 const loginLogoutFetch = (user, route) => {
     return dispatch => {
-        return fetch(`http://localhost:3000/api/v1/${route}`, {
+        return fetch(SLUG + route, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -47,7 +46,7 @@ const loginLogoutFetch = (user, route) => {
             if (data.error) {
                 console.log(data.error)
             } else {
-                console.log('User creation successful. Check localStorage: ', localStorage)
+                console.log('Signup/login successful. Check localStorage: ', localStorage)
                 localStorage.setItem("token", data.jwt)
                 dispatch(loginUser(data.user))
             }
@@ -63,8 +62,31 @@ export const fetchLoginUser = user => {
     return loginLogoutFetch(user, 'login')
 }
 
-export const loginUser = userObj => ({
-    type: 'LOGIN_USER',
-    payload: userObj
+export const getProfileFetch = () => {
+    return dispatch => {
+        const token = localStorage.token
+        if (token) {
+            return fetch(SLUG + 'profile', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.message) {
+                    localStorage.removeItem('token')
+                } else {
+                    dispatch(loginUser(data.user))
+                }
+            })
+        }
+    }
+}
+
+export const logoutUser = () => ({
+    type: 'LOGOUT_USER'
 })
 
