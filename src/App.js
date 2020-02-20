@@ -13,6 +13,7 @@ function App() {
     <Router>
       <div>
         <Header />
+
         <Switch>
           <Route exact path="/">
             <SearchPage />
@@ -30,6 +31,7 @@ function App() {
             <UserProfile/>
           </Route>
         </Switch>
+        
         {/* <Footer /> */}
       </div>
     </Router>

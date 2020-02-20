@@ -10,3 +10,4 @@ const flightReducer = (state = initialState, {type, payload}) => {
             return state
     }
 }
+

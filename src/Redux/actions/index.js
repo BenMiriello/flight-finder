@@ -32,9 +32,9 @@ export const addBookedTicketFlightToUser = (flight) => {
     }
 }
 
-export const userPostFetch = user => {
+const loginLogoutFetch = (user, route) => {
     return dispatch => {
-        return fetch('http://localhost:3000/api/v1/users', {
+        return fetch(`http://localhost:3000/api/v1/${route}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -44,7 +44,6 @@ export const userPostFetch = user => {
         })
         .then(r => r.json())
         .then(data => {
-            // debugger
             if (data.error) {
                 console.log(data.error)
             } else {
@@ -54,6 +53,14 @@ export const userPostFetch = user => {
             }
         })
     }
+}
+
+export const userPostFetch = user => {
+    return loginLogoutFetch(user, 'users')
+}
+
+export const fetchLoginUser = user => {
+    return loginLogoutFetch(user, 'login')
 }
 
 export const loginUser = userObj => ({
