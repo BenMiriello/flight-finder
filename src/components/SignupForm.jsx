@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Button, Form } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import { userPostFetch } from '../Redux/actions/userSession'
+import { withRouter } from 'react-router-dom'
 
 class SignupForm extends Component {
 
@@ -25,6 +26,8 @@ class SignupForm extends Component {
         // debugger
         this.props.userPostFetch(this.state)
         this.setState(this.defaultState)
+        // add error conditionality
+        this.props.history.push('/')
     }
 
     render() {
@@ -61,5 +64,5 @@ const mapDispatchToProps = dispatch => ({
     userPostFetch: userInfo => dispatch(userPostFetch(userInfo))
 })
 
-export default connect(null, mapDispatchToProps)(SignupForm)
+export default withRouter(connect(null, mapDispatchToProps)(SignupForm))
 

@@ -1,0 +1,12 @@
+- Make optional validations for password field in form handler:
+    - have several stages of checks for password being: 
+        - over n chars
+        - having a number
+        - having a non-alphanumeric component
+        - other?
+    - change color of text or something based on how many conditions are met
+    - have text appear suggesting what to fix
+    - but don't require anything except being over a low number of chars.
+    - this is separate from backend validation
+
+- 
