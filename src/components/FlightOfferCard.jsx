@@ -7,7 +7,8 @@ export default class FlightOfferCard extends Component {
         let segments = this.props.flightOffer.itineraries[leg].segments
 
         let stops = segments.length - 1
-        let carrier = segments[0].carrier_code
+        let carrierCode = segments[0].carrier_code
+        let carrier = segments[0].carrier.toLowerCase().replace(/^\w/, c => c.toUpperCase())
         let duration = segments[0].duration.substring(2).toLowerCase()
 
         let departureTime = segments[0].departure_time.substring(11, 16)
@@ -27,22 +28,37 @@ export default class FlightOfferCard extends Component {
             <>
                 <Item className="foci foci-carrier-icon">
                     <div className="vertical-center" style={{"padding":"5px"}}>
-                        <Image src={`https://www.gstatic.com/flights/airline_logos/32px/${carrier}.png`}/>
+                        <Image src={`https://www.gstatic.com/flights/airline_logos/32px/${carrierCode}.png`}/>
                     </div>
                 </Item>
                 <Item className="foci foci-times" >
                     <div className="vertical-center">
-                        <p className="foci-text">{departure12Hour}:{departureMinute} {departureAmPm} - {arrival12Hour}:{arrivalMinute} {arrivalAmPm}</p>
+                        <p className="foci-text">
+                            {departure12Hour}:{departureMinute} {departureAmPm} - {arrival12Hour}:{arrivalMinute} {arrivalAmPm}
+                        </p>
+                        <div className="flight-offer-card-flex-container sub-flex">
+                            <p className="foci-text">{carrier}</p>
+                        </div>
                     </div>
                 </Item>
                 <Item className="foci foci-legs">
                     <div className="vertical-center">
                         <p className="foci-text">{stops === 0 ? "non" : stops + " "}stop{stops >= 2 ? "s" : ""}</p>
+                        {stops >= 1 ? 
+                            <div className="flight-offer-card-flex-container sub-flex">
+                                <p className="foci-text">{segments[0].arrival_iata}</p>
+                            </div>
+                        :
+                            null
+                        }
                     </div>
                 </Item>
                 <Item className="foci foci-duration">
                     <div className="vertical-center">
                         <p className="foci-text">{duration}</p>
+                        <div className="flight-offer-card-flex-container sub-flex">
+                        <p className="foci-text">{segments[0].departure_iata} - {segments[segments.length - 1].arrival_iata}</p>
+                        </div>
                     </div>
                 </Item>
             </>

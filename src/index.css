@@ -36,6 +36,10 @@ code {
   margin: 20px;
 }
 
+.sub-flex {
+  margin: 5px;
+}
+
 /* .flight-card-item:nth-child(3n) */
 .foci {
   width: 100%;
@@ -80,7 +84,7 @@ code {
 .foci-text {
   text-align: center;
   margin: auto;
-  width: 50%;
+  /* width: 50%; */
 }
 
 .footer {
