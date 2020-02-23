@@ -9,11 +9,15 @@ export default class FlightOfferCard extends Component {
                 <Item className="foci foci-carrier-icon">
                     <Image src={`https://www.gstatic.com/flights/airline_logos/32px/${carrier}.png`}/>
                 </Item>
-                <Item className="foci foci-times" />
-                <Item className="foci foci-legs">
-                    <p>{stops === 0 ? "non" : stops}stop{stops >= 2 ? "s" : ""}</p>
+                <Item className="foci foci-times" >
+                    
                 </Item>
-                <Item className="foci foci-duration" />
+                <Item className="foci foci-legs">
+                    <p>{stops === 0 ? "non" : stops + " "}stop{stops >= 2 ? "s" : ""}</p>
+                </Item>
+                <Item className="foci foci-duration">
+                    <p>{duration}</p>
+                </Item>
             </>
         )
     }
@@ -23,7 +27,7 @@ export default class FlightOfferCard extends Component {
 
         let stops = segments.length - 1
         let carrier = segments[0].carrier_code
-        let duration = segments[0].duration
+        let duration = segments[0].duration.substring(2).toLowerCase()
 
         return this.infoRow(stops, carrier, duration)
     }
@@ -33,7 +37,7 @@ export default class FlightOfferCard extends Component {
 
         let stops = segments.length - 1
         let carrier = segments[0].carrier_code
-        let duration = segments[0].duration
+        let duration = segments[0].duration.substring(2).toLowerCase()
         
         return this.infoRow(stops, carrier, duration)
     }
