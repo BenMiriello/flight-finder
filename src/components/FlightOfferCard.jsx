@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Table, Card, Item, Image } from 'semantic-ui-react'
+import { Grid, Card, Item, Image } from 'semantic-ui-react'
 
 export default class FlightOfferCard extends Component {
 
@@ -9,33 +9,30 @@ export default class FlightOfferCard extends Component {
         let stops = segments.length - 1
         let carrier = segments[0].carrier_code
         let duration = segments[0].duration.substring(2).toLowerCase()
-        let departureTime = segments[0].departure_time.substring(11, 19)
-        let arrivalTime = segments[segments.length - 1].arrival_time.substring(11, 19)
+        let departureTime = segments[0].departure_time.substring(11, 16)
+        let arrivalTime = segments[segments.length - 1].arrival_time.substring(11, 16)
 
         return(
             <>
                 <Item className="foci foci-carrier-icon">
-                    <Image src={`https://www.gstatic.com/flights/airline_logos/32px/${carrier}.png`}/>
+                    <div className="vertical-center" style={{"padding":"5px"}}>
+                        <Image src={`https://www.gstatic.com/flights/airline_logos/32px/${carrier}.png`}/>
+                    </div>
                 </Item>
                 <Item className="foci foci-times" >
-                {/* <Table definition> */}
-                    {/* <Table.Body>
-                        <Table.Row>
-                            <Table.Cell> */}
-                                <p className="foci-text">departing: {departureTime}</p>
-                            {/* </Table.Cell>
-                            <Table.Cell> */}
-                                <p className="foci-text">arriving: {arrivalTime}</p>
-                            {/* </Table.Cell>
-                        </Table.Row>
-                    </Table.Body> */}
-                {/* </Table> */}
+                    <div className="vertical-center">
+                        <p className="foci-text">{departureTime} - {arrivalTime}</p>
+                    </div>
                 </Item>
                 <Item className="foci foci-legs">
-                    <p className="foci-text">{stops === 0 ? "non" : stops + " "}stop{stops >= 2 ? "s" : ""}</p>
+                    <div className="vertical-center">
+                        <p className="foci-text">{stops === 0 ? "non" : stops + " "}stop{stops >= 2 ? "s" : ""}</p>
+                    </div>
                 </Item>
                 <Item className="foci foci-duration">
-                    <p className="foci-text">{duration}</p>
+                    <div className="vertical-center">
+                        <p className="foci-text">{duration}</p>
+                    </div>
                 </Item>
             </>
         )
@@ -45,21 +42,23 @@ export default class FlightOfferCard extends Component {
         let [to, from] = ["0", "1"]
         return (
             <Card className="flight-offer-card" style={{"margin": "auto", "width": "82%"}} >
-                <Table definition>
-                    <Table.Body>
-                        <Table.Row>
-                            <Table.Cell width={13}>
+                {/* <Table definition>
+                    <Table.Body> */}
+                        <Grid columns={2}>
+                            <Grid.Column color="white" width={13}>
                                 <div className="flight-offer-card-flex-container">
                                     {this.infoRow(to)}
                                     {this.infoRow(from)}
                                 </div>
-                            </Table.Cell>
-                            <Table.Cell>
-                                <p>{this.props.flightOffer.grand_total}</p>
-                            </Table.Cell>
-                        </Table.Row>
-                    </Table.Body>
-                </Table>
+                            </Grid.Column>
+                            <Grid.Column width={3}>
+                                <div className="vertical-center">
+                                    <p className="foci-text">${this.props.flightOffer.grand_total}</p>
+                                </div>
+                            </Grid.Column>
+                        </Grid>
+                    {/* </Table.Body>
+                </Table> */}
             </Card>
         )
     }

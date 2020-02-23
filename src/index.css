@@ -33,12 +33,13 @@ code {
   flex-wrap: wrap;
   justify-content: space-around;
   width: 100%;
+  margin: 20px;
 }
 
 /* .flight-card-item:nth-child(3n) */
 .foci {
   width: 100%;
-  height: 52px;
+  height: 60px;
   /* margin-bottom: 2%; */
 }
 
@@ -55,11 +56,11 @@ code {
 }
 
 .foci-legs {
-  width: 20%
+  width: 25%
 }
 
 .foci-duration {
-  width: 30%
+  width: 25%
 }
 
 .carrier-icon {
@@ -68,8 +69,18 @@ code {
   height: 32px;
 }
 
+.vertical-center {
+  margin: 0;
+  position: relative;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
 .foci-text {
   text-align: center;
+  margin: auto;
+  width: 50%;
 }
 
 .footer {
