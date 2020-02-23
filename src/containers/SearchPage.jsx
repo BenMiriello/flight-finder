@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import SearchBar from './SearchBar'
 import FlightOfferCard from '../components/FlightOfferCard'
 import { Container } from 'semantic-ui-react'
+import { Separator } from '../styleComponents/Separator'
 
 export default class SearchPage extends Component {
 
@@ -10,20 +11,32 @@ export default class SearchPage extends Component {
     }
 
     componentDidMount(){
-        fetch('http://localhost:3000/api/v1/flight_offers/204')
+        fetch('http://localhost:3000/api/v1/flight_offers')
         .then(r => r.json())
         .then(data => {
             this.setState(prevState => ({
-                flightOffers: [...prevState.flightOffers, data]
+                flightOffers: [...prevState.flightOffers, ...data]
             }))
         })
         .then(console.log)
     }
 
     showFlightOffers = () => {
-        console.log(this.state.flightOffers[0])
+        let i = this.state.flightOffers.length - 1
         return (
-            this.state.flightOffers.map(foobj => <FlightOfferCard flightOffer={foobj} />)
+            this.state.flightOffers.map(foobj => {
+                if (i < this.state.flightOffers.length) {
+                    return (
+                        <>
+                            <FlightOfferCard flightOffer={foobj} />
+                            <Separator px={20}/>
+                        </>
+                    )
+                } else {
+                    return <FlightOfferCard flightOffer={foobj} />
+                }
+                i++
+            })
         )
     }
 
