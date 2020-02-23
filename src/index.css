@@ -87,6 +87,18 @@ code {
   /* width: 50%; */
 }
 
+.flight-offer-card-right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.flight-offer-card-right-item {
+  height: 40px;
+  margin: 5%
+}
+
 .footer {
   position: fixed;
   left: 0;

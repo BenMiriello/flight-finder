@@ -1,7 +1,22 @@
 import React, { Component } from 'react'
-import { Grid, Card, Item, Image } from 'semantic-ui-react'
+import { Grid, Card, Item, Image, Button } from 'semantic-ui-react'
+import { addFlightOfferToPurchases, addFlightOfferToFavorites } from '../Redux/actions/index'
+import { connect } from 'react-redux'
 
-export default class FlightOfferCard extends Component {
+export class FlightOfferCard extends Component {
+
+    handleItemClick = (e, { name }) => {
+        switch(name) {
+            case "favorite":
+                this.props.addFlightOfferToFavorites(this.props.flightOffer)
+                break
+            case "book flight":
+                this.props.addFlightOfferToPurchases(this.props.flightOffer)
+                break
+            default:
+                break
+        }
+    }
 
     infoRow = (leg) => {
         let segments = this.props.flightOffer.itineraries[leg].segments
@@ -69,27 +84,42 @@ export default class FlightOfferCard extends Component {
         let [to, from] = ["0", "1"]
         return (
             <Card className="flight-offer-card" style={{"margin": "auto", "width": "82%"}} >
-                {/* <Table definition>
-                    <Table.Body> */}
-                        <Grid columns={2}>
-                            <Grid.Column color="white" width={13}>
-                                <div className="flight-offer-card-flex-container">
-                                    {this.infoRow(to)}
-                                    {this.infoRow(from)}
-                                </div>
-                            </Grid.Column>
-                            <Grid.Column width={3}>
-                                <div className="vertical-center">
-                                    <p className="foci-text">${this.props.flightOffer.grand_total}</p>
-                                </div>
-                            </Grid.Column>
-                        </Grid>
-                    {/* </Table.Body>
-                </Table> */}
+                <Grid columns={2}>
+                    <Grid.Column color="white" width={13}>
+                        <div className="flight-offer-card-flex-container">
+                            {this.infoRow(to)}
+                            {this.infoRow(from)}
+                        </div>
+                    </Grid.Column>
+                    <Grid.Column width={3}>
+                        <div className="flight-offer-card-right">
+                            <div className="flight-offer-card-right-item" style={{"top": "10px","position": "relative"}}>
+                                <Button name="favorite" circular icon='heart outline' onClick={this.handleClick}/>
+                            </div>
+                            <div className="flight-offer-card-right-item ">
+                                <p className="foci-text vertical-center">${this.props.flightOffer.grand_total}</p>
+                            </div>
+                            <div className="flight-offer-card-right-item" >
+                                <Button name="book flight" onClick={this.handleClick}>Book Flight</Button>
+                            </div>
+                        </div>
+                    </Grid.Column>
+                </Grid>
             </Card>
         )
     }
 }
+
+const MSTP = state => ({
+
+})
+
+const MDTP = dispatch => ({
+    addFlightOfferToPurchases: () => dispatch(addFlightOfferToPurchases()),
+    addFlightOfferToFavorites: () => dispatch(addFlightOfferToFavorites())
+})
+
+export default connect(MSTP, MDTP)(FlightOfferCard)
 
 // props from flight card:  
 // {flightOffer: {…}}

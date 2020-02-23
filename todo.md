@@ -9,4 +9,7 @@
     - but don't require anything except being over a low number of chars.
     - this is separate from backend validation
 
-- 
+- add models for favorites and booked_flights
+- make button fave or book flight_offer object
+- make the specific search for the sample response return the sample response
+- add more search options

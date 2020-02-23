@@ -13,9 +13,9 @@ import {
 
 export default class SearchBar extends Component {
 
-    handleOnChange = (e) => {
-        
-    }
+    // handleOnChange = (e) => {
+
+    // }
 
     render() {
         return (
