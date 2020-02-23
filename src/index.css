@@ -18,6 +18,56 @@ code {
   max-width: 500px;
 }
 
+.flight-offer-cards-container {
+  width: 75%;
+  margin-top: 5%;
+}
+
+.flight-offer-card {
+  width: 100%;
+  margin: auto;
+}
+
+.flight-offer-card-flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  width: 100%;
+}
+
+/* .flight-card-item:nth-child(3n) */
+.foci {
+  width: 100%;
+  height: 52px;
+  /* margin-bottom: 2%; */
+}
+
+.foci-50 {
+  width: 50%;
+}
+
+.foci-carrier-icon {
+  width: 44px
+}
+
+.foci-times {
+  width: 25%;
+}
+
+.foci-legs {
+  width: 12%
+}
+
+.foci-duration {
+  width: 12%
+}
+
+.carrier-icon {
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+}
+
 .footer {
   position: fixed;
   left: 0;
