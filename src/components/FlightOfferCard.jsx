@@ -9,8 +9,19 @@ export default class FlightOfferCard extends Component {
         let stops = segments.length - 1
         let carrier = segments[0].carrier_code
         let duration = segments[0].duration.substring(2).toLowerCase()
+
         let departureTime = segments[0].departure_time.substring(11, 16)
         let arrivalTime = segments[segments.length - 1].arrival_time.substring(11, 16)
+
+        let departure24Hour = parseInt((departureTime.split(":"))[0])
+        let departure12Hour = departure24Hour > 12 ? departure24Hour - 12 : departure24Hour
+        let departureMinute = parseInt((departureTime.split(":"))[1])
+        let departureAmPm = departure24Hour >= 12 ? "pm" : "am"
+
+        let arrival24Hour = parseInt((arrivalTime.split(":"))[0])
+        let arrival12Hour = arrival24Hour > 12 ? arrival24Hour - 12 : arrival24Hour
+        let arrivalMinute = parseInt((arrivalTime.split(":"))[1])
+        let arrivalAmPm = arrival24Hour >= 12 ? "pm" : "am"
 
         return(
             <>
@@ -21,7 +32,7 @@ export default class FlightOfferCard extends Component {
                 </Item>
                 <Item className="foci foci-times" >
                     <div className="vertical-center">
-                        <p className="foci-text">{departureTime} - {arrivalTime}</p>
+                        <p className="foci-text">{departure12Hour}:{departureMinute} {departureAmPm} - {arrival12Hour}:{arrivalMinute} {arrivalAmPm}</p>
                     </div>
                 </Item>
                 <Item className="foci foci-legs">
