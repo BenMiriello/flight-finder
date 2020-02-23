@@ -3,47 +3,34 @@ import { Table, Card, Item, Image } from 'semantic-ui-react'
 
 export default class FlightOfferCard extends Component {
 
-    infoRow = (stops, carrier, duration) => {
+    infoRow = (leg) => {
+        let segments = this.props.flightOffer.itineraries[leg].segments
+
+        let stops = segments.length - 1
+        let carrier = segments[0].carrier_code
+        let duration = segments[0].duration.substring(2).toLowerCase()
+        let departureTime = segments[0].departure_time.substring(11, 19)
+
         return(
             <>
                 <Item className="foci foci-carrier-icon">
                     <Image src={`https://www.gstatic.com/flights/airline_logos/32px/${carrier}.png`}/>
                 </Item>
                 <Item className="foci foci-times" >
-                    
+                    <p className="foci-text">departing: {departureTime}</p>
                 </Item>
                 <Item className="foci foci-legs">
-                    <p>{stops === 0 ? "non" : stops + " "}stop{stops >= 2 ? "s" : ""}</p>
+                    <p className="foci-text">{stops === 0 ? "non" : stops + " "}stop{stops >= 2 ? "s" : ""}</p>
                 </Item>
                 <Item className="foci foci-duration">
-                    <p>{duration}</p>
+                    <p className="foci-text">{duration}</p>
                 </Item>
             </>
         )
     }
 
-    toRow = () => {
-        let segments = this.props.flightOffer.itineraries[0].segments
-
-        let stops = segments.length - 1
-        let carrier = segments[0].carrier_code
-        let duration = segments[0].duration.substring(2).toLowerCase()
-
-        return this.infoRow(stops, carrier, duration)
-    }
-
-    fromRow = () => {
-        let segments = this.props.flightOffer.itineraries[1].segments
-
-        let stops = segments.length - 1
-        let carrier = segments[0].carrier_code
-        let duration = segments[0].duration.substring(2).toLowerCase()
-        
-        return this.infoRow(stops, carrier, duration)
-    }
-
     render() {
-        console.log('props from flight card: ', this.props);
+        let [to, from] = ["0", "1"]
         return (
             <Card className="flight-offer-card" style={{"margin": "auto", "width": "82%"}} >
                 <Table definition>
@@ -51,8 +38,8 @@ export default class FlightOfferCard extends Component {
                         <Table.Row>
                             <Table.Cell width={13}>
                                 <div className="flight-offer-card-flex-container">
-                                    {this.toRow()}
-                                    {this.fromRow()}
+                                    {this.infoRow(to)}
+                                    {this.infoRow(from)}
                                 </div>
                             </Table.Cell>
                             <Table.Cell>
