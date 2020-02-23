@@ -3,10 +3,7 @@ import { Table, Card, Item, Image } from 'semantic-ui-react'
 
 export default class FlightOfferCard extends Component {
 
-    toRow = () => {
-        let stopsTo = this.props.flightOffer.itineraries[0].segments.length - 1
-        let carrier = this.props.flightOffer.itineraries[0].segments[0].carrier_code
-        let duration
+    infoRow = (stops, carrier, duration) => {
         return(
             <>
                 <Item className="foci foci-carrier-icon">
@@ -14,28 +11,31 @@ export default class FlightOfferCard extends Component {
                 </Item>
                 <Item className="foci foci-times" />
                 <Item className="foci foci-legs">
-                    <p>{stopsTo === 0 ? "non" : stopsTo}stop{stopsTo >= 2 ? "s" : ""}</p>
+                    <p>{stops === 0 ? "non" : stops}stop{stops >= 2 ? "s" : ""}</p>
                 </Item>
-                <Item className="foci foci-duration"  /> 
+                <Item className="foci foci-duration" />
             </>
         )
     }
 
+    toRow = () => {
+        let segments = this.props.flightOffer.itineraries[0].segments
+
+        let stops = segments.length - 1
+        let carrier = segments[0].carrier_code
+        let duration = segments[0].duration
+
+        return this.infoRow(stops, carrier, duration)
+    }
+
     fromRow = () => {
-        let stopsFrom = this.props.flightOffer.itineraries[1].segments.length
-        let carrier = this.props.flightOffer.itineraries[1].segments[1].carrier_code
-        return(
-            <>
-            <Item className="foci foci-carrier-icon">
-                <Image src={`https://www.gstatic.com/flights/airline_logos/32px/${carrier}.png`}/>
-            </Item>
-            <Item className="foci foci-times" />
-            <Item className="foci foci-legs">
-                <p>{stopsFrom === 0 ? "non" : stopsFrom}stop{stopsFrom >= 2 ? "s" : ""}</p>
-            </Item>
-            <Item className="foci foci-duration" />
-            </>
-        )
+        let segments = this.props.flightOffer.itineraries[1].segments
+
+        let stops = segments.length - 1
+        let carrier = segments[0].carrier_code
+        let duration = segments[0].duration
+        
+        return this.infoRow(stops, carrier, duration)
     }
 
     render() {
