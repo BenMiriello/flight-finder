@@ -10,6 +10,7 @@ export default class FlightOfferCard extends Component {
         let carrier = segments[0].carrier_code
         let duration = segments[0].duration.substring(2).toLowerCase()
         let departureTime = segments[0].departure_time.substring(11, 19)
+        let arrivalTime = segments[segments.length - 1].arrival_time.substring(11, 19)
 
         return(
             <>
@@ -17,7 +18,18 @@ export default class FlightOfferCard extends Component {
                     <Image src={`https://www.gstatic.com/flights/airline_logos/32px/${carrier}.png`}/>
                 </Item>
                 <Item className="foci foci-times" >
-                    <p className="foci-text">departing: {departureTime}</p>
+                {/* <Table definition> */}
+                    {/* <Table.Body>
+                        <Table.Row>
+                            <Table.Cell> */}
+                                <p className="foci-text">departing: {departureTime}</p>
+                            {/* </Table.Cell>
+                            <Table.Cell> */}
+                                <p className="foci-text">arriving: {arrivalTime}</p>
+                            {/* </Table.Cell>
+                        </Table.Row>
+                    </Table.Body> */}
+                {/* </Table> */}
                 </Item>
                 <Item className="foci foci-legs">
                     <p className="foci-text">{stops === 0 ? "non" : stops + " "}stop{stops >= 2 ? "s" : ""}</p>
