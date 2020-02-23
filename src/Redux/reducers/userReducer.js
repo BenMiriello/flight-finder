@@ -3,8 +3,8 @@ const initialState = {
         username: '',
         bio: '',
         avatar: '',
-        favorites: [],
-        purchases: []
+        favorited_flight_offers: [],
+        favorited_flight_offers: []
     },
     token: ""
 }
