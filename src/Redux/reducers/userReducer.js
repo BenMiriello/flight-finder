@@ -4,9 +4,10 @@ const initialState = {
         bio: '',
         avatar: '',
         favorited_flight_offers: [],
-        favorited_flight_offers: []
+        purchased_flight_offers: []
     },
     token: ""
+
 }
 
 const userReducer = (state = initialState, action) => {
@@ -15,25 +16,34 @@ const userReducer = (state = initialState, action) => {
             return {...state, user: action.payload}
         case "LOGOUT_USER":
             return {...state, user: {} }
-        // case "ADD_FAVORITED_FLIGHT_TO_USER":
-        //     return {
-        //         ...state,
-        //         user: {
-        //             ...state.user,
-        //             favorited_flights: [...state.user.favorited_flights, action.payload]
-        //         }
-        //     }
-        // case "ADD_TICKET_TO_USER":
-        //     return {
-        //         ...state,
-        //         user: {
-        //             ...state.user,
-        //             tickets: [...state.user.tickets, action.payload]
-        //         }
-        //     }
+        case "ADD_FLIGHT_OFFER_TO_FAVORITES":
+            // console.log('state.user.favorited_flight_offers: ', state.user.favorited_flight_offers)
+            // console.log('action.payload: ', action.payload)
+            if (action.payload){
+                return {
+                    ...state,
+                    user: {
+                        ...state.user,
+                        favorited_flight_offers: [...state.user.favorited_flight_offers, action.payload]
+                    }
+                }
+            }
+        case "ADD_FLIGHT_OFFER_TO_PURCHASES":
+            // console.log('state.user.favorited_flight_offers: ', state.user.favorited_flight_offers)
+            // console.log('action.payload: ', action.payload)
+            if (action.payload){
+                return {
+                    ...state,
+                    user: {
+                        ...state.user,
+                        purchased_flight_offers: [...state.user.purchased_flight_offers, action.payload]
+                    }
+                }
+            }
         default:
             return state
     }
 }
 
 export default userReducer
+

@@ -13,3 +13,9 @@
 - make button fave or book flight_offer object
 - make the specific search for the sample response return the sample response
 - add more search options
+
+- how should routing work for getting info from back end?
+
+- how to separate models from searches- or do I need to?
+    - do I just save every response in the db? Do i serve it straight up to the front end?
+

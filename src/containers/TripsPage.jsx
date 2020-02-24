@@ -5,17 +5,11 @@ import FlightOffersContainer from './FlightOffersContainer'
 
 class TripsPage extends Component {
     render() {
-        console.log(this.props.user.purchased_flight_offers)
+        let purchased = this.props.purchased_flight_offers
         return (
             <>
                 <Header as='h1' style={{ "text-align": "center" }}>My Trips</Header>
-                {
-                    this.props.user.purchased_flight_offers
-                ?
-                    <FlightOffersContainer flightOffers={this.props.user.purchased_flight_offers} />
-                :
-                    ""
-                }
+                { purchased ? <FlightOffersContainer flightOffers={purchased} /> : "" }
             </>
         )
     }
@@ -23,8 +17,9 @@ class TripsPage extends Component {
 
 const MSTP = state => (
     {
-        user: state.userInfo.user
+        purchased_flight_offers: state.userInfo.user.purchased_flight_offers
     } 
 )
 
 export default connect(MSTP)(TripsPage)
+

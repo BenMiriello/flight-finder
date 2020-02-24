@@ -1,17 +1,20 @@
 import React, { Component } from 'react'
 import { Grid, Card, Item, Image, Button } from 'semantic-ui-react'
-import { addFlightOfferToPurchases, addFlightOfferToFavorites } from '../Redux/actions/index'
+import { postPurchase, postFavorite } from '../Redux/actions/favoriteAndPurchase'
 import { connect } from 'react-redux'
 
 export class FlightOfferCard extends Component {
 
-    handleItemClick = (e, { name }) => {
+    handleClick = (e, {name}) => {
+        console.log('e: ', e);
+        console.log('name: ', name);
+        console.log('this.props.flightOffer: ', this.props.flightOffer);
         switch(name) {
             case "favorite":
-                this.props.addFlightOfferToFavorites(this.props.flightOffer)
+                this.props.postFavorite(this.props.flightOffer)
                 break
             case "book flight":
-                this.props.addFlightOfferToPurchases(this.props.flightOffer)
+                this.props.postPurchase(this.props.flightOffer)
                 break
             default:
                 break
@@ -85,7 +88,7 @@ export class FlightOfferCard extends Component {
         return (
             <Card className="flight-offer-card" style={{"margin": "auto", "width": "82%"}} >
                 <Grid columns={2}>
-                    <Grid.Column color="white" width={13}>
+                    <Grid.Column width={13}>
                         <div className="flight-offer-card-flex-container">
                             {this.infoRow(to)}
                             {this.infoRow(from)}
@@ -94,13 +97,13 @@ export class FlightOfferCard extends Component {
                     <Grid.Column width={3}>
                         <div className="flight-offer-card-right">
                             <div className="flight-offer-card-right-item" style={{"top": "10px","position": "relative"}}>
-                                <Button name="favorite" circular icon='heart outline' onClick={this.handleClick}/>
+                                <Button onClick={this.handleClick} name="favorite" circular icon='heart outline' />
                             </div>
                             <div className="flight-offer-card-right-item ">
                                 <p className="foci-text vertical-center">${this.props.flightOffer.grand_total}</p>
                             </div>
                             <div className="flight-offer-card-right-item" >
-                                <Button name="book flight" onClick={this.handleClick}>Book Flight</Button>
+                                <Button onClick={this.handleClick} name="book flight" >Book Flight</Button>
                             </div>
                         </div>
                     </Grid.Column>
@@ -110,16 +113,17 @@ export class FlightOfferCard extends Component {
     }
 }
 
-const MSTP = state => ({
+// const MDTP = dispatch => ({
+//     postPurchase: () => dispatch(postPurchase()),
+//     addFlightOfferToFavorites: () => dispatch(addFlightOfferToFavorites())
+// })
 
-})
+const MDTP = {
+    postPurchase,
+    postFavorite
+}
 
-const MDTP = dispatch => ({
-    addFlightOfferToPurchases: () => dispatch(addFlightOfferToPurchases()),
-    addFlightOfferToFavorites: () => dispatch(addFlightOfferToFavorites())
-})
-
-export default connect(MSTP, MDTP)(FlightOfferCard)
+export default connect(null, MDTP)(FlightOfferCard)
 
 // props from flight card:  
 // {flightOffer: {…}}

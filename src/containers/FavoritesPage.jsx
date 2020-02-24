@@ -5,17 +5,11 @@ import FlightOffersContainer from './FlightOffersContainer'
 
 class FavoritesPage extends Component {
     render() {
-        console.log(this.props.user.favorited_flight_offers)
+        let favorited = this.props.user.favorited_flight_offers
         return (
             <>
                 <Header as='h1' style={{ "text-align": "center" }}>My Favorites</Header>
-                {
-                    this.props.user.favorited_flight_offers
-                ?
-                    <FlightOffersContainer flightOffers={this.props.user.favorited_flight_offers} />
-                :
-                    ""
-                }
+                { favorited ? <FlightOffersContainer flightOffers={favorited} /> : "" }
             </>
         )
     }
@@ -28,3 +22,4 @@ const MSTP = state => (
 )
 
 export default connect(MSTP)(FavoritesPage)
+
