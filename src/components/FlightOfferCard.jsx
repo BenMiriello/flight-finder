@@ -1,20 +1,26 @@
 import React, { Component } from 'react'
 import { Grid, Card, Item, Image, Button, Icon } from 'semantic-ui-react'
-import { postPurchase, postFavorite } from '../Redux/actions/favoriteAndPurchase'
+import { postPurchase, postFavorite, deletePurchase, deleteFavorite } from '../Redux/actions/favoriteAndPurchase'
 import { connect } from 'react-redux'
 
 export class FlightOfferCard extends Component {
 
     handleClick = (e, {name}) => {
-        console.log('e: ', e);
-        console.log('name: ', name);
-        console.log('this.props.flightOffer: ', this.props.flightOffer);
+        // console.log('e: ', e);
+        // console.log('name: ', name);
+        // console.log('this.props.flightOffer: ', this.props.flightOffer);
         switch(name) {
-            case "favorite":
+            case "add favorite":
                 this.props.postFavorite(this.props.flightOffer)
                 break
-            case "book flight":
+            case "add purchase":
                 this.props.postPurchase(this.props.flightOffer)
+                break
+            case "remove favorite":
+                this.props.deleteFavorite(this.props.flightOffer)
+                break
+            case "remove purchase":
+                this.props.deletePurchase(this.props.flightOffer)
                 break
             default:
                 break
@@ -87,18 +93,18 @@ export class FlightOfferCard extends Component {
     }
 
     favoriteButton = () => {
-        if (this.props.favorited_flight_offers.some(fo => fo.id === this.props.flightOffer.id)){
-            return <Button onClick={this.handleClick} name="removeFavorite" circular icon={{color: "red", name: "heart"}} />
+        if (this.props.favorited_flight_offers && this.props.favorited_flight_offers.some(fo => fo.id === this.props.flightOffer.id)){
+            return <Button onClick={this.handleClick} name="remove favorite" circular icon={{color: "red", name: "heart"}} />
         } else {
-            return <Button onClick={this.handleClick} name="favorite" circular icon='heart outline' />
+            return <Button onClick={this.handleClick} name="add favorite" circular icon='heart outline' />
         }
     }
 
     purchaseButton = () => {
-        if (this.props.purchased_flight_offers.some(fo => fo.id === this.props.flightOffer.id)){
-            return <Button onClick={this.handleClick} name="cancel flight" color='green' >Cancel Flight</Button>
+        if (this.props.purchased_flight_offers && this.props.purchased_flight_offers.some(fo => fo.id === this.props.flightOffer.id)){
+            return <Button onClick={this.handleClick} name="remove purchase" color='green' >Cancel Flight</Button>
         } else {
-            return <Button onClick={this.handleClick} name="book flight" color='blue' >Book Flight</Button>
+            return <Button onClick={this.handleClick} name="add purchase" color='blue' >Book Flight</Button>
         }
     }
 
@@ -141,7 +147,9 @@ const MSTP = state => (
 
 const MDTP = {
     postPurchase,
-    postFavorite
+    postFavorite,
+    deletePurchase,
+    deleteFavorite
 }
 
 export default connect(MSTP, MDTP)(FlightOfferCard)
