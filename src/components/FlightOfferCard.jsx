@@ -93,7 +93,7 @@ export class FlightOfferCard extends Component {
     }
 
     favoriteButton = () => {
-        if (this.props.favorited_flight_offers && this.props.favorited_flight_offers.some(fo => fo.id === this.props.flightOffer.id)){
+        if (this.props.favorited_flight_offers && this.props.favorited_flight_offers.length > 0 && this.props.favorited_flight_offers.some(fo => fo.id === this.props.flightOffer.id)){
             return <Button onClick={this.handleClick} name="remove favorite" circular icon={{color: "red", name: "heart"}} />
         } else {
             return <Button onClick={this.handleClick} name="add favorite" circular icon='heart outline' />
@@ -101,7 +101,7 @@ export class FlightOfferCard extends Component {
     }
 
     purchaseButton = () => {
-        if (this.props.purchased_flight_offers && this.props.purchased_flight_offers.some(fo => fo.id === this.props.flightOffer.id)){
+        if (this.props.purchased_flight_offers && this.props.purchased_flight_offers.length > 0 && this.props.purchased_flight_offers.some(fo => fo.id === this.props.flightOffer.id)){
             return <Button onClick={this.handleClick} name="remove purchase" color='green' >Cancel Flight</Button>
         } else {
             return <Button onClick={this.handleClick} name="add purchase" color='blue' >Book Flight</Button>
@@ -138,12 +138,16 @@ export class FlightOfferCard extends Component {
     }
 }
 
-const MSTP = state => (
-    {
-        favorited_flight_offers: state.userInfo.user.favorited_flight_offers,
-        purchased_flight_offers: state.userInfo.user.purchased_flight_offers
+const MSTP = state => {
+    const user = state.userInfo.user
+    let favorited_flight_offers = user ? user.favorited_flight_offers : []
+    let purchased_flight_offers = user ? user.purchased_flight_offers : []
+    
+    return {
+        favorited_flight_offers: favorited_flight_offers,
+        purchased_flight_offers: purchased_flight_offers
     }
-)
+}
 
 const MDTP = {
     postPurchase,

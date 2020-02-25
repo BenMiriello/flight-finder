@@ -1,5 +1,6 @@
 const initialState = {
     user: {
+        id: '',
         username: '',
         bio: '',
         avatar: '',
@@ -16,6 +17,14 @@ const userReducer = (state = initialState, action) => {
             return {...state, user: action.payload}
         case "LOGOUT_USER":
             return {...state, user: {} }
+        case "CHANGE_USERNAME":
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    username: action.payload
+                }
+            }
         case "ADD_FLIGHT_OFFER_TO_FAVORITES":
             if (action.payload){
                 return {

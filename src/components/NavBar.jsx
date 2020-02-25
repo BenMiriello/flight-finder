@@ -9,11 +9,16 @@ class NavBar extends Component {
     state = {}
 
     handleItemClick = (e, { name }) => {
-        if ( name === 'logout' ) {
-            localStorage.removeItem('token')
-            this.props.logoutUser()
-        } else {
-            this.setState({ activeItem: name })
+        switch (name) {
+            case 'logout':
+                localStorage.removeItem('token')
+                this.props.logoutUser()
+                break
+            // case 'settings':
+            //     break
+            default:
+                this.setState({ activeItem: name })
+                break
         }
     }
 
@@ -44,8 +49,17 @@ class NavBar extends Component {
                         as={NavLink} 
                         to='/profile'
                         name='My Profile'
+                        text='My Profile'
                         active={this.state.activeItem === 'myProfile'}
                         onClick={this.handleItemClick}
+                    />
+                    <Menu.Item
+                        as={NavLink}
+                        to='/settings'
+                        name='settings' 
+                        text='Settings'
+                        active={this.state.activeItem === 'settings'}
+                        // onClick={this.handleItemClick}
                     />
                     <Menu.Item
                         as={NavLink}

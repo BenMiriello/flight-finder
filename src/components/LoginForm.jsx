@@ -24,7 +24,6 @@ class LoginForm extends Component {
 
     handleSubmit = e => {
         e.preventDefault()
-        // console.log('submitted');
         this.props.fetchLoginUser(this.state)
         this.setState(this.defaultState)
         // add error conditionality

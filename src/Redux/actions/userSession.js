@@ -64,3 +64,35 @@ export const logoutUser = () => ({
     type: 'LOGOUT_USER'
 })
 
+const slapNewUsername = newUsername => ({
+    type: 'CHANGE_USERNAME',
+    payload: newUsername
+})
+
+export const changeUsername = (userInfo) => {
+    // debugger
+    
+    console.log(userInfo)
+    // console.log(userId)
+    const userId = userInfo.userId
+    const newUsername = userInfo.newUsername
+    return dispatch => {
+        const token = localStorage.token
+        if (token) {
+            return fetch(SLUG + `users/${userId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(newUsername)
+            })
+            .then(r => r.json())
+            .then(data => {
+                dispatch(slapNewUsername(data.newUsername))
+            })
+        }
+    }
+}
+

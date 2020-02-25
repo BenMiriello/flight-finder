@@ -8,6 +8,7 @@ import LoginPage from './containers/LoginPage'
 import SearchPage from './containers/SearchPage'
 import FavoritesPage from './containers/FavoritesPage';
 import TripsPage from './containers/TripsPage';
+import SettingsPage from './containers/SettingsPage'
 import { getProfileFetch } from './Redux/actions/userSession'
 import { connect } from 'react-redux'
 
@@ -29,6 +30,7 @@ class App extends Component {
                         <Route path="/signup" component={SignupPage}/>
                         <Route path="/login" component={LoginPage}/>
                         <Route path="/profile" component={ProfilePage}/>
+                        <Route path="/settings" component={SettingsPage}/>
                     </Switch>
                     {/* <Footer /> */}
                 </div>
