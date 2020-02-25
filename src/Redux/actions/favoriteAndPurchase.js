@@ -29,8 +29,6 @@ export const postPurchase = (flightOffer) => {
             })
             .then(r => r.json())
             .then(data => {
-                // console.log(data)
-                // debugger
                 if (data.id){
                     dispatch(addFlightOfferToPurchases(data))
                 } else {

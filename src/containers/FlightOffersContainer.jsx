@@ -2,28 +2,29 @@ import React, { Component } from 'react'
 import FlightOfferCard from '../components/FlightOfferCard'
 import { Container } from 'semantic-ui-react'
 import { Separator } from '../styleComponents/Separator'
+import { v1 as uuidv1 } from 'uuid';
+
 
 export default class FlightOffersContainer extends Component {
 
     showFlightOffers = () => {
-        let i = this.props.flightOffers.length - 1
-        return (
-            this.props.flightOffers.map(foobj => {
-                if (i < this.props.flightOffers.length) {
+        if (this.props.flightOffers && this.props.flightOffers.length >= 1) {
+            // debugger
+            return (
+                this.props.flightOffers.map(foobj => {
                     return (
                         <>
-                            <FlightOfferCard flightOffer={foobj} />
-                            <Separator px={20}/>
+                            <FlightOfferCard key={uuidv1()} flightOffer={foobj} />
+                            <Separator px={20} />
                         </>
                     )
-                } else {
-                    return <FlightOfferCard flightOffer={foobj} />
-                }
-                i++
-            })
-        )
+                })
+            )
+        } else {
+            return ""
+        }
     }
-    
+
     render() {
         // debugger
         return (

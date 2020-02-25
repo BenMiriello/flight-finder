@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Menu, Dropdown } from 'semantic-ui-react'
 import { NavLink } from 'react-router-dom'
-import LoginForm from './LoginForm'
+// import LoginForm from './LoginForm'
 import { connect } from 'react-redux'
 import { getProfileFetch, logoutUser } from '../Redux/actions/userSession'
 
@@ -66,8 +66,8 @@ class NavBar extends Component {
 
         return (
             <Menu>
-                <Menu.Item as={NavLink} to='/' NavBar>
-                    <img src='/planet-earth.png' />
+                <Menu.Item as={NavLink} to='/' >
+                    <img src='/planet-earth.png' alt='icon of planet earth' />
                 </Menu.Item>
                 <Menu.Item as={NavLink} to='/favorites'
                     name='favorites'

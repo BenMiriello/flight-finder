@@ -5,7 +5,7 @@ export default class UserProfile extends Component {
     render() {
         return (
             <>
-                <Header as='h1' style={{ "text-align": "center" }}>My Profile</Header>
+                <Header as='h1' style={{ "textAlign": "center" }}>My Profile</Header>
                 <div>
                 </div>
             </>

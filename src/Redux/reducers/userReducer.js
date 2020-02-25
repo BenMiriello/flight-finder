@@ -27,7 +27,7 @@ const userReducer = (state = initialState, action) => {
                         favorited_flight_offers: [...state.user.favorited_flight_offers, action.payload]
                     }
                 }
-            }
+            } break
         case "ADD_FLIGHT_OFFER_TO_PURCHASES":
             // console.log('state.user.favorited_flight_offers: ', state.user.favorited_flight_offers)
             // console.log('action.payload: ', action.payload)
@@ -39,7 +39,7 @@ const userReducer = (state = initialState, action) => {
                         purchased_flight_offers: [...state.user.purchased_flight_offers, action.payload]
                     }
                 }
-            }
+            } break
         default:
             return state
     }

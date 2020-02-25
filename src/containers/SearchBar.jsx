@@ -19,7 +19,7 @@ export default class SearchBar extends Component {
 
     render() {
         return (
-            <Card style={{"width": "80%", "margin": "auto", "margin-top": "5%"}}>
+            <Card style={{"width": "80%", "margin": "auto", "marginTop": "5%"}}>
                 <Form style={{"margin": "15px"}}>
                     <Form.Group widths='equal'>
                         <Form.Field onChange = {this.handleOnChange}
@@ -42,8 +42,8 @@ export default class SearchBar extends Component {
                             label='Return Date'
                             placeholder='Return Date'
                         />
-                        <div style={{"text-align": "center", "margin": "auto", "margin-top": "23px", "margin-left": "4px"}}>
-                            <Button icon="search" type="submit">Search</Button>
+                        <div style={{"textAlign": "center", "margin": "auto", "marginTop": "23px", "marginLeft": "4px"}}>
+                            <Button type="submit">Search</Button>
                         </div>
                     </Form.Group>
                 </Form>

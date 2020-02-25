@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Grid, Card, Item, Image, Button } from 'semantic-ui-react'
+import { Grid, Card, Item, Image, Button, Icon } from 'semantic-ui-react'
 import { postPurchase, postFavorite } from '../Redux/actions/favoriteAndPurchase'
 import { connect } from 'react-redux'
 
@@ -28,9 +28,12 @@ export class FlightOfferCard extends Component {
         let carrierCode = segments[0].carrier_code
         let carrier = segments[0].carrier.toLowerCase().replace(/^\w/, c => c.toUpperCase())
         let duration = segments[0].duration.substring(2).toLowerCase()
-
-        let departureTime = segments[0].departure_time.substring(11, 16)
-        let arrivalTime = segments[segments.length - 1].arrival_time.substring(11, 16)
+        
+        
+        let departureStrEnd = parseInt((segments[0].departure_time.substring(11).split(":"))[0]) > 12 ? 17 : 16
+        let departureTime = segments[0].departure_time.substring(11, departureStrEnd)
+        let arrivalStrEnd = parseInt((segments[0].departure_time.substring(11).split(":"))[0]) > 12 ? 17 : 16
+        let arrivalTime = segments[segments.length - 1].arrival_time.substring(11, arrivalStrEnd)
 
         let departure24Hour = parseInt((departureTime.split(":"))[0])
         let departure12Hour = departure24Hour > 12 ? departure24Hour - 12 : departure24Hour
@@ -53,6 +56,7 @@ export class FlightOfferCard extends Component {
                     <div className="vertical-center">
                         <p className="foci-text">
                             {departure12Hour}:{departureMinute} {departureAmPm} - {arrival12Hour}:{arrivalMinute} {arrivalAmPm}
+                            {/* {this.formatAMPM(segments[0].departure_time)} - {this.formatAMPM(segments[0].departure_time)}  */}
                         </p>
                         <div className="flight-offer-card-flex-container sub-flex">
                             <p className="foci-text">{carrier}</p>
@@ -62,12 +66,11 @@ export class FlightOfferCard extends Component {
                 <Item className="foci foci-legs">
                     <div className="vertical-center">
                         <p className="foci-text">{stops === 0 ? "non" : stops + " "}stop{stops >= 2 ? "s" : ""}</p>
-                        {stops >= 1 ? 
+                        {stops >= 1 ?   
                             <div className="flight-offer-card-flex-container sub-flex">
                                 <p className="foci-text">{segments[0].arrival_iata}</p>
                             </div>
-                        :
-                            null
+                        : null
                         }
                     </div>
                 </Item>
@@ -83,10 +86,26 @@ export class FlightOfferCard extends Component {
         )
     }
 
+    favoriteButton = () => {
+        if (this.props.favorited_flight_offers.some(fo => fo.id === this.props.flightOffer.id)){
+            return <Button onClick={this.handleClick} name="removeFavorite" circular icon={{color: "red", name: "heart"}} />
+        } else {
+            return <Button onClick={this.handleClick} name="favorite" circular icon='heart outline' />
+        }
+    }
+
+    purchaseButton = () => {
+        if (this.props.purchased_flight_offers.some(fo => fo.id === this.props.flightOffer.id)){
+            return <Button onClick={this.handleClick} name="cancel flight" color='green' >Cancel Flight</Button>
+        } else {
+            return <Button onClick={this.handleClick} name="book flight" color='blue' >Book Flight</Button>
+        }
+    }
+
     render() {
         let [to, from] = ["0", "1"]
         return (
-            <Card className="flight-offer-card" style={{"margin": "auto", "width": "82%"}} >
+            <Card className="flight-offer-card" style={{"margin": "auto", "width": "82%"}}>
                 <Grid columns={2}>
                     <Grid.Column width={13}>
                         <div className="flight-offer-card-flex-container">
@@ -97,13 +116,13 @@ export class FlightOfferCard extends Component {
                     <Grid.Column width={3}>
                         <div className="flight-offer-card-right">
                             <div className="flight-offer-card-right-item" style={{"top": "10px","position": "relative"}}>
-                                <Button onClick={this.handleClick} name="favorite" circular icon='heart outline' />
+                                {this.favoriteButton()}
                             </div>
                             <div className="flight-offer-card-right-item ">
                                 <p className="foci-text vertical-center">${this.props.flightOffer.grand_total}</p>
                             </div>
-                            <div className="flight-offer-card-right-item" >
-                                <Button onClick={this.handleClick} name="book flight" >Book Flight</Button>
+                            <div className="flight-offer-card-right-item">
+                                {this.purchaseButton()}
                             </div>
                         </div>
                     </Grid.Column>
@@ -113,197 +132,17 @@ export class FlightOfferCard extends Component {
     }
 }
 
-// const MDTP = dispatch => ({
-//     postPurchase: () => dispatch(postPurchase()),
-//     addFlightOfferToFavorites: () => dispatch(addFlightOfferToFavorites())
-// })
+const MSTP = state => (
+    {
+        favorited_flight_offers: state.userInfo.user.favorited_flight_offers,
+        purchased_flight_offers: state.userInfo.user.purchased_flight_offers
+    }
+)
 
 const MDTP = {
     postPurchase,
     postFavorite
 }
 
-export default connect(null, MDTP)(FlightOfferCard)
-
-// props from flight card:  
-// {flightOffer: {…}}
-//     flightOffer:
-//         one_way: false
-//         currency: "EURO"
-//         grand_total: 329
-//         fare_type: "PUBLISHED"
-//         validating_airline_codes: "AY"
-
-//         itineraries: Array(2)
-//             0:
-//                 id: 407
-//                 duration: "PT6H50M"
-//                 segments: Array(1)
-//                     0:
-//                         id: 526
-//                         itinerary_id: 407
-//                         departure_iata: "JFK"
-//                         departure_city_code: "NYC"
-//                         departure_country_code: "US"
-//                         departure_terminal: "7"
-//                         departure_time: "2020-10-01T07:55:00.000Z"
-//                         arrival_iata: "LHR"
-//                         arrival_city_code: "LON"
-//                         arrival_country_code: "GB"
-//                         arrival_terminal: "5"
-//                         arrival_time: "2020-10-01T19:45:00.000Z"
-//                         carrier_code: "AY"
-//                         carrier: "FINNAIR"
-//                         flight_number: "5478"
-//                         aircraft_code: "744"
-//                         aircraft: "BOEING 747-400"
-//                         operating_carrier_code: "BA"
-//                         operating_carrier: null
-//                         duration: "PT6H50M"
-//                         xid: 8
-//                         number_of_stops: 0
-//                         blacklisted_in_eu: false
-//                         created_at: "2020-02-22T22:55:27.810Z"
-//                         updated_at: "2020-02-22T22:55:27.810Z"
-//                         __proto__: Object
-//                     length: 1
-//                     __proto__: Array(0)
-//                 __proto__: Object
-//             1:
-//                 id: 408
-//                 duration: "PT11H55M"
-//                 segments: Array(2)
-//                     0:
-//                         id: 527
-//                         itinerary_id: 408
-//                         departure_iata: "LHR"
-//                         departure_city_code: "LON"
-//                         departure_country_code: "GB"
-//                         departure_terminal: "5"
-//                         departure_time: "2020-10-10T07:20:00.000Z"
-//                         arrival_iata: "MAD"
-//                         arrival_city_code: "MAD"
-//                         arrival_country_code: "ES"
-//                         arrival_terminal: "4S"
-//                         arrival_time: "2020-10-10T10:50:00.000Z"
-//                         carrier_code: "IB"
-//                         carrier: "IBERIA"
-//                         flight_number: "7460"
-//                         aircraft_code: "320"
-//                         aircraft: "AIRBUS INDUSTRIE A320-100/200"
-//                         operating_carrier_code: "BA"
-//                         operating_carrier: null
-//                         duration: "PT2H30M"
-//                         xid: 21
-//                         number_of_stops: 0
-//                         blacklisted_in_eu: false
-//                         created_at: "2020-02-22T22:55:27.832Z"
-//                         updated_at: "2020-02-22T22:55:27.832Z"
-//                         __proto__: Object
-//                     1:
-//                         id: 528
-//                         itinerary_id: 408
-//                         departure_iata: "MAD"
-//                         departure_city_code: "MAD"
-//                         departure_country_code: "ES"
-//                         departure_terminal: "4S"
-//                         departure_time: "2020-10-10T12:20:00.000Z"
-//                         arrival_iata: "JFK"
-//                         arrival_city_code: "NYC"
-//                         arrival_country_code: "US"
-//                         arrival_terminal: "7"
-//                         arrival_time: "2020-10-10T14:15:00.000Z"
-//                         carrier_code: "IB"
-//                         carrier: "IBERIA"
-//                         flight_number: "6251"
-//                         aircraft_code: "359"
-//                         aircraft: "AIRBUS INDUSTRIE A350-900"
-//                         operating_carrier_code: "IB"
-//                         operating_carrier: null
-//                         duration: "PT7H55M"
-//                         xid: 22
-//                         number_of_stops: 0
-//                         blacklisted_in_eu: false
-//                         created_at: "2020-02-22T22:55:27.844Z"
-//                         updated_at: "2020-02-22T22:55:27.844Z"
-//                         __proto__: Object
-//                     length: 2
-//                     __proto__: Array(0)
-//                 __proto__: Object
-//             length: 2
-//             __proto__: Array(0)
-
-//         travelers: Array(1)
-//             0:
-//                 id: 204
-//                 traveler_type: "ADULT"
-//                 currency_code: "EUR"
-//                 currency: "EURO"
-//                 total: 329
-//                 traveler_segments: Array(3)
-//                     0:
-//                         id: 1
-//                         traveler_id: 204
-//                         segment_id: 526
-//                         segment_xid: 8
-//                         cabin: "ECONOMY"
-//                         fare_basis: "OLN8C7B5"
-//                         branded_fare: "NOBAG"
-//                         rbd_class: "O"
-//                         included_checked_bags_quantity: 0
-//                         created_at: "2020-02-22T22:55:27.888Z"
-//                         updated_at: "2020-02-22T22:55:27.888Z"
-//                         __proto__: Object
-//                     1:
-//                         id: 2
-//                         traveler_id: 204
-//                         segment_id: 527
-//                         segment_xid: 21
-//                         cabin: "ECONOMY"
-//                         fare_basis: "OLN8C7B5"
-//                         branded_fare: "NOBAG"
-//                         rbd_class: "O"
-//                         included_checked_bags_quantity: 0
-//                         created_at: "2020-02-22T22:55:27.894Z"
-//                         updated_at: "2020-02-22T22:55:27.894Z"
-//                         __proto__: Object
-//                     2:
-//                         id: 3
-//                         traveler_id: 204
-//                         segment_id: 528
-//                         segment_xid: 22
-//                         cabin: "ECONOMY"
-//                         fare_basis: "OLN8C7B5"
-//                         branded_fare: "NOBAG"
-//                         rbd_class: "O"
-//                         included_checked_bags_quantity: 0
-//                         created_at: "2020-02-22T22:55:27.900Z"
-//                         updated_at: "2020-02-22T22:55:27.900Z"
-//                         __proto__: Object
-//                     length: 3
-//                     __proto__: Array(0)
-//                 __proto__: Object
-//             length: 1
-//             __proto__: Array(0)
-//         __proto__: Object
-//     __proto__: Object
-
-
-
-{/* <Item className="flight-offer-card-item" />
-    {/* <Item.Image size='small' src='https://images.unsplash.com/photo-1503780099440-e6ab046a1d71?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&h=500&q=100' /> */}
-
-{/* <Item className="foci foci-50" />
-<Item className="foci foci-50" />
-<Item className="foci" /> */}
-
-// .foci-carrier-icon {
-//   width: 44px
-// .foci-times {
-//   width: 25%;
-// .foci-legs {
-//   width: 12%
-// .foci-duration {
-//   width: 12%
-// .carrier-icon
+export default connect(MSTP, MDTP)(FlightOfferCard)
 
