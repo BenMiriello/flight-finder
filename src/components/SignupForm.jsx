@@ -23,7 +23,6 @@ class SignupForm extends Component {
 
     handleSubmit = e => {
         e.preventDefault()
-        // debugger
         this.props.userPostFetch(this.state)
         this.setState(this.defaultState)
         // add error conditionality

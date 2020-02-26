@@ -6,9 +6,6 @@ import { connect } from 'react-redux'
 export class FlightOfferCard extends Component {
 
     handleClick = (e, {name}) => {
-        // console.log('e: ', e);
-        // console.log('name: ', name);
-        // console.log('this.props.flightOffer: ', this.props.flightOffer);
         switch(name) {
             case "add favorite":
                 this.props.postFavorite(this.props.flightOffer)
@@ -102,14 +99,14 @@ export class FlightOfferCard extends Component {
 
     purchaseButton = () => {
         if (this.props.purchased_flight_offers && this.props.purchased_flight_offers.length > 0 && this.props.purchased_flight_offers.some(fo => fo.id === this.props.flightOffer.id)){
-            return <Button onClick={this.handleClick} name="remove purchase" color='green' >Cancel Flight</Button>
+            return <Button onClick={this.handleClick} name="remove purchase" color='green'>Cancel Flight</Button>
         } else {
-            return <Button onClick={this.handleClick} name="add purchase" color='blue' >Book Flight</Button>
+            return <Button onClick={this.handleClick} name="add purchase" color='blue'>Book Flight</Button>
         }
     }
 
     render() {
-        let [to, from] = ["0", "1"]
+        const [to, from] = ["0", "1"]
         return (
             <Card className="flight-offer-card" style={{"margin": "auto", "width": "82%"}}>
                 <Grid columns={2}>
@@ -142,7 +139,7 @@ const MSTP = state => {
     const user = state.userInfo.user
     let favorited_flight_offers = user ? user.favorited_flight_offers : []
     let purchased_flight_offers = user ? user.purchased_flight_offers : []
-    
+
     return {
         favorited_flight_offers: favorited_flight_offers,
         purchased_flight_offers: purchased_flight_offers

@@ -112,3 +112,4 @@ const MDTP = dispatch => ({
 
 export default connect(MSTP, MDTP)(NavBar)
 
+// https://react.semantic-ui.com/modules/dropdown/#usage-close-on-change

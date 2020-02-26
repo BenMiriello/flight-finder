@@ -1,44 +1,117 @@
 import React, { Component } from 'react'
-import {
-  Button,
-  Form,
-  Input,
-  Card,
-//   Checkbox,
-//   Radio,
-//   Select,
-//   TextArea,
-//   Image
+import { searchForFlights } from '../Redux/actions/searchAndResults'
+import { 
+    Button, 
+    Form, 
+    Input, 
+    Card, 
+    Dropdown,
+    Grid 
 } from 'semantic-ui-react'
+import { connect } from 'react-redux'
 
-export default class SearchBar extends Component {
+class SearchBar extends Component {
 
-    // handleOnChange = (e) => {
+    defaultState = {
+        searchParams: {
+            originLocationCode: '',
+            destinationLocationCode: '',
+            departureDate: '',
+            returnDate: '',
+            travelClass: 'Economy',
+            adults: 1,
+            children: 0,
+            infants: 0
+        },
+        options: {
+            switchRoundTripOneWay: 'Round Trip'
+        }
+    }
 
-    // }
+    state = this.defaultState
+
+    handleOnChange = e => {
+        this.setState({
+            searchParams: {
+                [e.target.name]:e.target.value
+            }
+        })
+    }
+
+    handleSubmit = e => {
+        e.preventDefault()
+        let searchParams = {...this.state.searchParams}
+        this.props.searchForFlights(searchParams)
+        this.setState(this.defaultState)
+    }
+
+    handleSwitchTravelClass = e => {
+        let selection = e.target.textContent
+        this.setState(prevState => ({
+            searchParams: {...prevState.searchParams, travelClass: selection}
+        }))
+    }
+
+    handleSwitchRoundTripOneWay = e => {
+        let selection = e.target.textContent
+        this.setState(prevState => ({
+            options: {...prevState.options, switchRoundTripOneWay: selection}
+        }))
+    }
+
+    handleAddPassenger = e => {
+        let selection = e.target.textContent
+        this.setState(prevState => ({
+            options: {...prevState.options, switchRoundTripOneWay: selection}
+        }))
+    }
+
+    /** "https://test.api.amadeus.com/v2/shopping/flight-offers
+     * ?originLocationCode=JFK
+     * &destinationLocationCode=LHR
+     * &departureDate=2020-10-01
+     * &returnDate=2020-10-10
+     * &adults=1
+     * &nonStop=false
+     * &max=50"
+     * */ 
+
+    totalPassengers = () => {
+        let params = this.state.searchParams
+        let total = params.adults + params.children + params.infants 
+        return `${total} Passenger${total === 1 ? '' : 's'}`
+    }
 
     render() {
         return (
             <Card style={{"width": "80%", "margin": "auto", "marginTop": "5%"}}>
-                <Form style={{"margin": "15px"}}>
+                <Form onSubmit = {this.handleSubmit} style={{"margin": "15px"}}>
                     <Form.Group widths='equal'>
                         <Form.Field onChange = {this.handleOnChange}
+                            value={this.state.origin}
                             control={Input}
+                            name='originLocationCode'
                             label='Origin'
                             placeholder='Origin'
                         />
-                        <Form.Field
+                        <Form.Field onChange = {this.handleOnChange}
+                            value={this.state.destination}
                             control={Input}
+                            name='destinationLocationCode'
                             label='Destination'
                             placeholder='Destination'
                         />
-                        <Form.Field
+                        <Form.Field onChange = {this.handleOnChange}
+                            value={this.state.departDate}
                             control={Input}
-                            label='Date of Departure'
+                            name='departureDate'
+                            label='Depart Date'
                             placeholder='Date of Departure'
                         />
-                        <Form.Field
+                        <Form.Field onChange = {this.handleOnChange}
+                            value={this.state.returnDate}
                             control={Input}
+                            name='returnDate'
                             label='Return Date'
                             placeholder='Return Date'
                         />
@@ -47,7 +120,60 @@ export default class SearchBar extends Component {
                         </div>
                     </Form.Group>
                 </Form>
+                <Form>
+                    <Form.Group widths='equal'>
+                        <Dropdown text={this.state.options.switchRoundTripOneWay} style={{"marginLeft": "20px", "marginRight": "20px"}}>
+                            <Dropdown.Menu onClick={this.handleSwitchRoundTripOneWay}>
+                                <Dropdown.Item text='One Way' />
+                                <Dropdown.Item text='Round Trip' />
+                            </Dropdown.Menu>
+                        </Dropdown>
+                        <Dropdown text={this.state.searchParams.travelClass} style={{"marginLeft": "20px", "marginRight": "20px"}}>
+                            <Dropdown.Menu onClick={this.handleSwitchTravelClass}>
+                                <Dropdown.Item text='Economy' />
+                                <Dropdown.Item text='Premium Economy' />
+                                <Dropdown.Item text='Business' />
+                                <Dropdown.Item text='First Class' />
+                            </Dropdown.Menu>
+                        </Dropdown>
+                        <Dropdown onClick={e => e.stopPropagation()} text={this.totalPassengers()} style={{"marginLeft": "20px", "marginRight": "20px"}}>
+                            <Dropdown.Menu>
+                            <Form onClick={e => e.stopPropagation()}>
+                                <Button.Group onClick={e => e.stopPropagation()}>
+                                    <Button inactive style={{"backgroundColor": "white"}}><p>Adults:</p></Button>
+                                    <Button icon="minus circle" style={{"backgroundColor": "white"}} circular/>
+                                    <Button inactive style={{"backgroundColor": "white"}}><p>1</p></Button>
+                                    <Button icon="plus circle" style={{"backgroundColor": "white"}} circular/>
+                                </Button.Group>
+                            </Form>
+                            <Form onClick={e => e.stopPropagation()}>
+                                <Button.Group onClick={e => e.stopPropagation()}>
+                                    <Button inactive style={{"backgroundColor": "white"}}><p>Children:</p></Button>
+                                    <Button icon="minus circle" style={{"backgroundColor": "white"}} circular/>
+                                    <Button inactive style={{"backgroundColor": "white"}}><p>1</p></Button>
+                                    <Button icon="plus circle" style={{"backgroundColor": "white", "spaceRight": "10px"}} circular/>
+                                </Button.Group>
+                            </Form>
+                            <Form onClick={e => e.stopPropagation()}>
+                                <Button.Group onClick={e => e.stopPropagation()}>
+                                    <Button inactive style={{"backgroundColor": "white"}}><p>Infants:</p></Button>
+                                    <Button icon="minus circle" style={{"backgroundColor": "white"}} circular/>
+                                    <Button inactive style={{"backgroundColor": "white"}}><p>1</p></Button>
+                                    <Button icon="plus circle" style={{"backgroundColor": "white"}} circular/>
+                                </Button.Group>
+                            </Form>
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </Form.Group>
+                </Form>
             </Card>
         )
     }
 }
+
+const MDTP = dispatch => ({
+    searchForFlights: () => dispatch(searchForFlights())
+})
+
+export default connect(null, MDTP)(SearchBar)
+

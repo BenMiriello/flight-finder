@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Header, Form, Button } from 'semantic-ui-react'
 import { Separator } from '../styleComponents/Separator'
 import { changeUsername } from '../Redux/actions/userSession'
-// import { withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 class SettingsPage extends Component {
@@ -17,10 +17,8 @@ class SettingsPage extends Component {
         e.preventDefault()
         let userInfo = {newUsername: this.state.newUsername, userId: this.props.userId}
         this.props.changeUsername(userInfo)
-        // this.props.userPostFetch(this.state)
-        // this.setState(this.defaultState)
+        this.props.history.push('/profile')
         // add error conditionality
-        // this.props.history.push('/')
     }
 
     handleChange = e => {
@@ -30,7 +28,6 @@ class SettingsPage extends Component {
     }
 
     render() {
-        // console.log(this.props.userId)
         return (
             <div className="signup-form-div" >
                 <Header as='h1' style={{ "textAlign": "center" }}>Settings</Header>
@@ -64,4 +61,4 @@ const MSTP = state => (
     }
 )
 
-export default connect(MSTP, MDTP)(SettingsPage)
+export default withRouter(connect(MSTP, MDTP)(SettingsPage))
