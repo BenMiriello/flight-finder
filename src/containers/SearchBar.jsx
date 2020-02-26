@@ -6,7 +6,7 @@ import {
     Input, 
     Card, 
     Dropdown,
-    Grid 
+    // Grid 
 } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 
@@ -66,6 +66,18 @@ class SearchBar extends Component {
         }))
     }
 
+    handleAddRemovePerson = (e, type, operation) => {
+        let person = type.toLowerCase()
+        // console.log(e, type, operation)
+        // debugger
+        this.setState(prevState => ({
+            searchParams: {
+                ...prevState.searchParams,
+                [person]: operation === "minus" ? prevState.searchParams[person] - 1 : "plus" ? prevState.searchParams[person] + 1 : prevState.searchParams[person]
+            }
+        }))
+    }
+
     /** "https://test.api.amadeus.com/v2/shopping/flight-offers
      * ?originLocationCode=JFK
      * &destinationLocationCode=LHR
@@ -82,8 +94,35 @@ class SearchBar extends Component {
         return `${total} Passenger${total === 1 ? '' : 's'}`
     }
 
+    selectNumberOfPeople = (type) => (
+        <Form onClick={e => e.stopPropagation()}>
+            <Button.Group onClick={e => e.stopPropagation()}>
+                <Button inactive style={{"backgroundColor": "white"}}>
+                    <p>{type}:</p>
+                </Button>
+                <Button 
+                    name="minus" 
+                    onClick={e => this.handleAddRemovePerson(e, type, 'minus')}
+                    icon="minus circle" 
+                    style={{"backgroundColor": "white"}} 
+                    circular
+                />
+                <Button inactive style={{"backgroundColor": "white"}}>
+                    <p>1</p>
+                </Button>
+                <Button 
+                    name="plus" 
+                    onClick={e => this.handleAddRemovePerson(e, type, 'plus')}
+                    icon="plus circle" 
+                    style={{"backgroundColor": "white", "spaceRight": "10px"}} 
+                    circular
+                />
+            </Button.Group>
+        </Form>
+    )
+
     render() {
-        return (
+        return(
             <Card style={{"width": "80%", "margin": "auto", "marginTop": "5%"}}>
                 <Form onSubmit = {this.handleSubmit} style={{"margin": "15px"}}>
                     <Form.Group widths='equal'>
@@ -122,13 +161,17 @@ class SearchBar extends Component {
                 </Form>
                 <Form>
                     <Form.Group widths='equal'>
-                        <Dropdown text={this.state.options.switchRoundTripOneWay} style={{"marginLeft": "20px", "marginRight": "20px"}}>
+                        <Dropdown 
+                            text={this.state.options.switchRoundTripOneWay} 
+                            style={{"marginLeft": "20px", "marginRight": "20px"}}>
                             <Dropdown.Menu onClick={this.handleSwitchRoundTripOneWay}>
                                 <Dropdown.Item text='One Way' />
                                 <Dropdown.Item text='Round Trip' />
                             </Dropdown.Menu>
                         </Dropdown>
-                        <Dropdown text={this.state.searchParams.travelClass} style={{"marginLeft": "20px", "marginRight": "20px"}}>
+                        <Dropdown 
+                            text={this.state.searchParams.travelClass} 
+                            style={{"marginLeft": "20px", "marginRight": "20px"}}>
                             <Dropdown.Menu onClick={this.handleSwitchTravelClass}>
                                 <Dropdown.Item text='Economy' />
                                 <Dropdown.Item text='Premium Economy' />
@@ -136,32 +179,14 @@ class SearchBar extends Component {
                                 <Dropdown.Item text='First Class' />
                             </Dropdown.Menu>
                         </Dropdown>
-                        <Dropdown onClick={e => e.stopPropagation()} text={this.totalPassengers()} style={{"marginLeft": "20px", "marginRight": "20px"}}>
+                        <Dropdown 
+                            onClick={e => e.stopPropagation()} 
+                            text={this.totalPassengers()} 
+                            style={{"marginLeft": "20px", "marginRight": "20px"}}>
                             <Dropdown.Menu>
-                            <Form onClick={e => e.stopPropagation()}>
-                                <Button.Group onClick={e => e.stopPropagation()}>
-                                    <Button inactive style={{"backgroundColor": "white"}}><p>Adults:</p></Button>
-                                    <Button icon="minus circle" style={{"backgroundColor": "white"}} circular/>
-                                    <Button inactive style={{"backgroundColor": "white"}}><p>1</p></Button>
-                                    <Button icon="plus circle" style={{"backgroundColor": "white"}} circular/>
-                                </Button.Group>
-                            </Form>
-                            <Form onClick={e => e.stopPropagation()}>
-                                <Button.Group onClick={e => e.stopPropagation()}>
-                                    <Button inactive style={{"backgroundColor": "white"}}><p>Children:</p></Button>
-                                    <Button icon="minus circle" style={{"backgroundColor": "white"}} circular/>
-                                    <Button inactive style={{"backgroundColor": "white"}}><p>1</p></Button>
-                                    <Button icon="plus circle" style={{"backgroundColor": "white", "spaceRight": "10px"}} circular/>
-                                </Button.Group>
-                            </Form>
-                            <Form onClick={e => e.stopPropagation()}>
-                                <Button.Group onClick={e => e.stopPropagation()}>
-                                    <Button inactive style={{"backgroundColor": "white"}}><p>Infants:</p></Button>
-                                    <Button icon="minus circle" style={{"backgroundColor": "white"}} circular/>
-                                    <Button inactive style={{"backgroundColor": "white"}}><p>1</p></Button>
-                                    <Button icon="plus circle" style={{"backgroundColor": "white"}} circular/>
-                                </Button.Group>
-                            </Form>
+                                {this.selectNumberOfPeople('Adults')}
+                                {this.selectNumberOfPeople('Children')}
+                                {this.selectNumberOfPeople('Infants')}
                             </Dropdown.Menu>
                         </Dropdown>
                     </Form.Group>
