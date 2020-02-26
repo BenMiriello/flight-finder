@@ -1,4 +1,14 @@
 const initialState = {
+    queryParams: {
+        originLocationCode: '',
+        destinationLocationCode: '',
+        departureDate: '',
+        returnDate: '',
+        travelClass: 'Economy',
+        adults: 1,
+        children: 0,
+        infants: 0
+    },
     searchResults: []
 }
 

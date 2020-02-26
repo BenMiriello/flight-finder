@@ -31,50 +31,50 @@ class SearchBar extends Component {
     state = this.defaultState
 
     handleOnChange = e => {
-        this.setState({
+        let param = e.target.name
+        let value = e.target.value
+        this.setState(prevState => ({
             searchParams: {
-                [e.target.name]:e.target.value
+                ...prevState.searchParams,
+                [param]: value
             }
-        })
+        }))
     }
 
     handleSubmit = e => {
         e.preventDefault()
         let searchParams = {...this.state.searchParams}
         this.props.searchForFlights(searchParams)
-        this.setState(this.defaultState)
+        // this.setState(this.defaultState)
     }
 
     handleSwitchTravelClass = e => {
         let selection = e.target.textContent
         this.setState(prevState => ({
-            searchParams: {...prevState.searchParams, travelClass: selection}
+            ...prevState,
+            searchParams: {...prevState.searchParams, travelClass: selection},
+            options: prevState.options
         }))
     }
 
     handleSwitchRoundTripOneWay = e => {
         let selection = e.target.textContent
         this.setState(prevState => ({
-            options: {...prevState.options, switchRoundTripOneWay: selection}
-        }))
-    }
-
-    handleAddPassenger = e => {
-        let selection = e.target.textContent
-        this.setState(prevState => ({
-            options: {...prevState.options, switchRoundTripOneWay: selection}
+            ...prevState,
+            options: {...prevState.options, switchRoundTripOneWay: selection},
+            searchParams: prevState.searchParams
         }))
     }
 
     handleAddRemovePerson = (e, type, operation) => {
         let person = type.toLowerCase()
-        // console.log(e, type, operation)
-        // debugger
         this.setState(prevState => ({
+            ...prevState,
             searchParams: {
                 ...prevState.searchParams,
-                [person]: operation === "minus" ? prevState.searchParams[person] - 1 : "plus" ? prevState.searchParams[person] + 1 : prevState.searchParams[person]
-            }
+                [person]: operation === "plus" ? prevState.searchParams[person] + 1 : "minus" && prevState.searchParams[person] >= 1 ? prevState.searchParams[person] - 1 : prevState.searchParams[person]
+            },
+            options: prevState.options
         }))
     }
 
@@ -108,7 +108,7 @@ class SearchBar extends Component {
                     circular
                 />
                 <Button inactive style={{"backgroundColor": "white"}}>
-                    <p>1</p>
+                    <p>{this.state.searchParams[type.toLowerCase()]}</p>
                 </Button>
                 <Button 
                     name="plus" 
@@ -195,6 +195,10 @@ class SearchBar extends Component {
         )
     }
 }
+
+// const MSTP = state => ({
+//     queryParams: state.flights.searchParams
+// })
 
 const MDTP = dispatch => ({
     searchForFlights: () => dispatch(searchForFlights())
