@@ -6,7 +6,7 @@ import {
     Input, 
     Card, 
     Dropdown,
-    // Grid 
+    // Grid,
 } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 
@@ -21,7 +21,8 @@ class SearchBar extends Component {
             travelClass: 'Economy',
             adults: 1,
             children: 0,
-            infants: 0
+            infants: 0,
+            nonStop: false
         },
         options: {
             switchRoundTripOneWay: 'Round Trip'
@@ -51,42 +52,47 @@ class SearchBar extends Component {
     handleSwitchTravelClass = e => {
         let selection = e.target.textContent
         this.setState(prevState => ({
-            ...prevState,
-            searchParams: {...prevState.searchParams, travelClass: selection},
-            options: prevState.options
+            searchParams: {...prevState.searchParams, travelClass: selection}
         }))
     }
 
     handleSwitchRoundTripOneWay = e => {
         let selection = e.target.textContent
         this.setState(prevState => ({
-            ...prevState,
-            options: {...prevState.options, switchRoundTripOneWay: selection},
-            searchParams: prevState.searchParams
+            options: {
+                ...prevState.options, 
+                switchRoundTripOneWay: selection
+            }
         }))
     }
 
     handleAddRemovePerson = (e, type, operation) => {
         let person = type.toLowerCase()
         this.setState(prevState => ({
-            ...prevState,
             searchParams: {
                 ...prevState.searchParams,
                 [person]: operation === "plus" ? prevState.searchParams[person] + 1 : "minus" && prevState.searchParams[person] >= 1 ? prevState.searchParams[person] - 1 : prevState.searchParams[person]
-            },
-            options: prevState.options
+            }
         }))
     }
 
-    /** "https://test.api.amadeus.com/v2/shopping/flight-offers
-     * ?originLocationCode=JFK
-     * &destinationLocationCode=LHR
-     * &departureDate=2020-10-01
-     * &returnDate=2020-10-10
-     * &adults=1
-     * &nonStop=false
-     * &max=50"
-     * */ 
+    handleSwitchNonStop = e => {
+        this.setState(prevState => ({
+            searchParams: {
+                ...prevState.searchParams, 
+                nonStop: !prevState.searchParams.nonStop
+            }
+        }))
+    }
+
+    handleSwitchNonStop = (e, bool) => {
+        this.setState(prevState => ({
+            searchParams: {
+                ...prevState.searchParams, 
+                nonStop: bool
+            }
+        }))
+    }
 
     totalPassengers = () => {
         let params = this.state.searchParams
@@ -189,6 +195,14 @@ class SearchBar extends Component {
                                 {this.selectNumberOfPeople('Infants')}
                             </Dropdown.Menu>
                         </Dropdown>
+                        <Dropdown 
+                            text={this.state.searchParams.nonStop ? "Nonstop Only" : "Allow Multiple Stops"}
+                            style={{"marginLeft": "20px", "marginRight": "20px"}}>
+                            <Dropdown.Menu >
+                                <Dropdown.Item text='Nonstop Only' onClick={e => this.handleSwitchNonStop(e, true)}/>
+                                <Dropdown.Item text='Allow Multiple Stops'onClick={e => this.handleSwitchNonStop(e, false)} />
+                            </Dropdown.Menu>
+                        </Dropdown>
                     </Form.Group>
                 </Form>
             </Card>
@@ -205,4 +219,14 @@ const MDTP = dispatch => ({
 })
 
 export default connect(null, MDTP)(SearchBar)
+
+/** "https://test.api.amadeus.com/v2/shopping/flight-offers
+ * ?originLocationCode=JFK
+ * &destinationLocationCode=LHR
+ * &departureDate=2020-10-01
+ * &returnDate=2020-10-10
+ * &adults=1
+ * &nonStop=false
+ * &max=50"
+ * */ 
 
