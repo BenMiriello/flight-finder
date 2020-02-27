@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import { searchForFlights } from '../Redux/actions/searchAndResults'
+import { connect } from 'react-redux'
+import SelectNumberOfPeople from '../components/searchForm/SelectNumberOfPeople'
+
 import { 
     Button, 
     Form, 
@@ -8,7 +11,17 @@ import {
     Dropdown,
     // Grid,
 } from 'semantic-ui-react'
-import { connect } from 'react-redux'
+
+// import Slider from 'rc-slider';
+// import 'rc-slider/assets/index.css';
+
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
+import { Calendar } from 'react-date-range';
+import 'react-date-range/dist/styles.css'; // main style file
+import 'react-date-range/dist/theme/default.css'; // theme css file
+import { DateRangePicker } from 'react-date-range';
 
 class SearchBar extends Component {
 
@@ -17,12 +30,14 @@ class SearchBar extends Component {
             originLocationCode: '',
             destinationLocationCode: '',
             departureDate: '',
+            // departureDate: new Date(),
             returnDate: '',
             travelClass: 'Economy',
             adults: 1,
             children: 0,
             infants: 0,
-            nonStop: false
+            nonStop: false,
+            maxPrice: 0
         },
         options: {
             switchRoundTripOneWay: 'Round Trip'
@@ -76,14 +91,14 @@ class SearchBar extends Component {
         }))
     }
 
-    handleSwitchNonStop = e => {
-        this.setState(prevState => ({
-            searchParams: {
-                ...prevState.searchParams, 
-                nonStop: !prevState.searchParams.nonStop
-            }
-        }))
-    }
+    // handleSwitchNonStop = e => {
+    //     this.setState(prevState => ({
+    //         searchParams: {
+    //             ...prevState.searchParams, 
+    //             nonStop: !prevState.searchParams.nonStop
+    //         }
+    //     }))
+    // }
 
     handleSwitchNonStop = (e, bool) => {
         this.setState(prevState => ({
@@ -94,40 +109,35 @@ class SearchBar extends Component {
         }))
     }
 
+    handleSwitchMultipleStops = e => {
+        this.setState()
+    }
+
+    handleStartDateChange = date => {
+        this.setState(prevState => ({
+            searchParams: {
+                ...prevState.searchParams, 
+                startDate: date
+            }
+        }))
+    };
+
+    handleSelect(date){
+        console.log(date); // native Date object
+    }
+
     totalPassengers = () => {
         let params = this.state.searchParams
         let total = params.adults + params.children + params.infants 
         return `${total} Passenger${total === 1 ? '' : 's'}`
     }
 
-    selectNumberOfPeople = (type) => (
-        <Form onClick={e => e.stopPropagation()}>
-            <Button.Group onClick={e => e.stopPropagation()}>
-                <Button inactive style={{"backgroundColor": "white"}}>
-                    <p>{type}:</p>
-                </Button>
-                <Button 
-                    name="minus" 
-                    onClick={e => this.handleAddRemovePerson(e, type, 'minus')}
-                    icon="minus circle" 
-                    style={{"backgroundColor": "white"}} 
-                    circular
-                />
-                <Button inactive style={{"backgroundColor": "white"}}>
-                    <p>{this.state.searchParams[type.toLowerCase()]}</p>
-                </Button>
-                <Button 
-                    name="plus" 
-                    onClick={e => this.handleAddRemovePerson(e, type, 'plus')}
-                    icon="plus circle" 
-                    style={{"backgroundColor": "white", "spaceRight": "10px"}} 
-                    circular
-                />
-            </Button.Group>
-        </Form>
-    )
-
     render() {
+        const selectionRange = {
+            startDate: new Date(),
+            endDate: new Date(),
+            key: 'selection',
+        }
         return(
             <Card style={{"width": "80%", "margin": "auto", "marginTop": "5%"}}>
                 <Form onSubmit = {this.handleSubmit} style={{"margin": "15px"}}>
@@ -139,6 +149,7 @@ class SearchBar extends Component {
                             label='Origin'
                             placeholder='Origin'
                         />
+                        <Button icon="exchange" style={{"height":"38px", "width":"38px", "marginTop":"23px", "backgroundColor":"white"}}/>
                         <Form.Field onChange = {this.handleOnChange}
                             value={this.state.destination}
                             control={Input}
@@ -152,14 +163,28 @@ class SearchBar extends Component {
                             name='departureDate'
                             label='Depart Date'
                             placeholder='Date of Departure'
-                        />
+                        >
+                            <DatePicker
+                                selected={this.state.startDate}
+                                onChange={this.handleChange}
+                            />
+                        </Form.Field>
                         <Form.Field onChange = {this.handleOnChange}
-                            value={this.state.returnDate}
+                            value={this.state.departDate}
                             control={Input}
-                            name='returnDate'
-                            label='Return Date'
-                            placeholder='Return Date'
-                        />
+                            name='departureDate'
+                            label='Depart Date'
+                            placeholder='Date of Departure'
+                        >
+                            <DatePicker
+                                selected={this.state.startDate}
+                                onChange={this.handleChange}
+                            />
+                        </Form.Field>
+                        {/* <DateRangePicker
+                            ranges={[selectionRange]}
+                            onChange={this.handleSelect}
+                        /> */}
                         <div style={{"textAlign": "center", "margin": "auto", "marginTop": "23px", "marginLeft": "4px"}}>
                             <Button type="submit">Search</Button>
                         </div>
@@ -185,14 +210,14 @@ class SearchBar extends Component {
                                 <Dropdown.Item text='First Class' />
                             </Dropdown.Menu>
                         </Dropdown>
-                        <Dropdown 
+                        <Dropdown
                             onClick={e => e.stopPropagation()} 
                             text={this.totalPassengers()} 
                             style={{"marginLeft": "20px", "marginRight": "20px"}}>
                             <Dropdown.Menu>
-                                {this.selectNumberOfPeople('Adults')}
-                                {this.selectNumberOfPeople('Children')}
-                                {this.selectNumberOfPeople('Infants')}
+                                <SelectNumberOfPeople type={'adults'} handleAddRemovePerson={this.handleAddRemovePerson}/>
+                                <SelectNumberOfPeople type={'children'} handleAddRemovePerson={this.handleAddRemovePerson}/>
+                                <SelectNumberOfPeople type={'infants'} handleAddRemovePerson={this.handleAddRemovePerson}/>
                             </Dropdown.Menu>
                         </Dropdown>
                         <Dropdown 
@@ -230,3 +255,14 @@ export default connect(null, MDTP)(SearchBar)
  * &max=50"
  * */ 
 
+
+{/* <Dropdown 
+    onClick={e => e.stopPropagation()}
+    text={this.state.searchParams.maxPrice > 0 ? `Max Price: ${this.state.searchParams.maxPrice}` : "Any Price"}
+    style={{"marginLeft": "20px", "marginRight": "20px"}}>
+    <Dropdown.Menu inactive onClick={e => e.stopPropagation()}>
+        <Dropdown.Item style={{"width":"200px"}} onClick={e => e.stopPropagation()}>
+            <Slider onClick={e => e.stopPropagation()}/>
+        </Dropdown.Item>
+    </Dropdown.Menu>
+</Dropdown> */}
