@@ -7,8 +7,8 @@ import { Separator } from '../StyleComponents/Separator'
 
 const Settings = () => {
 
-    const dispatch = useDispatch()
     const userId = useSelector(state => state.userInfo.user.id)
+    const dispatch = useDispatch()
     const history = useHistory()
 
     const [settingsForm, setSettingsForm] = useState({

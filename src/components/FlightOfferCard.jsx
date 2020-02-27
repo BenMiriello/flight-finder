@@ -1,37 +1,40 @@
-import React, { Component } from 'react'
-import { Grid, Card, Item, Image, Button, Icon } from 'semantic-ui-react'
+import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Grid, Card, Item, Image, Button } from 'semantic-ui-react'
 import { postPurchase, postFavorite, deletePurchase, deleteFavorite } from '../Redux/actions/favoriteAndPurchase'
-import { connect } from 'react-redux'
 
-class FlightOfferCard extends Component {
+const FlightOfferCard = props => {
 
-    handleClick = (e, {name}) => {
+    const favorited_flight_offers = useSelector(state => state.userInfo.user.favorited_flight_offers)
+    const purchased_flight_offers = useSelector(state => state.userInfo.user.purchased_flight_offers)
+    const dispatch = useDispatch()
+
+    const handleClick = (e, {name}) => {
         switch(name) {
             case "add favorite":
-                this.props.postFavorite(this.props.flightOffer)
+                dispatch(postFavorite(props.flightOffer))
                 break
             case "add purchase":
-                this.props.postPurchase(this.props.flightOffer)
+                dispatch(postPurchase(props.flightOffer))
                 break
             case "remove favorite":
-                this.props.deleteFavorite(this.props.flightOffer)
+                dispatch(deleteFavorite(props.flightOffer))
                 break
             case "remove purchase":
-                this.props.deletePurchase(this.props.flightOffer)
+                dispatch(deletePurchase(props.flightOffer))
                 break
             default:
                 break
         }
     }
 
-    infoRow = (leg) => {
-        let segments = this.props.flightOffer.itineraries[leg].segments
+    const infoRow = (leg) => {
+        let segments = props.flightOffer.itineraries[leg].segments
 
         let stops = segments.length - 1
         let carrierCode = segments[0].carrier_code
         let carrier = segments[0].carrier.toLowerCase().replace(/^\w/, c => c.toUpperCase())
         let duration = segments[0].duration.substring(2).toLowerCase()
-        
         
         let departureStrEnd = parseInt((segments[0].departure_time.substring(11).split(":"))[0]) > 12 ? 17 : 16
         let departureTime = segments[0].departure_time.substring(11, departureStrEnd)
@@ -59,7 +62,7 @@ class FlightOfferCard extends Component {
                     <div className="vertical-center">
                         <p className="foci-text">
                             {departure12Hour}:{departureMinute} {departureAmPm} - {arrival12Hour}:{arrivalMinute} {arrivalAmPm}
-                            {/* {this.formatAMPM(segments[0].departure_time)} - {this.formatAMPM(segments[0].departure_time)}  */}
+                            {/* {formatAMPM(segments[0].departure_time)} - {formatAMPM(segments[0].departure_time)}  */}
                         </p>
                         <div className="flight-offer-card-flex-container sub-flex">
                             <p className="foci-text">{carrier}</p>
@@ -89,69 +92,49 @@ class FlightOfferCard extends Component {
         )
     }
 
-    favoriteButton = () => {
-        if (this.props.favorited_flight_offers && this.props.favorited_flight_offers.length > 0 && this.props.favorited_flight_offers.some(fo => fo.id === this.props.flightOffer.id)){
-            return <Button onClick={this.handleClick} name="remove favorite" circular icon={{color: "red", name: "heart"}} />
+    const favoriteButton = () => {
+        if (favorited_flight_offers && favorited_flight_offers.length > 0 && favorited_flight_offers.some(fo => fo.id === props.flightOffer.id)){
+            return <Button onClick={handleClick} name="remove favorite" circular icon={{color: "red", name: "heart"}} />
         } else {
-            return <Button onClick={this.handleClick} name="add favorite" circular icon='heart outline' />
+            return <Button onClick={handleClick} name="add favorite" circular icon='heart outline' />
         }
     }
 
-    purchaseButton = () => {
-        if (this.props.purchased_flight_offers && this.props.purchased_flight_offers.length > 0 && this.props.purchased_flight_offers.some(fo => fo.id === this.props.flightOffer.id)){
-            return <Button onClick={this.handleClick} name="remove purchase" color='green'>Cancel Flight</Button>
+    const purchaseButton = () => {
+        if (purchased_flight_offers && purchased_flight_offers.length > 0 && purchased_flight_offers.some(fo => fo.id === props.flightOffer.id)){
+            return <Button onClick={handleClick} name="remove purchase" color='green'>Cancel Flight</Button>
         } else {
-            return <Button onClick={this.handleClick} name="add purchase" color='blue'>Book Flight</Button>
+            return <Button onClick={handleClick} name="add purchase" color='blue'>Book Flight</Button>
         }
     }
 
-    render() {
-        const [to, from] = ["0", "1"]
-        return (
-            <Card className="flight-offer-card" style={{"margin": "auto", "width": "82%"}}>
-                <Grid columns={2}>
-                    <Grid.Column width={13}>
-                        <div className="flight-offer-card-flex-container">
-                            {this.infoRow(to)}
-                            {this.infoRow(from)}
+    const [to, from] = ["0", "1"]
+    return (
+        <Card className="flight-offer-card" style={{"margin": "auto", "width": "82%"}}>
+            <Grid columns={2}>
+                <Grid.Column width={13}>
+                    <div className="flight-offer-card-flex-container">
+                        {infoRow(to)}
+                        {infoRow(from)}
+                    </div>
+                </Grid.Column>
+                <Grid.Column width={3}>
+                    <div className="flight-offer-card-right">
+                        <div className="flight-offer-card-right-item" style={{"top": "10px","position": "relative"}}>
+                            {favoriteButton()}
                         </div>
-                    </Grid.Column>
-                    <Grid.Column width={3}>
-                        <div className="flight-offer-card-right">
-                            <div className="flight-offer-card-right-item" style={{"top": "10px","position": "relative"}}>
-                                {this.favoriteButton()}
-                            </div>
-                            <div className="flight-offer-card-right-item ">
-                                <p className="foci-text vertical-center">${this.props.flightOffer.grand_total}</p>
-                            </div>
-                            <div className="flight-offer-card-right-item">
-                                {this.purchaseButton()}
-                            </div>
+                        <div className="flight-offer-card-right-item ">
+                            <p className="foci-text vertical-center">${props.flightOffer.grand_total}</p>
                         </div>
-                    </Grid.Column>
-                </Grid>
-            </Card>
-        )
-    }
+                        <div className="flight-offer-card-right-item">
+                            {purchaseButton()}
+                        </div>
+                    </div>
+                </Grid.Column>
+            </Grid>
+        </Card>
+    )
 }
 
-const MSTP = state => {
-    const user = state.userInfo.user
-    let favorited_flight_offers = user ? user.favorited_flight_offers : []
-    let purchased_flight_offers = user ? user.purchased_flight_offers : []
-
-    return {
-        favorited_flight_offers: favorited_flight_offers,
-        purchased_flight_offers: purchased_flight_offers
-    }
-}
-
-const MDTP = {
-    postPurchase,
-    postFavorite,
-    deletePurchase,
-    deleteFavorite
-}
-
-export default connect(MSTP, MDTP)(FlightOfferCard)
+export default FlightOfferCard
 
