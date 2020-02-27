@@ -1,11 +1,19 @@
-import React, { Component } from 'react'
+import React from 'react'
 
-export default class Footer extends Component {
-    render() {
-        return (
-            <div>
-                The Footer Goes Here
-            </div>
-        )
-    }
+const Footer = () => {
+    return (
+        <footer className="footer">
+            Icons made by 
+            <a href="https://www.flaticon.com/authors/prosymbols" title="Prosymbols">
+                Prosymbols
+            </a> 
+            from 
+            <a href="https://www.flaticon.com/" title="Flaticon"> 
+                www.flaticon.com
+            </a>
+        </footer>
+    )
 }
+
+export default Footer
+

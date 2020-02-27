@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { searchForFlights } from '../Redux/actions/searchAndResults'
 import { connect } from 'react-redux'
-import SelectNumberOfPeople from '../components/searchForm/SelectNumberOfPeople'
+import { SelectNumberOfPeople } from '../Components/SearchBar'
 
 import { 
     Button, 
@@ -30,7 +30,6 @@ class SearchBar extends Component {
             originLocationCode: '',
             destinationLocationCode: '',
             departureDate: '',
-            // departureDate: new Date(),
             returnDate: '',
             travelClass: 'Economy',
             adults: 1,
@@ -91,15 +90,6 @@ class SearchBar extends Component {
         }))
     }
 
-    // handleSwitchNonStop = e => {
-    //     this.setState(prevState => ({
-    //         searchParams: {
-    //             ...prevState.searchParams, 
-    //             nonStop: !prevState.searchParams.nonStop
-    //         }
-    //     }))
-    // }
-
     handleSwitchNonStop = (e, bool) => {
         this.setState(prevState => ({
             searchParams: {
@@ -123,7 +113,7 @@ class SearchBar extends Component {
     };
 
     handleSelect(date){
-        console.log(date); // native Date object
+        console.log(date)
     }
 
     totalPassengers = () => {
@@ -133,36 +123,44 @@ class SearchBar extends Component {
     }
 
     render() {
-        const selectionRange = {
-            startDate: new Date(),
-            endDate: new Date(),
-            key: 'selection',
-        }
+        // const selectionRange = {
+        //     startDate: new Date(),
+        //     endDate: new Date(),
+        //     key: 'selection',
+        // }
         return(
             <Card style={{"width": "80%", "margin": "auto", "marginTop": "5%"}}>
                 <Form onSubmit = {this.handleSubmit} style={{"margin": "15px"}}>
                     <Form.Group widths='equal'>
-                        <Form.Field onChange = {this.handleOnChange}
+                        <Form.Field 
+                            onChange = {this.handleOnChange}
                             value={this.state.origin}
                             control={Input}
                             name='originLocationCode'
                             label='Origin'
                             placeholder='Origin'
                         />
-                        <Button icon="exchange" style={{"height":"38px", "width":"38px", "marginTop":"23px", "backgroundColor":"white"}}/>
-                        <Form.Field onChange = {this.handleOnChange}
+                        <Button 
+                        // make this button stop triggering submit
+                            onClick={e => e.stopPropagation()} 
+                            icon="exchange" 
+                            style={{"height":"38px", "width":"38px", "marginTop":"23px", "backgroundColor":"white"}}
+                        />
+                        <Form.Field 
+                            onChange = {this.handleOnChange}
                             value={this.state.destination}
                             control={Input}
                             name='destinationLocationCode'
                             label='Destination'
                             placeholder='Destination'
                         />
-                        <Form.Field onChange = {this.handleOnChange}
+                        <Form.Field 
+                            onChange = {this.handleOnChange}
                             value={this.state.departDate}
                             control={Input}
                             name='departureDate'
-                            label='Depart Date'
-                            placeholder='Date of Departure'
+                            label='Departure Date'
+                            placeholder='Departure Date'
                         >
                             <DatePicker
                                 selected={this.state.startDate}
@@ -215,9 +213,9 @@ class SearchBar extends Component {
                             text={this.totalPassengers()} 
                             style={{"marginLeft": "20px", "marginRight": "20px"}}>
                             <Dropdown.Menu>
-                                <SelectNumberOfPeople type={'adults'} handleAddRemovePerson={this.handleAddRemovePerson}/>
+                                <SelectNumberOfPeople type={'adults'}   handleAddRemovePerson={this.handleAddRemovePerson}/>
                                 <SelectNumberOfPeople type={'children'} handleAddRemovePerson={this.handleAddRemovePerson}/>
-                                <SelectNumberOfPeople type={'infants'} handleAddRemovePerson={this.handleAddRemovePerson}/>
+                                <SelectNumberOfPeople type={'infants'}  handleAddRemovePerson={this.handleAddRemovePerson}/>
                             </Dropdown.Menu>
                         </Dropdown>
                         <Dropdown 

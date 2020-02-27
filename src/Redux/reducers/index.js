@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux'
 import userReducer from './userReducer'
-import flightQueryReducer from './flightQueryReducer'
+import searchReducer from './searchReducer'
 
 const rootReducer = combineReducers(
     {
         userInfo: userReducer,
-        flights: flightQueryReducer
+        flights: searchReducer
     }
 )
 

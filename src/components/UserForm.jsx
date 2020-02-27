@@ -1,13 +1,15 @@
 import React, { useState } from 'react'
-import { useDispatch} from 'react-redux'
 import { Button, Form } from 'semantic-ui-react'
-import { loginUserToDB } from '../Redux/actions/userSession'
+import { useDispatch } from 'react-redux'
+import { persistUser, loginUserToDB } from '../Redux/actions/userSession'
+import { useHistory } from 'react-router-dom'
 
-const LoginForm = props => {
+
+const UserForm = props => {
 
     const dispatch = useDispatch()
-
-    const [loginForm, setLoginForm] = useState({
+    
+    const [formParams, setFormParams] = useState({
         username: '',
         password: '',
         avatar: '',
@@ -15,20 +17,31 @@ const LoginForm = props => {
     })
 
     const handleChange = e => {
-        // e.preventDefault()
-        setLoginForm({
-            ...loginForm,
+        setFormParams({
+            ...formParams,
             [e.target.name]:e.target.value
         })
     }
 
+    const history = useHistory()
+
     const handleSubmit = e => {
         e.preventDefault()
-        dispatch(loginUserToDB(loginForm))
-        props.history.push('/')
+        let action = null
+        switch(props.type){
+            case "LOGIN":
+                action = loginUserToDB
+                break
+            case "SIGNUP":
+                action = persistUser
+                break
+            default: break
+        }
+        dispatch(action(formParams))
+        history.push('/')
     }
 
-    const { username, password } = loginForm
+    const { username, password } = formParams
 
     return (
         <Form onSubmit={handleSubmit} >
@@ -41,9 +54,7 @@ const LoginForm = props => {
                     onChange={handleChange}
                 />
             </Form.Field>
-            <p style={{"font-size": "12px", "text-indent": "20px", "position": "relative", "bottom": "10px"}}>
-                Minimum length: 4 characters.
-            </p>
+            <p style={{"fontSize": "12px", "textIndent": "20px", "position": "relative", "bottom": "10px"}}>Minimum length: 4 characters.</p>
             <Form.Field>
                 <label>Password</label>
                 <input 
@@ -54,13 +65,11 @@ const LoginForm = props => {
                     onChange={handleChange}
                 />
             </Form.Field>
-            <p style={{"font-size": "12px", "text-indent": "20px", "position": "relative", "bottom": "10px"}}>
-                Minimum length: 4 characters.
-            </p>
+            <p style={{"fontSize": "12px", "textIndent": "20px", "position": "relative", "bottom": "10px"}}>Minimum length: 4 characters.</p>
             <Button type='submit'>Submit</Button>
         </Form>
     )
 }
 
-export default LoginForm
+export default UserForm
 

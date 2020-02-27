@@ -4,8 +4,9 @@ import { NavLink } from 'react-router-dom'
 // import LoginForm from './LoginForm'
 import { connect } from 'react-redux'
 import { getProfileFetch, logoutUser } from '../Redux/actions/userSession'
+import { Route } from 'react-router-dom'
 
-class NavBar extends Component {
+class Nav extends Component {
     state = {}
 
     handleItemClick = (e, { name }) => {
@@ -79,22 +80,24 @@ class NavBar extends Component {
         // debugger
 
         return (
-            <Menu>
-                <Menu.Item as={NavLink} to='/' >
-                    <img src='/planet-earth.png' alt='icon of planet earth' />
-                </Menu.Item>
-                <Menu.Item as={NavLink} to='/favorites'
-                    name='favorites'
-                    active={activeItem === 'favorites'}
-                    onClick={this.handleItemClick}
-                />
-                <Menu.Item as={NavLink} to='/trips'
-                    name='trips'
-                    active={activeItem === 'trips'}
-                    onClick={this.handleItemClick}
-                />
-                { localStorage.token ? this.userMenu() : this.signupMenu() }
-            </Menu>
+            <Route>
+                <Menu>
+                    <Menu.Item as={NavLink} to='/' >
+                        <img src='/planet-earth.png' alt='icon of planet earth' />
+                    </Menu.Item>
+                    <Menu.Item as={NavLink} to='/favorites'
+                        name='favorites'
+                        active={activeItem === 'favorites'}
+                        onClick={this.handleItemClick}
+                    />
+                    <Menu.Item as={NavLink} to='/trips'
+                        name='trips'
+                        active={activeItem === 'trips'}
+                        onClick={this.handleItemClick}
+                    />
+                    { localStorage.token ? this.userMenu() : this.signupMenu() }
+                </Menu>
+            </Route>
         )
     }
 }
@@ -110,6 +113,6 @@ const MDTP = dispatch => ({
     logoutUser: () => dispatch(logoutUser())
 })
 
-export default connect(MSTP, MDTP)(NavBar)
+export default connect(MSTP, MDTP)(Nav)
 
 // https://react.semantic-ui.com/modules/dropdown/#usage-close-on-change

@@ -1,42 +1,22 @@
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-import NavBar from './components/NavBar'
-// import Footer from './components/Footer'
-import ProfilePage from './containers/ProfilePage'
-import SignupPage from './containers/SignupPage'
-import LoginPage from './containers/LoginPage'
-import SearchPage from './containers/SearchPage'
-import FavoritesPage from './containers/FavoritesPage';
-import TripsPage from './containers/TripsPage';
-import SettingsPage from './containers/SettingsPage'
-import { getProfileFetch } from './Redux/actions/userSession'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
+import { getProfileFetch } from './Redux/actions/userSession'
+import { BrowserRouter as Router } from 'react-router-dom'
+import Routes from './Routes'
+import Component from './Components'
 
-class App extends Component {
+const App = () => {
 
-    componentDidMount = () => {
-        this.props.getProfileFetch()
-    }
+    useEffect(() => getProfileFetch())
 
-    render(){
-        return (
-            <Router>
-                <div>
-                    <Route path="*" component={NavBar} />
-                    <Switch>
-                        <Route exact path="/" component={SearchPage} />
-                        <Route path="/favorites" component={FavoritesPage} />
-                        <Route path="/trips" component={TripsPage}/>
-                        <Route path="/signup" component={SignupPage}/>
-                        <Route path="/login" component={LoginPage}/>
-                        <Route path="/profile" component={ProfilePage}/>
-                        <Route path="/settings" component={SettingsPage}/>
-                    </Switch>
-                    {/* <Footer /> */}
-                </div>
-            </Router>
-        );
-    }
+    return (
+        <Router>
+            <Component.Nav/>
+            <Routes/>
+            <Component.Footer/>
+        </Router>
+    )
+    
 }
 
 const MDTP = dispatch => ({

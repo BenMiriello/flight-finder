@@ -3,7 +3,7 @@ import { Grid, Card, Item, Image, Button, Icon } from 'semantic-ui-react'
 import { postPurchase, postFavorite, deletePurchase, deleteFavorite } from '../Redux/actions/favoriteAndPurchase'
 import { connect } from 'react-redux'
 
-export class FlightOfferCard extends Component {
+class FlightOfferCard extends Component {
 
     handleClick = (e, {name}) => {
         switch(name) {

@@ -1,15 +1,15 @@
 import React, { Component } from 'react'
 import { Header } from 'semantic-ui-react'
 import { connect } from 'react-redux'
-import FlightOffersContainer from './FlightOffersContainer'
+import { FlightOffers } from '../Containers/index'
 
-class FavoritesPage extends Component {
+class Favorites extends Component {
     render() {
         let favorited = this.props.user.favorited_flight_offers
         return (
             <>
                 <Header as='h1' style={{ "text-align": "center" }}>My Favorites</Header>
-                { favorited ? <FlightOffersContainer flightOffers={favorited} /> : "" }
+                { favorited ? <FlightOffers flightOffers={favorited} /> : "" }
             </>
         )
     }
@@ -21,5 +21,5 @@ const MSTP = state => (
     } 
 )
 
-export default connect(MSTP)(FavoritesPage)
+export default connect(MSTP)(Favorites)
 

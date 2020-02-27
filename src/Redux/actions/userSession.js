@@ -28,11 +28,11 @@ const loginSignupFetch = (user, route) => {
     }
 }
 
-export const userPostFetch = user => {
+export const persistUser = user => {
     return loginSignupFetch(user, 'users')
 }
 
-export const fetchLoginUser = user => {
+export const loginUserToDB = user => {
     return loginSignupFetch(user, 'login')
 }
 
@@ -70,10 +70,8 @@ const slapNewUsername = newUsername => ({
 })
 
 export const changeUsername = (userInfo) => {
-    // debugger
-    
+
     console.log(userInfo)
-    // console.log(userId)
     const userId = userInfo.userId
     const newUsername = userInfo.newUsername
     return dispatch => {
@@ -94,5 +92,19 @@ export const changeUsername = (userInfo) => {
             })
         }
     }
+}
+
+const clearUserAction = () => ({
+    type: 'CLEAR_USER'
+  });
+
+export const deleteUserFromDB = userId => dispatch => {
+    fetch(`http://localhost:3000/api/v1/users${userId}`, {
+            method: 'DELETE'
+        })
+    .then(r => {
+        dispatch(clearUserAction())
+        localStorage.clear()
+    })
 }
 

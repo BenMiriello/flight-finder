@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Header } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 
-class UserProfile extends Component {
+class Profile extends Component {
     render() {
         return (
             <>
@@ -20,4 +20,4 @@ const MSTP = state => (
     }
 )
 
-export default connect(MSTP)(UserProfile)
+export default connect(MSTP)(Profile)

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Header } from 'semantic-ui-react'
 import { connect } from 'react-redux'
-import FlightOffersContainer from './FlightOffersContainer'
+import FlightOffers from '../Containers/FlightOffers'
 
 class TripsPage extends Component {
     render() {
@@ -9,7 +9,7 @@ class TripsPage extends Component {
         return (
             <>
                 <Header as='h1' style={{ "text-align": "center" }}>My Trips</Header>
-                { purchased ? <FlightOffersContainer flightOffers={purchased} /> : "" }
+                { purchased ? <FlightOffers flightOffers={purchased} /> : "" }
             </>
         )
     }
