@@ -1,22 +1,10 @@
-const initialState = {
-    queryParams: {
-        originLocationCode: '',
-        destinationLocationCode: '',
-        departureDate: '',
-        returnDate: '',
-        travelClass: 'Economy',
-        adults: 1,
-        children: 0,
-        infants: 0
-    },
-    searchResults: []
-}
+const initialState = []
 
 const flightReducer = (state = initialState, action) => {
     switch (action.type) {
         case "MAP_SEARCH_RESULTS_TO_STATE":
             if (action.payload[0]){
-                return {searchResults: [...action.payload]}
+                return action.payload
             } return state
         case "QUERY_AMADEUS_FLIGHT_OFFERS_SEARCH":
             console.log('u hit the QUERY_AMADEUS_FLIGHT_OFFERS_SEARCH reducer case. queryParams in payload are: ', action.payload)

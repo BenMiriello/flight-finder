@@ -99,10 +99,6 @@ class SearchBar extends Component {
         }))
     }
 
-    handleSwitchMultipleStops = e => {
-        this.setState()
-    }
-
     handleStartDateChange = date => {
         this.setState(prevState => ({
             searchParams: {
@@ -116,6 +112,20 @@ class SearchBar extends Component {
         console.log(date)
     }
 
+    handleSwapLocations = e => {
+        e.stopPropagation() 
+        this.setState(prevState => {
+            return({
+                ...prevState,
+                searchParams: {
+                    ...prevState.searchParams,
+                    originLocationCode: prevState.searchParams.destinationLocationCode,
+                    destinationLocationCode: prevState.searchParams.originLocationCode
+                }
+            })
+        })
+    }
+
     totalPassengers = () => {
         let params = this.state.searchParams
         let total = params.adults + params.children + params.infants 
@@ -123,32 +133,26 @@ class SearchBar extends Component {
     }
 
     render() {
-        // const selectionRange = {
-        //     startDate: new Date(),
-        //     endDate: new Date(),
-        //     key: 'selection',
-        // }
         return(
             <Card style={{"width": "80%", "margin": "auto", "marginTop": "5%"}}>
                 <Form onSubmit = {this.handleSubmit} style={{"margin": "15px"}}>
                     <Form.Group widths='equal'>
                         <Form.Field 
                             onChange = {this.handleOnChange}
-                            value={this.state.origin}
+                            value={this.state.searchParams.originLocationCode}
                             control={Input}
                             name='originLocationCode'
                             label='Origin'
                             placeholder='Origin'
                         />
-                        <Button 
-                        // make this button stop triggering submit
-                            onClick={e => e.stopPropagation()} 
-                            icon="exchange" 
+                        <Button
+                            onClick={this.handleSwapLocations} 
+                            icon={{name: "exchange", onClick:(e => e.preventDefault())}}
                             style={{"height":"38px", "width":"38px", "marginTop":"23px", "backgroundColor":"white"}}
                         />
                         <Form.Field 
                             onChange = {this.handleOnChange}
-                            value={this.state.destination}
+                            value={this.state.searchParams.destinationLocationCode}
                             control={Input}
                             name='destinationLocationCode'
                             label='Destination'
@@ -156,26 +160,26 @@ class SearchBar extends Component {
                         />
                         <Form.Field 
                             onChange = {this.handleOnChange}
-                            value={this.state.departDate}
+                            value={this.state.searchParams.departureDate}
                             control={Input}
                             name='departureDate'
                             label='Departure Date'
                             placeholder='Departure Date'
                         >
                             <DatePicker
-                                selected={this.state.startDate}
+                                selected={this.state.searchParams.departureDate}
                                 onChange={this.handleChange}
                             />
                         </Form.Field>
                         <Form.Field onChange = {this.handleOnChange}
-                            value={this.state.departDate}
+                            value={this.state.searchParams.returnDate}
                             control={Input}
-                            name='departureDate'
-                            label='Depart Date'
-                            placeholder='Date of Departure'
+                            name='returnDate'
+                            label='Return Date'
+                            placeholder='Return Date'
                         >
                             <DatePicker
-                                selected={this.state.startDate}
+                                selected={this.state.searchParams.departureDate}
                                 onChange={this.handleChange}
                             />
                         </Form.Field>
@@ -213,9 +217,9 @@ class SearchBar extends Component {
                             text={this.totalPassengers()} 
                             style={{"marginLeft": "20px", "marginRight": "20px"}}>
                             <Dropdown.Menu>
-                                <SelectNumberOfPeople type={'adults'}   handleAddRemovePerson={this.handleAddRemovePerson}/>
-                                <SelectNumberOfPeople type={'children'} handleAddRemovePerson={this.handleAddRemovePerson}/>
-                                <SelectNumberOfPeople type={'infants'}  handleAddRemovePerson={this.handleAddRemovePerson}/>
+                                <SelectNumberOfPeople number={this.state.searchParams.adults} type={'adults'}   handleAddRemovePerson={this.handleAddRemovePerson}/>
+                                <SelectNumberOfPeople number={this.state.searchParams.children} type={'children'} handleAddRemovePerson={this.handleAddRemovePerson}/>
+                                <SelectNumberOfPeople number={this.state.searchParams.infants} type={'infants'}  handleAddRemovePerson={this.handleAddRemovePerson}/>
                             </Dropdown.Menu>
                         </Dropdown>
                         <Dropdown 

@@ -19,4 +19,3 @@ export const queryAmadeusFlightOffersSearch = (queryParams) => {
         payload: queryParams
     })
 }
-

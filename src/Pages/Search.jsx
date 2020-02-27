@@ -15,7 +15,7 @@ class Search extends Component {
 }
 
 const MSTP = state => (
-    { searchResults: state.flights.searchResults }
+    { searchResults: state.searchResults }
 )
 
 export default connect(MSTP)(Search)

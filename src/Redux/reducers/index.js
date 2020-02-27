@@ -5,7 +5,7 @@ import searchReducer from './searchReducer'
 const rootReducer = combineReducers(
     {
         userInfo: userReducer,
-        flights: searchReducer
+        searchResults: searchReducer
     }
 )
 
