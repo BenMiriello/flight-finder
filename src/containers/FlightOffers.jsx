@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { Container } from 'semantic-ui-react'
 import { Separator } from '../StyleComponents/Separator'
 import { v1 as uuidv1 } from 'uuid'
 import FlightOfferCard from '../Components/FlightOfferCard'
+import FilterResults from './FilterResults'
 
 class FlightOffers extends Component {
 
@@ -24,13 +26,21 @@ class FlightOffers extends Component {
     }
 
     render() {
+        // debugger
+        // console.log('lastSearchParams in FlightOffers.render: ', this.props.lastSearchParams);
         return (
             <Container className="flight-offer-cards-container">
+                {this.props.searchResults.length > 0 ? <FilterResults/> : null}
                 {this.showFlightOffers()}
             </Container>
         )
     }
 }
 
-export default FlightOffers
+const MSTP = state => ({
+    lastSearchParams: state.lastSearchParams,
+    searchResults: state.searchResults
+})
+
+export default connect(MSTP)(FlightOffers)
 

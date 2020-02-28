@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { searchForFlights } from '../Redux/actions/searchAndResults'
+import { searchForFlights, getStaticFlights } from '../Redux/actions/searchAndResults'
 import { connect } from 'react-redux'
 import { SelectNumberOfPeople } from '../Components/SearchBar'
 
@@ -12,16 +12,8 @@ import {
     // Grid,
 } from 'semantic-ui-react'
 
-// import Slider from 'rc-slider';
-// import 'rc-slider/assets/index.css';
-
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
-import { Calendar } from 'react-date-range';
-import 'react-date-range/dist/styles.css'; // main style file
-import 'react-date-range/dist/theme/default.css'; // theme css file
-import { DateRangePicker } from 'react-date-range';
 
 class SearchBar extends Component {
 
@@ -46,6 +38,7 @@ class SearchBar extends Component {
     state = this.defaultState
 
     handleOnChange = e => {
+        // debugger
         let param = e.target.name
         let value = e.target.value
         this.setState(prevState => ({
@@ -56,10 +49,22 @@ class SearchBar extends Component {
         }))
     }
 
+    handleDateChange = (time, type) => {
+        // debugger
+        this.setState(prevState => ({
+            searchParams: {
+                ...prevState.searchParams,
+                [type]: time
+            }
+        }), () => console.log(this.state.searchParams))
+    }
+
     handleSubmit = e => {
         e.preventDefault()
-        let searchParams = {...this.state.searchParams}
-        this.props.searchForFlights(searchParams)
+        let searchParams = this.state.searchParams
+        // debugger
+        // this.props.searchForFlights(searchParams)
+        this.props.getStaticFlights(searchParams)
         // this.setState(this.defaultState)
     }
 
@@ -158,35 +163,29 @@ class SearchBar extends Component {
                             label='Destination'
                             placeholder='Destination'
                         />
-                        <Form.Field 
+                        {/* <Form.Field 
                             onChange = {this.handleOnChange}
                             value={this.state.searchParams.departureDate}
                             control={Input}
                             name='departureDate'
                             label='Departure Date'
                             placeholder='Departure Date'
-                        >
+                        > */}
                             <DatePicker
+                                name="departureDate"
+                                value={this.state.searchParams.departureDate}
                                 selected={this.state.searchParams.departureDate}
-                                onChange={this.handleChange}
-                            />
-                        </Form.Field>
-                        <Form.Field onChange = {this.handleOnChange}
-                            value={this.state.searchParams.returnDate}
-                            control={Input}
-                            name='returnDate'
-                            label='Return Date'
-                            placeholder='Return Date'
-                        >
+                                dateFormat="yyyy-mm-dd"
+                                onChange={time => this.handleDateChange(time, 'departureDate')}
+                                />
+                            {/* </Form.Field> */}
                             <DatePicker
-                                selected={this.state.searchParams.departureDate}
-                                onChange={this.handleChange}
+                                name="returnDate"
+                                value={this.state.searchParams.returnDate}
+                                selected={this.state.searchParams.returnDate}
+                                dateFormat="yyyy-mm-dd"
+                                onChange={time => this.handleDateChange(time, 'returnDate')}
                             />
-                        </Form.Field>
-                        {/* <DateRangePicker
-                            ranges={[selectionRange]}
-                            onChange={this.handleSelect}
-                        /> */}
                         <div style={{"textAlign": "center", "margin": "auto", "marginTop": "23px", "marginLeft": "4px"}}>
                             <Button type="submit">Search</Button>
                         </div>
@@ -210,6 +209,7 @@ class SearchBar extends Component {
                                 <Dropdown.Item text='Premium Economy' />
                                 <Dropdown.Item text='Business' />
                                 <Dropdown.Item text='First Class' />
+                                <Dropdown.Item text='Any' />
                             </Dropdown.Menu>
                         </Dropdown>
                         <Dropdown
@@ -237,34 +237,10 @@ class SearchBar extends Component {
     }
 }
 
-// const MSTP = state => ({
-//     queryParams: state.flights.searchParams
-// })
-
 const MDTP = dispatch => ({
-    searchForFlights: () => dispatch(searchForFlights())
+    searchForFlights: (searchParams) => dispatch(searchForFlights(searchParams)),
+    getStaticFlights: (searchParams) => dispatch(getStaticFlights(searchParams))
 })
 
 export default connect(null, MDTP)(SearchBar)
 
-/** "https://test.api.amadeus.com/v2/shopping/flight-offers
- * ?originLocationCode=JFK
- * &destinationLocationCode=LHR
- * &departureDate=2020-10-01
- * &returnDate=2020-10-10
- * &adults=1
- * &nonStop=false
- * &max=50"
- * */ 
-
-
-{/* <Dropdown 
-    onClick={e => e.stopPropagation()}
-    text={this.state.searchParams.maxPrice > 0 ? `Max Price: ${this.state.searchParams.maxPrice}` : "Any Price"}
-    style={{"marginLeft": "20px", "marginRight": "20px"}}>
-    <Dropdown.Menu inactive onClick={e => e.stopPropagation()}>
-        <Dropdown.Item style={{"width":"200px"}} onClick={e => e.stopPropagation()}>
-            <Slider onClick={e => e.stopPropagation()}/>
-        </Dropdown.Item>
-    </Dropdown.Menu>
-</Dropdown> */}
