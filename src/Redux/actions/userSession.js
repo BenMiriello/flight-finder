@@ -71,7 +71,6 @@ const slapNewUsername = newUsername => ({
 
 export const changeUsername = (userInfo) => {
 
-    console.log(userInfo)
     const userId = userInfo.userId
     const newUsername = userInfo.newUsername
     return dispatch => {

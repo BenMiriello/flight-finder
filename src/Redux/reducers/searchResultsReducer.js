@@ -1,6 +1,6 @@
 const initialState = []
 
-const flightsReducer = (state = initialState, action) => {
+const searchResultsReducer = (state = initialState, action) => {
     switch (action.type) {
         case "MAP_SEARCH_RESULTS_TO_STATE":
             if (action.payload[0]){
@@ -11,5 +11,5 @@ const flightsReducer = (state = initialState, action) => {
     }
 }
 
-export default flightsReducer
+export default searchResultsReducer
 

@@ -8,6 +8,12 @@ import FilterResults from './FilterResults'
 
 class FlightOffers extends Component {
 
+    state={
+        filterParams:{
+            
+        }
+    }
+
     showFlightOffers = () => {
         if (this.props.flightOffers && this.props.flightOffers.length >= 1) {
             return (
@@ -30,7 +36,8 @@ class FlightOffers extends Component {
         // console.log('lastSearchParams in FlightOffers.render: ', this.props.lastSearchParams);
         return (
             <Container className="flight-offer-cards-container">
-                {this.props.searchResults.length > 0 ? <FilterResults/> : null}
+                {/* {this.props.searchResults.length > 0 ? <FilterResults/> : null} */}
+                <FilterResults />
                 {this.showFlightOffers()}
             </Container>
         )

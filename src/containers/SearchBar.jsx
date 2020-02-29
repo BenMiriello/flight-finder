@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { searchForFlights, getStaticFlights } from '../Redux/actions/searchAndResults'
+import { searchForFlights, queryTestFlights } from '../Redux/actions/searchAndResults'
 import { connect } from 'react-redux'
 import { SelectNumberOfPeople } from '../Components/SearchBar'
 
@@ -64,7 +64,7 @@ class SearchBar extends Component {
         let searchParams = this.state.searchParams
         // debugger
         // this.props.searchForFlights(searchParams)
-        this.props.getStaticFlights(searchParams)
+        this.props.queryTestFlights(searchParams)
         // this.setState(this.defaultState)
     }
 
@@ -149,6 +149,7 @@ class SearchBar extends Component {
                             name='originLocationCode'
                             label='Origin'
                             placeholder='Origin'
+                            autoComplete="off"
                         />
                         <Button
                             onClick={this.handleSwapLocations} 
@@ -162,6 +163,7 @@ class SearchBar extends Component {
                             name='destinationLocationCode'
                             label='Destination'
                             placeholder='Destination'
+                            autoComplete="off"
                         />
                         {/* <Form.Field 
                             onChange = {this.handleOnChange}
@@ -171,21 +173,26 @@ class SearchBar extends Component {
                             label='Departure Date'
                             placeholder='Departure Date'
                         > */}
+                        <Form.Field>
                             <DatePicker
                                 name="departureDate"
                                 value={this.state.searchParams.departureDate}
                                 selected={this.state.searchParams.departureDate}
                                 dateFormat="yyyy-mm-dd"
                                 onChange={time => this.handleDateChange(time, 'departureDate')}
+                                autoComplete="off"
                                 />
-                            {/* </Form.Field> */}
+                        </Form.Field>
+                        <Form.Field>
                             <DatePicker
                                 name="returnDate"
                                 value={this.state.searchParams.returnDate}
                                 selected={this.state.searchParams.returnDate}
                                 dateFormat="yyyy-mm-dd"
                                 onChange={time => this.handleDateChange(time, 'returnDate')}
+                                autoComplete="off"
                             />
+                        </Form.Field>
                         <div style={{"textAlign": "center", "margin": "auto", "marginTop": "23px", "marginLeft": "4px"}}>
                             <Button type="submit">Search</Button>
                         </div>
@@ -217,17 +224,35 @@ class SearchBar extends Component {
                             text={this.totalPassengers()} 
                             style={{"marginLeft": "20px", "marginRight": "20px"}}>
                             <Dropdown.Menu>
-                                <SelectNumberOfPeople number={this.state.searchParams.adults} type={'adults'}   handleAddRemovePerson={this.handleAddRemovePerson}/>
-                                <SelectNumberOfPeople number={this.state.searchParams.children} type={'children'} handleAddRemovePerson={this.handleAddRemovePerson}/>
-                                <SelectNumberOfPeople number={this.state.searchParams.infants} type={'infants'}  handleAddRemovePerson={this.handleAddRemovePerson}/>
+                                <SelectNumberOfPeople 
+                                    type={'adults'}   
+                                    number={this.state.searchParams.adults} 
+                                    handleAddRemovePerson={this.handleAddRemovePerson}
+                                />
+                                <SelectNumberOfPeople 
+                                    type={'children'} 
+                                    number={this.state.searchParams.children} 
+                                    handleAddRemovePerson={this.handleAddRemovePerson}
+                                />
+                                <SelectNumberOfPeople 
+                                    type={'infants'}  
+                                    number={this.state.searchParams.infants} 
+                                    handleAddRemovePerson={this.handleAddRemovePerson}
+                                />
                             </Dropdown.Menu>
                         </Dropdown>
                         <Dropdown 
                             text={this.state.searchParams.nonStop ? "Nonstop Only" : "Allow Multiple Stops"}
                             style={{"marginLeft": "20px", "marginRight": "20px"}}>
                             <Dropdown.Menu >
-                                <Dropdown.Item text='Nonstop Only' onClick={e => this.handleSwitchNonStop(e, true)}/>
-                                <Dropdown.Item text='Allow Multiple Stops'onClick={e => this.handleSwitchNonStop(e, false)} />
+                                <Dropdown.Item 
+                                    text='Nonstop Only' 
+                                    onClick={e => this.handleSwitchNonStop(e, true)}
+                                />
+                                <Dropdown.Item 
+                                    text='Allow Multiple Stops'
+                                    onClick={e => this.handleSwitchNonStop(e, false)} 
+                                />
                             </Dropdown.Menu>
                         </Dropdown>
                     </Form.Group>
@@ -239,7 +264,7 @@ class SearchBar extends Component {
 
 const MDTP = dispatch => ({
     searchForFlights: (searchParams) => dispatch(searchForFlights(searchParams)),
-    getStaticFlights: (searchParams) => dispatch(getStaticFlights(searchParams))
+    queryTestFlights: (searchParams) => dispatch(queryTestFlights(searchParams))
 })
 
 export default connect(null, MDTP)(SearchBar)
