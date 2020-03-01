@@ -41,7 +41,7 @@ class Nav extends Component {
 
     userMenu = () => (
         <Menu.Menu position='right'>
-            <Dropdown item text={localStorage.token && localStorage.username ? localStorage.username : null}>
+            <Dropdown item text={this.props.user && this.props.user.username ? this.props.user.username : null}>
                 <Dropdown.Menu>
                     <Menu.Item 
                         as={NavLink} 

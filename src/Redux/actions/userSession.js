@@ -38,6 +38,7 @@ export const loginUserToDB = user => {
 }
 
 export const getProfileFetch = () => {
+    // debugger
     return dispatch => {
         const token = localStorage.token
         if (token) {
