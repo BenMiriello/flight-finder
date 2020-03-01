@@ -28,13 +28,54 @@ const FlightOfferCard = props => {
         }
     }
 
+    itineraries: Array(2)
+// 0:
+// id: 3305
+// duration: "PT6H50M"
+// segments: Array(1)
+// 0:
+// id: 4345
+// itinerary_id: 3305
+// departure_terminal: "7"
+// departure_time: "2020-10-01T07:55:00.000Z"
+// arrival_terminal: "5"
+// arrival_time: "2020-10-01T19:45:00.000Z"
+// flight_number: "5478"
+// aircraft_code: "744"
+// aircraft: "BOEING 747-400"
+// duration: "PT6H50M"
+// number_of_stops: 0
+// airline:
+// id: 44
+// name: "Finnair"
+// iata_code: "AY"
+// __proto__: Object
+// operating_airline:
+// id: 54
+// name: "British Airways"
+// iata_code: "BA"
+// __proto__: Object
+// origin:
+// id: 216
+// name: "John F Kennedy Intl"
+// iata_code: "JFK"
+// icao_code: "KJFK"
+// latitude: "40.639751"
+// longitude: "-73.778925"
+// alias: null
+// dst: null
+// destinations: 162
+// city_id: 216
+// created_at: "2020-02-29T23:49:06.372Z"
+// updated_at: "2020-02-29T23:49:06.372Z"
+
     const infoRow = (leg) => {
-        debugger
+        // debugger
         let segments = props.flightOffer.itineraries[leg].segments
 
         let stops = segments.length - 1
-        let carrierCode = segments[0].carrier_code
-        let carrier = segments[0].carrier.toLowerCase().replace(/^\w/, c => c.toUpperCase())
+        let carrierCode = segments[0].airline.iata_code
+        let carrier = segments[0].airline.name.toLowerCase().replace(/^\w/, c => c.toUpperCase())
         let duration = segments[0].duration.substring(2).toLowerCase()
         
         let departureStrEnd = parseInt((segments[0].departure_time.substring(11).split(":"))[0]) > 12 ? 17 : 16
@@ -75,7 +116,7 @@ const FlightOfferCard = props => {
                         <p className="foci-text">{stops === 0 ? "non" : stops + " "}stop{stops >= 2 ? "s" : ""}</p>
                         {stops >= 1 ?   
                             <div className="flight-offer-card-flex-container sub-flex">
-                                <p className="foci-text">{segments[0].arrival_iata}</p>
+                                <p className="foci-text">{segments[0].destination.iata_code}</p>
                             </div>
                         : null
                         }
@@ -85,7 +126,7 @@ const FlightOfferCard = props => {
                     <div className="vertical-center">
                         <p className="foci-text">{duration}</p>
                         <div className="flight-offer-card-flex-container sub-flex">
-                        <p className="foci-text">{segments[0].departure_iata} - {segments[segments.length - 1].arrival_iata}</p>
+                        <p className="foci-text">{segments[0].origin.iata_code} - {segments[segments.length - 1].destination.iata_code}</p>
                         </div>
                     </div>
                 </Item>
@@ -110,7 +151,7 @@ const FlightOfferCard = props => {
     }
 
     const [to, from] = ["0", "1"]
-    
+
     return (
         <Card className="flight-offer-card" style={{"margin": "auto", "width": "82%"}}>
             <Grid columns={2}>

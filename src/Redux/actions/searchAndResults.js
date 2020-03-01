@@ -12,6 +12,7 @@ export const queryTestFlights = searchParams => {
         })
         .then(r => r.json())
         .then(qandr => {
+            // debugger
             dispatch(mapQueryToState(qandr.query))
             dispatch(mapResponseToState(qandr.response))
         })
@@ -20,15 +21,13 @@ export const queryTestFlights = searchParams => {
 }
 
 export const refreshResponse = response => {
-    // debugger
     return dispatch => {
         if (response.id){
             return fetch(BASE + 'responses/' + response.id)
             .then(r => r.json())
             .then(response => {
-                // console.log(response)
-                // debugger
-                dispatch(mapResponseToState(response))
+                debugger
+                dispatch(updateResponse(response))
                 dispatch(mapSearchResultsToState(response.flight_offers))
             })
             .catch(console.log)
@@ -55,8 +54,12 @@ const mapResponseToState = responseObj => ({
     payload: responseObj
 })
 
+const updateResponse = responseObj => ({
+    type: "UPDATE_RESPONSE_RESOLVED",
+    payload: responseObj
+})
+
 export const searchForFlights = searchParams => {
-    // debugger
     return dispatch => {
         return fetch(BASE + 'queries/', {
             method: "POST",
