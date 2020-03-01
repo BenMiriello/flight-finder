@@ -9,7 +9,7 @@ class TripsPage extends Component {
         return (
             <>
                 <Header as='h1' style={{ "text-align": "center" }}>My Trips</Header>
-                { purchased ? <FlightOffers flightOffers={purchased} /> : "" }
+                { purchased ? <FlightOffers page={'trips'} flightOffers={purchased} /> : "" }
             </>
         )
     }

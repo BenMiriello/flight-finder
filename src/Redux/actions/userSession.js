@@ -20,8 +20,9 @@ const loginSignupFetch = (user, route) => {
             if (data.error) {
                 console.log(data.error)
             } else {
-                console.log('Signup/login successful. Check localStorage: ', localStorage)
+                // console.log('Signup/login successful. Check localStorage: ', localStorage)
                 localStorage.setItem("token", data.jwt)
+                localStorage.setItem("username", data.user.username)
                 dispatch(loginUser(data.user))
             }
         })
@@ -50,8 +51,12 @@ export const getProfileFetch = () => {
             })
             .then(r => r.json())
             .then(data => {
+                debugger
                 if (data.message) {
                     localStorage.removeItem('token')
+                    if (localStorage.username){
+                        localStorage.removeItem('username')
+                    }
                 } else {
                     dispatch(loginUser(data.user))
                 }

@@ -12,7 +12,6 @@ export const queryTestFlights = searchParams => {
         })
         .then(r => r.json())
         .then(qandr => {
-            // debugger
             dispatch(mapQueryToState(qandr.query))
             dispatch(mapResponseToState(qandr.response))
         })
@@ -26,7 +25,7 @@ export const refreshResponse = response => {
             return fetch(BASE + 'responses/' + response.id)
             .then(r => r.json())
             .then(response => {
-                debugger
+                console.log('response in actions: ', response)
                 dispatch(updateResponse(response))
                 dispatch(mapSearchResultsToState(response.flight_offers))
             })
@@ -55,7 +54,7 @@ const mapResponseToState = responseObj => ({
 })
 
 const updateResponse = responseObj => ({
-    type: "UPDATE_RESPONSE_RESOLVED",
+    type: "UPDATE_RESPONSE",
     payload: responseObj
 })
 
@@ -77,28 +76,4 @@ export const searchForFlights = searchParams => {
         .catch(console.log)
     }
 }
-
-// export const getResponseFlights = response_id =>{
-//     return dispatch => {
-//         return fetch(BASE + '/responses/' + response_id)
-//         .then(r => r.json())
-//         .then(flightOffersArray => dispatch(mapSearchResultsToState(flightOffersArray)))
-//         // .then(dispatch(setLastSearchParams(searchParams)))
-//         .catch(console.log)
-//     }
-// }
-
-// const mapSearchResultsToState = flightOffersArray => {
-//     return ({
-//         type: 'MAP_SEARCH_RESULTS_TO_STATE',
-//         payload: flightOffersArray
-//     })
-// }
-
-// const setLastSearchParams = searchParams => {
-//     return ({
-//         type: "SET_LAST_SEARCH_PARAMS",
-//         payload: searchParams
-//     })
-// }
 

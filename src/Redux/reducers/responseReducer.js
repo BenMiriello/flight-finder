@@ -7,7 +7,9 @@ const responseReducer = (state = initialState, { type, payload }) => {
         case "UPDATE_RESPONSE":
             return {
                 ...state,
-                resolved: payload.resolved
+                resolved: payload.resolved,
+                real_flight_offer_count: payload.real_flight_offer_count,
+                expected_flight_offer_count: payload.expected_flight_offer_count
             }
         default:
             return state

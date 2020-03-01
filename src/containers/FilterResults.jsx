@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Card, Form, Dropdown, Button } from 'semantic-ui-react'
-import { refreshResponse } from '../Redux/actions/searchAndResults'
+import { Card, Form, Dropdown } from 'semantic-ui-react'
 
 class FilterResults extends Component {
 
@@ -11,17 +10,11 @@ class FilterResults extends Component {
     handleOnChange = () => {
     }
 
-    handleRefresh = () => {
-        // debugger
-        this.props.refreshResponse(this.props.response)
-    }
-    
     render() {
         return (
             <Card style={{"width": "82%", "margin": "auto", "marginTop": "2.5%", "marginBottom":"2.5%"}}>
                 <Form>
                     <Form.Group widths='equal'>
-                        <Button text='Refresh Search Results' onClick={this.handleRefresh}/>
                         <Dropdown 
                             text={`Included Airlines`}
                             style={{"marginLeft": "20px", "marginRight": "20px"}}>
@@ -36,7 +29,6 @@ class FilterResults extends Component {
                         <Dropdown
                             text={`Excluded Airlines`}
                         >
-
                         </Dropdown>
                     </Form.Group>
                 </Form>
@@ -49,6 +41,5 @@ const MSTP = state => ({
     response: state.response
 })
 
-const MDTP = { refreshResponse }
+export default connect(MSTP)(FilterResults)
 
-export default connect(MSTP, MDTP)(FilterResults)

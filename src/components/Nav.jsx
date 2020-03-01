@@ -14,8 +14,6 @@ class Nav extends Component {
                 localStorage.removeItem('token')
                 this.props.logoutUser()
                 break
-            // case 'settings':
-            //     break
             default:
                 this.setState({ activeItem: name })
                 break
@@ -43,7 +41,7 @@ class Nav extends Component {
 
     userMenu = () => (
         <Menu.Menu position='right'>
-            <Dropdown item text={this.props.user && this.props.user.username ? this.props.user.username : null}>
+            <Dropdown item text={localStorage.token && localStorage.username ? localStorage.username : null}>
                 <Dropdown.Menu>
                     <Menu.Item 
                         as={NavLink} 
@@ -75,7 +73,6 @@ class Nav extends Component {
     )
 
     render() {
-        // debugger
         const { activeItem } = this.state
         console.log(this.props.token)
 

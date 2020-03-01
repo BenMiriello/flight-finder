@@ -4,11 +4,9 @@ Commit Conventions:
 
 Type: refactor, example: "refactor: separated selectNumberOfPeople from SearchBar"
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
-
-
+*Feature note: The app is able to show flight results several times faster because of new data flow: Back end creates a Query object which belongs to user and a Response object which belongs to the Query and to which belongs all models containing flight info. Because App receives a model it can use to request any existing Flight Offers in milliseconds instead of 10+ seconds, it is able to send a new query to the back end to receive all Flight Offers that have been created at that point and start showing them to the user in about 1 second or less instead of 5-30 seconds otherwise. This is partly facilitated by using multi-threading in the back end to return the reference objects (Query and Response) while the response from the external API is processed on a separate thread.
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

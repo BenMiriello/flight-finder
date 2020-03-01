@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { searchForFlights, queryTestFlights } from '../Redux/actions/searchAndResults'
+import { searchForFlights, queryTestFlights, refreshResponse } from '../Redux/actions/searchAndResults'
 import { connect } from 'react-redux'
 import { SelectNumberOfPeople } from '../Components/SearchBar'
 
@@ -38,7 +38,6 @@ class SearchBar extends Component {
     state = this.defaultState
 
     handleOnChange = e => {
-        // debugger
         let param = e.target.name
         let value = e.target.value
         this.setState(prevState => ({
@@ -50,7 +49,6 @@ class SearchBar extends Component {
     }
 
     handleDateChange = (time, type) => {
-        // debugger
         this.setState(prevState => ({
             searchParams: {
                 ...prevState.searchParams,
@@ -62,10 +60,14 @@ class SearchBar extends Component {
     handleSubmit = e => {
         e.preventDefault()
         let searchParams = this.state.searchParams
-        // debugger
         // this.props.searchForFlights(searchParams)
         this.props.queryTestFlights(searchParams)
         // this.setState(this.defaultState)
+        setTimeout(() => this.props.refreshResponse(this.props.response), 500)
+        setTimeout(() => this.props.refreshResponse(this.props.response), 1000)
+        setTimeout(() => this.props.refreshResponse(this.props.response), 2000)
+        setTimeout(() => this.props.refreshResponse(this.props.response), 3000)
+        setTimeout(() => this.props.refreshResponse(this.props.response), 5000)
     }
 
     handleSwitchTravelClass = e => {
@@ -262,10 +264,15 @@ class SearchBar extends Component {
     }
 }
 
-const MDTP = dispatch => ({
-    searchForFlights: (searchParams) => dispatch(searchForFlights(searchParams)),
-    queryTestFlights: (searchParams) => dispatch(queryTestFlights(searchParams))
+const MSTP = state => ({
+    response: state.response
 })
 
-export default connect(null, MDTP)(SearchBar)
+const MDTP = dispatch => ({
+    searchForFlights: (searchParams) => dispatch(searchForFlights(searchParams)),
+    queryTestFlights: (searchParams) => dispatch(queryTestFlights(searchParams)),
+    refreshResponse: (response) => dispatch(refreshResponse(response))
+})
+
+export default connect(MSTP, MDTP)(SearchBar)
 

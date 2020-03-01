@@ -27,18 +27,15 @@ const UserForm = props => {
 
     const handleSubmit = e => {
         e.preventDefault()
-        // let action = null
-        // switch(props.type){
-        //     case "LOGIN":
-        //         action = loginUserToDB
-        //         break
-        //     case "SIGNUP":
-        //         action = persistUser
-        //         break
-        //     default: break
-        // }
-        let action = (props.type === "LOGIN" ? loginUserToDB : "SIGNUP" ? persistUser : null)
-        (action) ? dispatch(action(formParams)) : null
+        switch(props.type){
+            case "LOGIN":
+                dispatch(loginUserToDB(formParams))
+                break
+            case "SIGNUP":
+                dispatch(persistUser(formParams))
+                break
+            default: break
+        }
         history.push('/')
     }
 

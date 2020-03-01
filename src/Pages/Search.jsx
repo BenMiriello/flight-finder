@@ -8,7 +8,7 @@ class Search extends Component {
         return (
             <div>
                 <SearchBar/>
-                <FlightOffers flightOffers={this.props.searchResults} />
+                <FlightOffers page={'search'} flightOffers={this.props.searchResults} />
             </div>
         )
     }
