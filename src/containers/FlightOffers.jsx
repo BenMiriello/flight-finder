@@ -15,9 +15,10 @@ class FlightOffers extends Component {
     }
 
     showFlightOffers = () => {
-        if (this.props.flightOffers && this.props.flightOffers.length >= 1) {
+        if (this.props.searchResults && this.props.searchResults.length >= 1) {
+            // debugger
             return (
-                this.props.flightOffers.map(foobj => {
+                this.props.searchResults.map(foobj => {
                     return (
                         <>
                             <FlightOfferCard key={uuidv1()} flightOffer={foobj}/>

@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Menu, Dropdown } from 'semantic-ui-react'
 import { NavLink } from 'react-router-dom'
-// import LoginForm from './LoginForm'
 import { connect } from 'react-redux'
 import { getProfileFetch, logoutUser } from '../Redux/actions/userSession'
 import { Route } from 'react-router-dom'
@@ -76,8 +75,9 @@ class Nav extends Component {
     )
 
     render() {
-        const { activeItem } = this.state
         // debugger
+        const { activeItem } = this.state
+        console.log(this.props.token)
 
         return (
             <Route>
@@ -95,7 +95,7 @@ class Nav extends Component {
                         active={activeItem === 'trips'}
                         onClick={this.handleItemClick}
                     />
-                    { localStorage.token ? this.userMenu() : this.signupMenu() }
+                    { localStorage.token && localStorage.token.length > 0 ? this.userMenu() : this.signupMenu() }
                 </Menu>
             </Route>
         )
@@ -104,7 +104,8 @@ class Nav extends Component {
 
 const MSTP = state => (
     {
-        user: state.userInfo.user
+        user: state.userInfo.user,
+        token: state.userInfo.token
     } 
 )
 

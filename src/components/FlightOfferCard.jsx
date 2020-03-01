@@ -29,6 +29,7 @@ const FlightOfferCard = props => {
     }
 
     const infoRow = (leg) => {
+        debugger
         let segments = props.flightOffer.itineraries[leg].segments
 
         let stops = segments.length - 1
@@ -109,6 +110,7 @@ const FlightOfferCard = props => {
     }
 
     const [to, from] = ["0", "1"]
+    
     return (
         <Card className="flight-offer-card" style={{"margin": "auto", "width": "82%"}}>
             <Grid columns={2}>
