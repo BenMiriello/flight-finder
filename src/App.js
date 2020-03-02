@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import Routes from './Routes'
 import { getProfileFetch } from './Redux/actions/userSession'
 import Component from './Components'
+import { refreshResponse } from './Redux/actions/searchAndResults'
 
 class App extends React.Component {
 
@@ -11,6 +12,10 @@ class App extends React.Component {
     // useEffect(() => getProfileFetch())
 
     componentDidMount(){
+
+        // Get test response by default for testing:
+        this.props.refreshResponse({id: 200})
+        
         this.props.getProfileFetch()
     }
 
@@ -26,7 +31,7 @@ class App extends React.Component {
     
 }
 
-const MDTP = { getProfileFetch }
+const MDTP = { getProfileFetch, refreshResponse }
 
 export default connect(null, MDTP)(App)
 

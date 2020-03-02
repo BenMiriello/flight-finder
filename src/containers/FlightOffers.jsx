@@ -112,6 +112,7 @@ class FlightOffers extends Component {
     }
 
     render() {
+        console.log(this.props.response, this.props.flightOffers)
         return (
             <Container className="flight-offer-cards-container">
                 {this.props.response && !this.props.response.resolved ? <RefreshResults/> : null}

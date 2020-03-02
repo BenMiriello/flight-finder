@@ -69,13 +69,13 @@ class SearchBar extends Component {
         setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 1000)
         setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 1500)
         setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 2000)
-        setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 3000)
-        setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 5000)
-        setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 10000)
-        setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 15000)
-        setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 20000)
-        setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 30000)
-        setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 60000)
+        // setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 3000)
+        // setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 5000)
+        // setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 10000)
+        // setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 15000)
+        // setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 20000)
+        // setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 30000)
+        // setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 60000)
     }
 
     handleSwitchTravelClass = e => {

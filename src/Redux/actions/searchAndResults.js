@@ -27,7 +27,6 @@ export const refreshResponse = (response) => {
             .then(updatedResponse => {
                 dispatch(updateResponse(updatedResponse))
                 dispatch(mapSearchResultsToState(updatedResponse.flight_offers))
-                // console.log('updated Response: ', updatedResponse)
             })
             .catch(console.log)
         } else {

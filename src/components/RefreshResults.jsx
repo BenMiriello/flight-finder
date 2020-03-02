@@ -7,12 +7,13 @@ class RefreshResults extends Component {
 
     handleRefresh = () => {
         this.props.refreshResponse(this.props.response)
-        // console.log('real: ', this.props.response.real_flight_offer_count)
-        // console.log('expected: ', this.props.response.expected_flight_offer_count)
     }
 
     showCount = () => {
         let shown = this.props.response.resolved ? this.props.searchResults.length : this.props.searchResults.length - 1
+        if (this.props.searchResults.length < 1){
+            shown = 0
+        }
         let total = this.props.response.real_flight_offer_count
         return(
             <p>

@@ -1,14 +1,21 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Grid, Card, Item, Image, Button } from 'semantic-ui-react'
+import { Grid, Card, Item, Image, Button, Icon, Divider } from 'semantic-ui-react'
 import { postPurchase, postFavorite, deletePurchase, deleteFavorite } from '../Redux/actions/favoriteAndPurchase'
+import { useState } from 'react'
+import SegmentDetails from './SegmentDetails'
 
 const FlightOfferCard = props => {
 
     const favorited_flight_offers = useSelector(state => state.userInfo.user.favorited_flight_offers)
     const purchased_flight_offers = useSelector(state => state.userInfo.user.purchased_flight_offers)
     const dispatch = useDispatch()
+    const [showSegmentDetails, setSegmentDetails] = useState(false)
 
+    const toggleSegmentDetails = () => {
+        setSegmentDetails(prevShowSegmentDetails => !prevShowSegmentDetails)
+    }
+    
     const handleClick = (e, {name}) => {
         switch(name) {
             case "add favorite":
@@ -27,47 +34,6 @@ const FlightOfferCard = props => {
                 break
         }
     }
-
-    itineraries: Array(2)
-// 0:
-// id: 3305
-// duration: "PT6H50M"
-// segments: Array(1)
-// 0:
-// id: 4345
-// itinerary_id: 3305
-// departure_terminal: "7"
-// departure_time: "2020-10-01T07:55:00.000Z"
-// arrival_terminal: "5"
-// arrival_time: "2020-10-01T19:45:00.000Z"
-// flight_number: "5478"
-// aircraft_code: "744"
-// aircraft: "BOEING 747-400"
-// duration: "PT6H50M"
-// number_of_stops: 0
-// airline:
-// id: 44
-// name: "Finnair"
-// iata_code: "AY"
-// __proto__: Object
-// operating_airline:
-// id: 54
-// name: "British Airways"
-// iata_code: "BA"
-// __proto__: Object
-// origin:
-// id: 216
-// name: "John F Kennedy Intl"
-// iata_code: "JFK"
-// icao_code: "KJFK"
-// latitude: "40.639751"
-// longitude: "-73.778925"
-// alias: null
-// dst: null
-// destinations: 162
-// city_id: 216
-// created_at: "2020-02-29T23:49:06.372Z"
-// updated_at: "2020-02-29T23:49:06.372Z"
 
     const infoRow = (leg) => {
         // debugger
@@ -150,6 +116,46 @@ const FlightOfferCard = props => {
         }
     }
 
+    const toggleSegmentDetailsButton = () => {
+        return(
+            <div onClick={() => toggleSegmentDetails()}>
+                <Icon name="dropdown" rotated={showSegmentDetails ? null : "counterclockwise"}/>
+                Details
+            </div>
+        )   
+    }
+
+    const destinationPhoto = (source) => {
+        return(
+            <>
+                <Divider section />
+                <Image src={source + "?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&h=300&q=100"} fluid />
+            </>
+        )
+    }
+
+    const itineraryDetails = (direction) => {
+        return props.flightOffer.itineraries[direction].segments.map(segment => {
+            return(
+                <>
+                    <Divider section />
+                    <SegmentDetails flightOffer={props.flightOffer} segment={segment}/>
+                </>
+            )
+        })
+    }
+
+    const segmentDetails = () => {
+        let image = props.flightOffer.itineraries[1].segments[0].origin.city.image
+        return(
+            <>
+                {itineraryDetails(0)}
+                {image ? destinationPhoto(image) : null}
+                {itineraryDetails(1)}
+            </>
+        )
+    }
+
     const [to, from] = ["0", "1"]
 
     return (
@@ -170,11 +176,12 @@ const FlightOfferCard = props => {
                             <p className="foci-text vertical-center">${props.flightOffer.grand_total}</p>
                         </div>
                         <div className="flight-offer-card-right-item">
-                            {purchaseButton()}
+                            {toggleSegmentDetailsButton()}
                         </div>
                     </div>
                 </Grid.Column>
             </Grid>
+            {showSegmentDetails ? segmentDetails() : null}
         </Card>
     )
 }
