@@ -74,7 +74,7 @@ class Nav extends Component {
 
     render() {
         const { activeItem } = this.state
-        console.log(this.props.token)
+        // console.log(this.props.token)
 
         return (
             <Route>

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { searchForFlights, queryTestFlights, refreshResponse } from '../Redux/actions/searchAndResults'
 import { connect } from 'react-redux'
 import { SelectNumberOfPeople } from '../Components/SearchBar'
+import { debounce } from 'lodash'
 
 import { 
     Button, 
@@ -62,12 +63,19 @@ class SearchBar extends Component {
         let searchParams = this.state.searchParams
         // this.props.searchForFlights(searchParams)
         this.props.queryTestFlights(searchParams)
-        // this.setState(this.defaultState)
-        setTimeout(() => this.props.refreshResponse(this.props.response), 500)
-        setTimeout(() => this.props.refreshResponse(this.props.response), 1000)
-        setTimeout(() => this.props.refreshResponse(this.props.response), 2000)
-        setTimeout(() => this.props.refreshResponse(this.props.response), 3000)
-        setTimeout(() => this.props.refreshResponse(this.props.response), 5000)
+
+        // debugger
+        setTimeout(this.props.refreshResponse(this.props.response), 500)
+        setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 1000)
+        setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 1500)
+        setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 2000)
+        setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 3000)
+        setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 5000)
+        setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 10000)
+        setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 15000)
+        setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 20000)
+        setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 30000)
+        setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 60000)
     }
 
     handleSwitchTravelClass = e => {

@@ -8,14 +8,17 @@ class Search extends Component {
         return (
             <div>
                 <SearchBar/>
-                <FlightOffers page={'search'} flightOffers={this.props.searchResults} />
+                <FlightOffers page={'search'} response={this.props.response} flightOffers={this.props.searchResults} />
             </div>
         )
     }
 }
 
 const MSTP = state => (
-    { searchResults: state.searchResults }
+    { 
+        searchResults: state.searchResults,
+        response: state.response
+    }
 )
 
 export default connect(MSTP)(Search)

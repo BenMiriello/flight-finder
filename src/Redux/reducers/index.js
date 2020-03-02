@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 import userReducer from './userReducer'
-import searchResultsReducer from './searchResultsReducer'
+import flightOffersReducer from './flightOffersReducer'
 import searchReducer from './searchReducer'
 import queryReducer from './queryReducer'
 import responseReducer from './responseReducer'
@@ -8,7 +8,7 @@ import responseReducer from './responseReducer'
 const rootReducer = combineReducers(
     {
         userInfo: userReducer,
-        searchResults: searchResultsReducer,
+        searchResults: flightOffersReducer,
         lastSearchParams: searchReducer,
         query: queryReducer,
         response: responseReducer

@@ -12,9 +12,11 @@ class RefreshResults extends Component {
     }
 
     showCount = () => {
+        let shown = this.props.response.resolved ? this.props.searchResults.length : this.props.searchResults.length - 1
+        let total = this.props.response.real_flight_offer_count
         return(
             <p>
-                Showing {this.props.response.real_flight_offer_count} of {this.props.response.expected_flight_offer_count} results.
+                Showing {shown} of {total} results.
             </p>
         )
     }
@@ -36,7 +38,8 @@ class RefreshResults extends Component {
 }
 
 const MSTP = state => ({
-    response: state.response
+    response: state.response,
+    searchResults: state.searchResults
 })
 
 const MDTP = { refreshResponse }

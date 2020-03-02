@@ -19,15 +19,15 @@ export const queryTestFlights = searchParams => {
     }
 }
 
-export const refreshResponse = response => {
+export const refreshResponse = (response) => {
     return dispatch => {
         if (response.id){
-            return fetch(BASE + 'responses/' + response.id)
+            fetch(BASE + 'responses/' + response.id)
             .then(r => r.json())
-            .then(response => {
-                console.log('response in actions: ', response)
-                dispatch(updateResponse(response))
-                dispatch(mapSearchResultsToState(response.flight_offers))
+            .then(updatedResponse => {
+                dispatch(updateResponse(updatedResponse))
+                dispatch(mapSearchResultsToState(updatedResponse.flight_offers))
+                // console.log('updated Response: ', updatedResponse)
             })
             .catch(console.log)
         } else {
@@ -75,5 +75,11 @@ export const searchForFlights = searchParams => {
         })
         .catch(console.log)
     }
+}
+
+export const loadLastQuery = user => {
+    // return dispatch => {
+    //     return fetch(BASE + 'users/' + user.id + '/queries/last')
+    // }
 }
 

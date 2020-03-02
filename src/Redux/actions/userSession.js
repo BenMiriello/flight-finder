@@ -17,10 +17,10 @@ const loginSignupFetch = (user, route) => {
         })
         .then(r => r.json())
         .then(data => {
-            if (data.error) {
-                console.log(data.error)
+            if (data.message) {
+                console.log(data.message)
             } else {
-                // console.log('Signup/login successful. Check localStorage: ', localStorage)
+                // debugger
                 localStorage.setItem("token", data.jwt)
                 localStorage.setItem("username", data.user.username)
                 dispatch(loginUser(data.user))
@@ -28,6 +28,21 @@ const loginSignupFetch = (user, route) => {
         })
     }
 }
+
+
+
+
+
+
+
+// IN USER PROFILE FETCH, SET USER QUERIES TO STATE
+
+
+
+
+
+
+
 
 export const persistUser = user => {
     return loginSignupFetch(user, 'users')
@@ -52,7 +67,7 @@ export const getProfileFetch = () => {
             })
             .then(r => r.json())
             .then(data => {
-                debugger
+                // debugger
                 if (data.message) {
                     localStorage.removeItem('token')
                     if (localStorage.username){
