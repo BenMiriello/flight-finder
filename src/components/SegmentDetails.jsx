@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Grid, Segment, Image } from 'semantic-ui-react'
+import { Grid, Segment, Image, Header } from 'semantic-ui-react'
 import { Separator } from '../StyleComponents/Separator'
 
 export default class SegmentDetails extends Component {
@@ -27,114 +27,56 @@ export default class SegmentDetails extends Component {
 
 
         return (
+            <>
+            <Grid>
+                <Grid.Row>
+                    <Grid.Column width={16}>
+                        <Header as='h3' textAlign="center">
+                            <div >
+                                {segment.origin.city.name} - {segment.destination.city.name}
+                            </div>
+                        </Header>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
             <Grid>
                 <Grid.Row>
                     <Grid.Column width={1}></Grid.Column>
-                    <Grid.Column width={4} >
+                    <Grid.Column width={3} >
                         <Segment vertical>
                             <Image src={`https://www.gstatic.com/flights/airline_logos/70px/${segment.airline.iata_code}.png`}/>
+                            {segment.airline.name}
                         </Segment>
                         <Segment vertical>
-                            <p>
-                                {segment.airline.name}
-                            </p>
-                        </Segment>
-                        <Segment vertical>
-                            <p>
-                                Operated by {segment.operating_airline.name}
-                            </p>
+                            Operated by {segment.operating_airline.name}
                         </Segment>
                     </Grid.Column>
-                    <Grid.Column width={10} >
+                    <Grid.Column width={11} >
                         <Segment vertical>
-                            <p>
-                                Departing {departure12Hour}:{departureMinute} {departureAmPm}
-                            </p>
+                            Departing {departure12Hour}:{departureMinute} {departureAmPm} from {segment.origin.airport.name} Airport terminal {segment.departure_terminal} {segment.origin.city.name}, {segment.origin.country.name}
                         </Segment>
                         <Segment vertical>
-                            <p>
-                                From {segment.origin.airport.name}
-                            </p>
+                            Arriving {arrival12Hour}:{arrivalMinute} {arrivalAmPm} at {segment.destination.airport.name} Airport terminal {segment.arrival_terminal} {segment.destination.city.name}, {segment.destination.country.name}
                         </Segment>
-                        <Segment vertical>
-                            <p>
-                                Terminal {segment.departure_terminal}
-                            </p>
-                        </Segment>
-                        <Segment vertical>
-                            <p>
-                                {segment.origin.city.name}, {segment.origin.country.name}
-                            </p>
-                        </Segment>
+                        <Segment.Group horizontal>
+                            <Segment basic>
+                                <Header as='h5'>Flight No.</Header>
+                                {segment.flight_number}
+                            </Segment>
+                            <Segment basic>
+                                <Header as='h5'>Duration</Header>
+                                {duration}
+                            </Segment>
+                            <Segment basic>
+                                <Header as='h5'>Aircraft</Header>
+                                {segment.aircraft}
+                            </Segment>
+                        </Segment.Group>
                     </Grid.Column>
-                    <Grid.Column width={4} >
-                        <Segment vertical>
-                            <p>
-                                Arriving {arrival12Hour}:{arrivalMinute} {arrivalAmPm}
-                            </p>
-                        </Segment>
-                        <Segment vertical>
-                            <p>
-                                At {segment.destination.airport.name}
-                            </p>
-                        </Segment>
-                        <Segment vertical>
-                            <p>
-                                Terminal {segment.arrival_terminal}
-                            </p>
-                        </Segment>
-                        <Segment vertical>
-                            <p>
-                                {segment.destination.city.name}, {segment.destination.country.name}
-                            </p>
-                        </Segment>
-                    </Grid.Column>
+                    <Grid.Column width={1}></Grid.Column>
                 </Grid.Row>
-                {/* <Grid.Column>
-                    <Item className="foci foci-times" >
-                        <div className="vertical-center">
-                            <p className="foci-text">
-                                {departure12Hour}:{departureMinute} {departureAmPm} - {arrival12Hour}:{arrivalMinute} {arrivalAmPm}
-                            </p>
-                            <div className="flight-offer-card-flex-container sub-flex">
-                                <p className="foci-text">{carrier}</p>
-                            </div>
-                        </div>
-                    </Item>
-                </Grid.Column>
-                <Grid.Column width={4}>
-                    <Item className="foci foci-legs">
-                        <div className="vertical-center">
-                            <p className="foci-text">{stops === 0 ? "non" : stops + " "}stop{stops >= 2 ? "s" : ""}</p>
-                            {stops >= 1 ?   
-                                <div className="flight-offer-card-flex-container sub-flex">
-                                    <p className="foci-text">{segments[0].destination.iata_code}</p>
-                                </div>
-                            : null
-                            }
-                        </div>
-                    </Item>
-                </Grid.Column>
-                <Grid.Column width={4}>
-                    <Item className="foci foci-duration">
-                        <div className="vertical-center">
-                            <p className="foci-text">{duration}</p>
-                            <div className="flight-offer-card-flex-container sub-flex">
-                            <p className="foci-text">{segments[0].origin.iata_code} - {segments[segments.length - 1].destination.iata_code}</p>
-                            </div>
-                        </div>
-                    </Item>
-                </Grid.Column>
-                <Grid.Column width={4} >
-                    <div className="flight-offer-card-right">
-                        <div className="flight-offer-card-right-item ">
-                            <p className="foci-text vertical-center">
-                                Test filler
-                            </p>
-                        </div>
-                    </div>
-                </Grid.Column> */}
             </Grid>
+            </>
         )
     }
 }

@@ -4,6 +4,7 @@ import { Grid, Card, Item, Image, Button, Icon, Divider } from 'semantic-ui-reac
 import { postPurchase, postFavorite, deletePurchase, deleteFavorite } from '../Redux/actions/favoriteAndPurchase'
 import { useState } from 'react'
 import SegmentDetails from './SegmentDetails'
+import { Separator } from '../StyleComponents/Separator'
 
 const FlightOfferCard = props => {
 
@@ -70,7 +71,6 @@ const FlightOfferCard = props => {
                     <div className="vertical-center">
                         <p className="foci-text">
                             {departure12Hour}:{departureMinute} {departureAmPm} - {arrival12Hour}:{arrivalMinute} {arrivalAmPm}
-                            {/* {formatAMPM(segments[0].departure_time)} - {formatAMPM(segments[0].departure_time)}  */}
                         </p>
                         <div className="flight-offer-card-flex-container sub-flex">
                             <p className="foci-text">{carrier}</p>
@@ -110,9 +110,19 @@ const FlightOfferCard = props => {
 
     const purchaseButton = () => {
         if (purchased_flight_offers && purchased_flight_offers.length > 0 && purchased_flight_offers.some(fo => fo.id === props.flightOffer.id)){
-            return <Button onClick={handleClick} name="remove purchase" color='green'>Cancel Flight</Button>
+            // return (
+            //     <>
+            //         <Divider section />
+            //         <Button onClick={handleClick} name="remove purchase" color='green'>Cancel Flight</Button>
+            //     </>
+            // )
+            return(
+                <Button onClick={handleClick} name="remove purchase" color='green' style={{"width":"80%", "marginLeft":"10%"}}>You're booked for this flight! Click to cancel.</Button>
+            )
         } else {
-            return <Button onClick={handleClick} name="add purchase" color='blue'>Book Flight</Button>
+            return(
+                <Button onClick={handleClick} name="add purchase" color='blue' style={{"width":"80%", "marginLeft":"10%"}}>Book Flight</Button>
+            )
         }
     }
 
@@ -130,6 +140,8 @@ const FlightOfferCard = props => {
             <>
                 <Divider section />
                 <Image src={source + "?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&h=300&q=100"} fluid />
+                <Separator px={25} />
+                {purchaseButton()}
             </>
         )
     }
