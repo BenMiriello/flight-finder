@@ -11,7 +11,7 @@ const FlightOfferCard = props => {
     const favorited_flight_offers = useSelector(state => state.userInfo.user.favorited_flight_offers)
     const purchased_flight_offers = useSelector(state => state.userInfo.user.purchased_flight_offers)
     const dispatch = useDispatch()
-    const [showSegmentDetails, setSegmentDetails] = useState(false)
+    const [showSegmentDetails, setSegmentDetails] = useState(props.fan ? true : false)
 
     const toggleSegmentDetails = () => {
         setSegmentDetails(prevShowSegmentDetails => !prevShowSegmentDetails)

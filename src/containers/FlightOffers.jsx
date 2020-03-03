@@ -98,12 +98,22 @@ class FlightOffers extends Component {
                     if (this.findCommonElement(iataArray, excluded)) {
                         return
                     } else {
-                        return (
-                            <>
-                                <FlightOfferCard key={uuidv1()} flightOffer={FO}/>
-                                <Separator px={20} />
-                            </>
-                        )
+                        if (this.props.page === 'trips'){
+                            return (
+                                <>
+                                    <FlightOfferCard key={uuidv1()} flightOffer={FO} fan/>
+                                    <Separator px={20} />
+                                </>
+                            )
+                        } else {
+                            return (
+                                <>
+                                    <FlightOfferCard key={uuidv1()} flightOffer={FO}/>
+                                    <Separator px={20} />
+                                </>
+                            )
+                        }
+
                     }
                 })
             )
@@ -129,9 +139,9 @@ class FlightOffers extends Component {
             return (
                 <Container className="flight-offer-cards-container">
                     {/* {this.props.response && !this.props.response.resolved ? <RefreshResults/> : null} */}
-                    <RefreshResults/>
+                    {!this.props.noRefresh ? <RefreshResults/> : null}
                     {/* {this.props.response.expected_flight_offer_count ? <RefreshResults/> : null} */}
-                    {this.props.flightOffers.length > 0 ? 
+                    {this.props.flightOffers.length > 0 && this.props.page != 'trips' ? 
                         <FilterResults 
                             filterParams={this.state.filterParams}
                             setSortBy={this.setSortBy}

@@ -9,7 +9,7 @@ class Favorites extends Component {
         return (
             <>
                 <Header as='h1' style={{ "text-align": "center" }}>My Favorites</Header>
-                { favorited ? <FlightOffers page={'favorites'} flightOffers={favorited} /> : "" }
+                { favorited ? <FlightOffers page={'favorites'} flightOffers={favorited} noRefresh={true} /> : "" }
             </>
         )
     }
