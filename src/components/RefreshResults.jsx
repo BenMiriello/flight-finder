@@ -9,38 +9,42 @@ class RefreshResults extends Component {
         this.props.refreshResponse(this.props.response)
     }
 
-    showCount = () => {
-        let shown = this.props.response.resolved ? this.props.searchResults.length : this.props.searchResults.length - 1
-        if (this.props.searchResults.length < 1){
-            shown = 0
-        }
-        let total = 0
-        if (this.props.response.expected_flight_offer_count){
-            total = this.props.response.expected_flight_offer_count
-        }
+    showButton = () => {
         return(
             <Button onClick={this.handleRefresh} as='div' labelPosition='left'>
                 <Label as='a' pointing='right' basic>
-                    {`Showing ${shown} of ${total} results.`}
+                    {`Showing ${this.props.real? this.props.real : 0} of ${this.props.expected ? this.props.expected : 0} results.`}
                 </Label>
-                <Button icon>
+                <Button>
                     Show More Flights
                 </Button>
             </Button>
         )
     }
 
+    refreshButton = () => {
+        if (this.props.response.expected_flight_offer_count){
+            if (!this.props.response.resolved) {
+                return this.showButton()
+            } else {
+                return(
+                    <div style={{"margin":"20px", "margin":"auto"}}>
+                        <p>
+                            Showing all {this.props.real} results.
+                        </p>
+                    </div>
+                )
+            }
+        }
+    }
+
     percent = () => {
-        let real = this.props.response.real_flight_offer_count
-        let expected = this.props.response.expected_flight_offer_count
-        return 100 * real / expected
+        return 100 * this.props.real / this.props.expected
     }
 
     whichProgressBarToShow = () => {
-        let real = this.props.response.real_flight_offer_count
-        let expected = this.props.response.expected_flight_offer_count
         let progress = <Progress percent={this.percent()} indicating/>
-        if (real === expected) {
+        if (this.props.real === this.props.expected) {
             progress = <Progress percent={this.percent()} success />
         }
         return progress
@@ -51,7 +55,7 @@ class RefreshResults extends Component {
             <Card style={{"width": "100%", "margin": "auto", "marginTop": "2.5%", "marginBottom":"2.5%"}}>
                 <div style={{"margin":"20px"}}>
                     <Progress percent={this.percent()} indicating autoSuccess />
-                    {this.showCount()}
+                    {this.refreshButton()}
                 </div>
             </Card>
         )
@@ -60,7 +64,9 @@ class RefreshResults extends Component {
 
 const MSTP = state => ({
     response: state.response,
-    searchResults: state.searchResults
+    searchResults: state.searchResults,
+    real: state.response.real_flight_offer_count,
+    expected: state.response.expected_flight_offer_count
 })
 
 const MDTP = { refreshResponse }

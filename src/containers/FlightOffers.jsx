@@ -113,23 +113,24 @@ class FlightOffers extends Component {
     }
 
     render() {
-        console.log(this.props.error[0]);
+        let error = [...this.props.error]
+        let errorMessage = error[0]
         if (this.props.error.length > 0){
+            this.props.clearErrors()
             return (
                 <Container className="flight-offer-cards-container">
                     <Separator px={40}/>
                     <Header as='h2'>
-                        {this.props.error[0]}
+                        {errorMessage}
                     </Header>
                 </Container>
             )
-            this.props.clearErrors()
         } else {
             return (
                 <Container className="flight-offer-cards-container">
                     {/* {this.props.response && !this.props.response.resolved ? <RefreshResults/> : null} */}
-                    {/* <RefreshResults/> */}
-                    {this.props.response ? <RefreshResults/> : null}
+                    <RefreshResults/>
+                    {/* {this.props.response.expected_flight_offer_count ? <RefreshResults/> : null} */}
                     {this.props.flightOffers.length > 0 ? 
                         <FilterResults 
                             filterParams={this.state.filterParams}
