@@ -62,14 +62,14 @@ class SearchBar extends Component {
     handleSubmit = e => {
         e.preventDefault()
         let searchParams = this.state.searchParams
-        this.props.searchForFlights(searchParams)
-        // this.props.queryTestFlights(searchParams)
+        // this.props.searchForFlights(searchParams)
+        this.props.queryTestFlights(searchParams)
 
         // debugger
-        setTimeout(this.props.refreshResponse(this.props.response), 500)
-        setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 1000)
-        setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 1500)
-        setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 2000)
+        // setTimeout(this.props.refreshResponse(this.props.response), 500)
+        // setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 1000)
+        // setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 1500)
+        // setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 2000)
         // setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 3000)
         // setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 5000)
         // setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 10000)
@@ -149,6 +149,7 @@ class SearchBar extends Component {
     }
 
     render() {
+        console.log(this.props.response)
         return(
             <>
                 <Separator px={20}/>

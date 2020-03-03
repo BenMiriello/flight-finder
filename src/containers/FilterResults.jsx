@@ -14,6 +14,7 @@ class FilterResults extends Component {
     
     airlineOptions = () => {
         if (this.props.response.airlines){
+            console.log(this.props.response.airlines)
             return this.props.response.airlines.map(airline => 
                 <Checkbox 
                     label={airline.name} 

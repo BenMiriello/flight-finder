@@ -4,6 +4,7 @@ import flightOffersReducer from './flightOffersReducer'
 import searchReducer from './searchReducer'
 import queryReducer from './queryReducer'
 import responseReducer from './responseReducer'
+import errorReducer from './errorReducer'
 
 const rootReducer = combineReducers(
     {
@@ -11,7 +12,8 @@ const rootReducer = combineReducers(
         searchResults: flightOffersReducer,
         lastSearchParams: searchReducer,
         query: queryReducer,
-        response: responseReducer
+        response: responseReducer,
+        error: errorReducer
     }
 )
 

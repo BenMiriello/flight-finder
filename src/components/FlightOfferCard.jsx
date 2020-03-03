@@ -82,7 +82,7 @@ const FlightOfferCard = props => {
                         <p className="foci-text">{stops === 0 ? "non" : stops + " "}stop{stops >= 2 ? "s" : ""}</p>
                         {stops >= 1 ?   
                             <div className="flight-offer-card-flex-container sub-flex">
-                                <p className="foci-text">{segments[0].destination.iata_code}</p>
+                                <p className="foci-text">{segments[0].destination.airport.iata_code}</p>
                             </div>
                         : null
                         }
@@ -92,7 +92,7 @@ const FlightOfferCard = props => {
                     <div className="vertical-center">
                         <p className="foci-text">{duration}</p>
                         <div className="flight-offer-card-flex-container sub-flex">
-                        <p className="foci-text">{segments[0].origin.iata_code} - {segments[segments.length - 1].destination.iata_code}</p>
+                        <p className="foci-text">{segments[0].origin.airport.iata_code} - {segments[segments.length - 1].destination.airport.iata_code}</p>
                         </div>
                     </div>
                 </Item>

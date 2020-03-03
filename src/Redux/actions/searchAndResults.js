@@ -2,7 +2,7 @@ const BASE = 'http://localhost:3000/api/v1/'
 
 export const searchForFlights = searchParams => {
     let token = ""
-    if (localStorage.token){
+    if (localStorage.token) {
         token = localStorage.token
     }
     return dispatch => {
@@ -17,27 +17,46 @@ export const searchForFlights = searchParams => {
         })
         .then(r => r.json())
         .then(qandr => {
-            dispatch(mapQueryToState(qandr.query))
-            dispatch(mapResponseToState(qandr.response))
+            console.log(qandr)
+            // debugger
+            if (qandr.status === 500){
+                dispatch(handleErrorResponse(qandr))
+            } else {
+                dispatch(mapQueryToState(qandr.query))
+                dispatch(mapResponseToState(qandr.response))
+            }
         })
         .catch(console.log)
     }
 }
 
 export const queryTestFlights = searchParams => {
+    let token = ""
+    if (localStorage.token) {
+        token = localStorage.token
+    }
     return dispatch => {
         return fetch(BASE + 'queries/initiate_test', {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json'
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify({searchParams})
         })
         .then(r => r.json())
         .then(qandr => {
-            dispatch(mapQueryToState(qandr.query))
-            dispatch(mapResponseToState(qandr.response))
+            if (qandr.status === 500){
+                // console.log("error received")
+                dispatch(handleErrorResponse(qandr))
+            } else {
+                dispatch(mapQueryToState(qandr.query))
+                dispatch(mapResponseToState(qandr.response))
+                if (qandr.response.flight_offers) {
+                    dispatch(mapSearchResultsToState(qandr.response.flight_offers))
+                }
+            }
         })
         .catch(console.log)
     }
@@ -46,9 +65,10 @@ export const queryTestFlights = searchParams => {
 export const refreshResponse = (response) => {
     return dispatch => {
         if (response.id){
-            fetch(BASE + 'responses/' + response.id)
+            return fetch(BASE + 'responses/' + response.id)
             .then(r => r.json())
             .then(updatedResponse => {
+                // debugger
                 dispatch(updateResponse(updatedResponse))
                 dispatch(mapSearchResultsToState(updatedResponse.flight_offers))
             })
@@ -79,6 +99,15 @@ const mapResponseToState = responseObj => ({
 const updateResponse = responseObj => ({
     type: "UPDATE_RESPONSE",
     payload: responseObj
+})
+
+const handleErrorResponse = (errors) => ({
+    type: "ERROR_RESPONSE",
+    payload: errors
+})
+
+export const clearErrors = () => ({
+    type: "CLEAR_ERRORS"
 })
 
 export const loadLastQuery = user => {

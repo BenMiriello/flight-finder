@@ -5,6 +5,7 @@ import { SearchBar, FlightOffers } from '../Containers'
 class Search extends Component {
 
     render() {
+        console.log(this.props.searchResults);
         return (
             <div>
                 <SearchBar/>
@@ -20,6 +21,7 @@ const MSTP = state => (
         response: state.response
     }
 )
+
 
 export default connect(MSTP)(Search)
 

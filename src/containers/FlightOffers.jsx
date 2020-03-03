@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-// import { connect } from 'react-redux'
-import { Container, Ref } from 'semantic-ui-react'
+import { connect } from 'react-redux'
+import { Container, Header } from 'semantic-ui-react'
 import { Separator } from '../StyleComponents/Separator'
 import { v1 as uuidv1 } from 'uuid'
 import FlightOfferCard from '../Components/FlightOfferCard'
 import RefreshResults from '../Components/RefreshResults'
 import FilterResults from './FilterResults'
+import { clearErrors } from '../Redux/actions/searchAndResults'
 
 class FlightOffers extends Component {
 
@@ -112,35 +113,48 @@ class FlightOffers extends Component {
     }
 
     render() {
-        console.log(this.props.response, this.props.flightOffers)
-        return (
-            <Container className="flight-offer-cards-container">
-                {/* {this.props.response && !this.props.response.resolved ? <RefreshResults/> : null} */}
-                <RefreshResults/>
-                {this.props.flightOffers.length > 0 ? 
-                    <FilterResults 
-                        filterParams={this.state.filterParams}
-                        setSortBy={this.setSortBy}
-                        addExcludedAirlineCodes={this.addExcludedAirlineCodes}
-                        removeExcludedAirlineCodes={this.removeExcludedAirlineCodes}
-                        addOrRemoveExcludedAirlineCodes={this.addOrRemoveExcludedAirlineCodes}
-                        setTravelClass={this.setTravelClass}
-                        toggleNonStop={this.toggleNonStop}
-                        setMaxPrice={this.setMaxPrice}
-                        updateFilterParams={this.updateFilterParams}
-                    /> 
-                : null}
-                {this.showFlightOffers()}
-            </Container>
-        )
+        console.log(this.props.error[0]);
+        if (this.props.error.length > 0){
+            return (
+                <Container className="flight-offer-cards-container">
+                    <Separator px={40}/>
+                    <Header as='h2'>
+                        {this.props.error[0]}
+                    </Header>
+                </Container>
+            )
+            this.props.clearErrors()
+        } else {
+            return (
+                <Container className="flight-offer-cards-container">
+                    {/* {this.props.response && !this.props.response.resolved ? <RefreshResults/> : null} */}
+                    {/* <RefreshResults/> */}
+                    {this.props.response ? <RefreshResults/> : null}
+                    {this.props.flightOffers.length > 0 ? 
+                        <FilterResults 
+                            filterParams={this.state.filterParams}
+                            setSortBy={this.setSortBy}
+                            addExcludedAirlineCodes={this.addExcludedAirlineCodes}
+                            removeExcludedAirlineCodes={this.removeExcludedAirlineCodes}
+                            addOrRemoveExcludedAirlineCodes={this.addOrRemoveExcludedAirlineCodes}
+                            setTravelClass={this.setTravelClass}
+                            toggleNonStop={this.toggleNonStop}
+                            setMaxPrice={this.setMaxPrice}
+                            updateFilterParams={this.updateFilterParams}
+                        /> 
+                    : null}
+                    {this.showFlightOffers()}
+                </Container>
+            )
+        }
     }
 }
 
-// const MSTP = state => ({
-//     // lastSearchParams: state.lastSearchParams,
-//     // searchResults: state.searchResults,
-//     response: state.response
-// })
+const MSTP = state => ({
+    error: state.error
+})
 
-export default FlightOffers
+const MDTP = { clearErrors }
+
+export default connect(MSTP,MDTP)(FlightOffers)
 
