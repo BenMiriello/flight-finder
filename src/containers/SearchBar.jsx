@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { searchForFlights, queryTestFlights, refreshResponse } from '../Redux/actions/searchAndResults'
 import { connect } from 'react-redux'
 import { SelectNumberOfPeople } from '../Components/SearchBar'
-import { debounce } from 'lodash'
+// import { debounce } from 'lodash'
 
 import { 
     Button, 
@@ -10,12 +10,18 @@ import {
     Input, 
     Card, 
     Dropdown,
+    Grid,
+    Label,
     // Grid,
 } from 'semantic-ui-react'
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Separator } from '../StyleComponents/Separator'
+
+import SemanticDatepicker from 'react-semantic-ui-datepickers';
+import 'react-semantic-ui-datepickers/dist/react-semantic-ui-datepickers.css';
+ 
 
 class SearchBar extends Component {
 
@@ -153,8 +159,8 @@ class SearchBar extends Component {
         return(
             <>
                 <Separator px={20}/>
-                <Card style={{"width": "90%", "margin": "auto"}}>
-                    <Form onSubmit = {this.handleSubmit} style={{"margin": "15px"}}>
+                <Card color='blue' style={{"width": "90%", "margin": "auto"}}>
+                    <Form onSubmit = {this.handleSubmit} style={{"margin": "15px", "marginLeft":"auto","marginRight":"auto"}}>
                         <Form.Group widths='equal'>
                             <Form.Field 
                                 onChange = {this.handleOnChange}
@@ -168,7 +174,7 @@ class SearchBar extends Component {
                             <Button
                                 onClick={this.handleSwapLocations} 
                                 icon={{name: "exchange", onClick:(e => e.preventDefault())}}
-                                style={{"height":"38px", "width":"38px", "marginTop":"23px", "backgroundColor":"white"}}
+                                style={{"height":"20px", "width":"20px","marginRight":"15px", "marginTop":"23px", "backgroundColor":"white"}}
                             />
                             <Form.Field 
                                 onChange = {this.handleOnChange}
@@ -179,25 +185,18 @@ class SearchBar extends Component {
                                 placeholder='Destination'
                                 autoComplete="off"
                             />
-                            {/* <Form.Field 
-                                onChange = {this.handleOnChange}
-                                value={this.state.searchParams.departureDate}
-                                control={Input}
-                                name='departureDate'
-                                label='Departure Date'
-                                placeholder='Departure Date'
-                            > */}
-                            <Form.Field>
+                            <Form.Field control={Input} label='Departure Date'>
                                 <DatePicker
                                     name="departureDate"
                                     value={this.state.searchParams.departureDate}
                                     selected={this.state.searchParams.departureDate}
                                     dateFormat="yyyy-mm-dd"
+                                    placeholder='Departure Date'
                                     onChange={time => this.handleDateChange(time, 'departureDate')}
                                     autoComplete="off"
                                     />
                             </Form.Field>
-                            <Form.Field>
+                            <Form.Field control={Input} label='Return Date'>
                                 <DatePicker
                                     name="returnDate"
                                     value={this.state.searchParams.returnDate}
@@ -207,6 +206,7 @@ class SearchBar extends Component {
                                     autoComplete="off"
                                 />
                             </Form.Field>
+                            {/* <Label style={{"backgroundColor":"white", "opacity":"0", "width":"150px","marginTop":"4px"}}/> */}
                             <div style={{"textAlign": "center", "margin": "auto", "marginTop": "23px", "marginLeft": "4px"}}>
                                 <Button type="submit">Search</Button>
                             </div>
