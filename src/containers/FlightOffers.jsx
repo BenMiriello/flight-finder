@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 // import { connect } from 'react-redux'
-import { Container } from 'semantic-ui-react'
+import { Container, Ref } from 'semantic-ui-react'
 import { Separator } from '../StyleComponents/Separator'
 import { v1 as uuidv1 } from 'uuid'
 import FlightOfferCard from '../Components/FlightOfferCard'
@@ -115,7 +115,8 @@ class FlightOffers extends Component {
         console.log(this.props.response, this.props.flightOffers)
         return (
             <Container className="flight-offer-cards-container">
-                {this.props.response && !this.props.response.resolved ? <RefreshResults/> : null}
+                {/* {this.props.response && !this.props.response.resolved ? <RefreshResults/> : null} */}
+                <RefreshResults/>
                 {this.props.flightOffers.length > 0 ? 
                     <FilterResults 
                         filterParams={this.state.filterParams}

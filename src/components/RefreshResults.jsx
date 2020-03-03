@@ -24,7 +24,7 @@ class RefreshResults extends Component {
     
     render() {
         return (   
-            <Card style={{"width": "82%", "margin": "auto", "marginTop": "2.5%", "marginBottom":"2.5%"}}>
+            <Card style={{"width": "100%", "margin": "auto", "marginTop": "2.5%", "marginBottom":"2.5%"}}>
                 <Form>
                     <Form.Group widths='equal'>
                         <Button onClick={this.handleRefresh}>

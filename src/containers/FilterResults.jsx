@@ -35,7 +35,7 @@ class FilterResults extends Component {
     airlinesAccordion = () => {
         const { activeIndex } = this.state
         return(
-            <Accordion>
+            <Accordion style={{"margin":"20px"}}>
                 <Accordion.Title
                     active={activeIndex === 0}
                     index={0}
@@ -59,7 +59,7 @@ class FilterResults extends Component {
 
     render(){
         return(
-            <Card style={{"width": "82%", "margin": "auto", "marginTop": "2.5%", "marginBottom":"2.5%"}}>
+            <Card style={{"width": "100%", "margin": "auto", "marginTop": "2.5%", "marginBottom":"2.5%"}}>
                 {this.airlinesAccordion()}
             </Card>
         )

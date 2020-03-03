@@ -1,5 +1,29 @@
 const BASE = 'http://localhost:3000/api/v1/'
 
+export const searchForFlights = searchParams => {
+    let token = ""
+    if (localStorage.token){
+        token = localStorage.token
+    }
+    return dispatch => {
+        return fetch(BASE + 'queries/', {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({searchParams})
+        })
+        .then(r => r.json())
+        .then(qandr => {
+            dispatch(mapQueryToState(qandr.query))
+            dispatch(mapResponseToState(qandr.response))
+        })
+        .catch(console.log)
+    }
+}
+
 export const queryTestFlights = searchParams => {
     return dispatch => {
         return fetch(BASE + 'queries/initiate_test', {
@@ -56,25 +80,6 @@ const updateResponse = responseObj => ({
     type: "UPDATE_RESPONSE",
     payload: responseObj
 })
-
-export const searchForFlights = searchParams => {
-    return dispatch => {
-        return fetch(BASE + 'queries/', {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify({searchParams})
-        })
-        .then(r => r.json())
-        .then(qandr => {
-            dispatch(mapQueryToState(qandr.query))
-            dispatch(mapResponseToState(qandr.response))
-        })
-        .catch(console.log)
-    }
-}
 
 export const loadLastQuery = user => {
     // return dispatch => {

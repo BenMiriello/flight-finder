@@ -14,7 +14,7 @@ class App extends React.Component {
     componentDidMount(){
 
         // Get test response by default for testing:
-        this.props.refreshResponse({id: 200})
+        // this.props.refreshResponse({id: 200})
         
         this.props.getProfileFetch()
     }

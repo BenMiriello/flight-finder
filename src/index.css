@@ -19,8 +19,8 @@ code {
 }
 
 .flight-offer-cards-container {
-  width: 75%;
-  margin-top: 5%;
+  width: 100%;
+  /* margin-top: 5%; */
 }
 
 .flight-offer-card {

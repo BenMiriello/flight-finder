@@ -171,7 +171,7 @@ const FlightOfferCard = props => {
     const [to, from] = ["0", "1"]
 
     return (
-        <Card className="flight-offer-card" style={{"margin": "auto", "width": "82%"}}>
+        <Card className="flight-offer-card" style={{"margin": "auto", "width": "100%"}}>
             <Grid columns={2}>
                 <Grid.Column width={13}>
                     <div className="flight-offer-card-flex-container">
