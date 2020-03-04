@@ -21,7 +21,7 @@ import _ from 'lodash'
 
 class SearchBar extends Component {
 
-    defaultState = {
+    initialState = {
         searchParams: {
             originLocationCode: '',
             destinationLocationCode: '',
@@ -36,19 +36,114 @@ class SearchBar extends Component {
         },
         options: {
             isLoading: false,
-            results: [],
+            // results: [],
             value: '',
             switchRoundTripOneWay: 'Round Trip'
-        }
+        },
+        results: []
     }
 
-    state = this.defaultState
+    state = this.initialState
 
-    // getResults = () => (
-    //     _.times(5, () => ({
+    handleResultSelect = (e, { result }) => this.setState(prevState => ({ 
+        options: {
+            ...prevState.options,
+            value: result.code
+        }
+    }))
+
+    handleSearchChange = (e, { value }) => {
+        this.getAirports(e).then(() => {
             
-    //     }))
-    // )
+            this.setState(prevState => ({ options: { ...prevState.options,
+                isLoading: true, value }
+            }))
+
+            console.log(this.state.options.value)
+            // debugger
+    
+            // setTimeout(() => {
+                if (this.state.options.value.length < 1) return this.setState({
+                    options: {
+                        ...this.initialState.options
+                    }
+                })
+    
+                // const re = new RegExp(_.escapeRegExp(this.state.options.value), 'i')
+                // const isMatch = (result) => re.test(result.code)
+    
+                // const filteredResults = _.reduce(
+                //     this.state.airports, (memo, data, name) => {
+                //         debugger
+                //         const results = _.filter(data.airports, isMatch)
+                //         if (results.length) memo[data.city] = { name, results } // eslint-disable-line no-param-reassign
+    
+                //         return memo
+                //     },
+                //     {},
+                // )
+    
+                this.setState(prevState => ({
+                    options: {
+                        ...prevState.options,
+                        isLoading: false,
+                        results: this.initialState.options.results
+                    }
+                }))
+            // }, 300)
+        })
+        // debugger
+    }
+
+    getAirports = async (e) => {
+        let raw_airports
+        if (e.target) {
+            raw_airports = await fetchAirports(e.target.value)
+        } else {
+            raw_airports = []
+        }
+        let airports = raw_airports.map(airport => ({
+            code: airport.code,
+            name: airport.name,
+            city: airport.city
+        }))
+        let resultsObject = {}
+        let duplicate_cities = airports.map(airport => airport.city)
+        let unique_cities = duplicate_cities.filter(this.unique)
+
+        
+        let airportsByCity = unique_cities.map(city => {
+            let theCityObject = {  
+                name: city,
+                results: []
+            }
+            
+            resultsObject[city] = theCityObject
+
+            return {[city]: theCityObject}
+        })
+
+        airports.forEach(airport => {
+            let target = airportsByCity.find(abc => {
+                return Object.values(abc)[0].name === airport.city
+            })
+            // debugger
+            Object.values(target)[0].results.push({
+                title: airport.code,
+                description: airport.name
+            })
+        })
+        // console.log(airportsByCity);
+        // debugger
+        this.setState({
+            results: resultsObject
+        })
+        return airportsByCity
+    }
+
+    unique = (val, idx, self) => {
+        return self.indexOf(val) === idx
+    }
 
     handleOnChange = e => {
         let param = e.target.name
@@ -70,7 +165,7 @@ class SearchBar extends Component {
                 [param]: value
             }
         }))
-        fetchAirports(e.target.value)
+        this.getAirports(e)
     }
 
     handleDateChange = (time, type) => {
@@ -137,10 +232,6 @@ class SearchBar extends Component {
                 startDate: date
             }
         }))
-    };
-
-    handleSelect(date){
-        console.log(date)
     }
 
     handleSwapLocations = e => {
@@ -164,8 +255,37 @@ class SearchBar extends Component {
     }
 
     render() {
+        const { isLoading, value, results } = this.state.options
+        console.log(this.state.airports)
         return(
             <>
+                <Grid>
+                    <Grid.Column width={8}>
+                        <Search
+                            category
+                            loading={isLoading}
+                            onResultSelect={this.handleResultSelect}
+                            onSearchChange={_.debounce(this.handleSearchChange, 500, {
+                                leading: true,
+                            })}
+                            results={this.state.results}
+                            value={value}
+                            {...this.props}
+                        />
+                        </Grid.Column>
+                        <Grid.Column width={8}>
+                        <Segment>
+                            <Header>State</Header>
+                            <pre style={{ overflowX: 'auto' }}>
+                                {JSON.stringify(this.state, null, 2)}
+                            </pre>
+                            <Header>Options</Header>
+                            <pre style={{ overflowX: 'auto' }}>
+                                {JSON.stringify(this.state.airports, null, 2)}
+                            </pre>
+                        </Segment>
+                    </Grid.Column>
+                </Grid>
                 <Separator px={20}/>
                 <Card color='blue' style={{"width": "90%", "margin": "auto"}}>
                     <Form onSubmit = {this.handleSubmit} style={{"margin": "15px", "marginLeft":"auto","marginRight":"auto"}}>
