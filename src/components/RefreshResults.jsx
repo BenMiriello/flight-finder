@@ -34,7 +34,7 @@ class RefreshResults extends Component {
                 return this.showButton()
             } else {
                 return(
-                    <div style={{"margin":"20px", "margin":"auto"}}>
+                    <div style={{"margin":"auto"}}>
                         <p>
                             Showing all {this.props.real} results.
                         </p>

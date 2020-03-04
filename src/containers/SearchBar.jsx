@@ -10,17 +10,14 @@ import {
     Input, 
     Card, 
     Dropdown,
-    Grid,
-    Label,
-    // Grid,
 } from 'semantic-ui-react'
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Separator } from '../StyleComponents/Separator'
 
-import SemanticDatepicker from 'react-semantic-ui-datepickers';
-import 'react-semantic-ui-datepickers/dist/react-semantic-ui-datepickers.css';
+// import SemanticDatepicker from 'react-semantic-ui-datepickers';
+// import 'react-semantic-ui-datepickers/dist/react-semantic-ui-datepickers.css';
  
 
 class SearchBar extends Component {
@@ -70,6 +67,7 @@ class SearchBar extends Component {
         let searchParams = this.state.searchParams
         // this.props.searchForFlights(searchParams)
         this.props.queryTestFlights(searchParams)
+        this.props.resetFeatureSelectionToNull()
 
         // debugger
         // setTimeout(this.props.refreshResponse(this.props.response), 500)
@@ -155,7 +153,16 @@ class SearchBar extends Component {
     }
 
     render() {
-        console.log(this.props.response)
+        // debugger
+        if (this.props.featureSelection !== null) {
+            this.setState(prevState => ({
+                searchParams: {
+                    ...prevState.searchParams,
+                    originLocationCode: 'JFK',
+                    destinationLocationCode: this.props.featureSelection
+                }
+            }), () => this.props.resetFeatureSelectionToNull())
+        }
         return(
             <>
                 <Separator px={20}/>

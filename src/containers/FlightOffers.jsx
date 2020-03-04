@@ -7,6 +7,7 @@ import FlightOfferCard from '../Components/FlightOfferCard'
 import RefreshResults from '../Components/RefreshResults'
 import FilterResults from './FilterResults'
 import { clearErrors } from '../Redux/actions/searchAndResults'
+import FeaturedCard from '../Components/FeaturedCard'
 
 class FlightOffers extends Component {
 
@@ -81,7 +82,7 @@ class FlightOffers extends Component {
         }
         // Return if no common element exist 
         return false;  
-    } 
+    }
 
     showFlightOffers = () => {
         if (this.props.flightOffers && this.props.flightOffers.length >= 1) {
@@ -96,7 +97,7 @@ class FlightOffers extends Component {
                         })
                     }) 
                     if (this.findCommonElement(iataArray, excluded)) {
-                        return
+                        return null
                     } else {
                         if (this.props.page === 'trips'){
                             return (
@@ -118,14 +119,14 @@ class FlightOffers extends Component {
                 })
             )
         } else {
-            return ""
+            return <FeaturedCard fillFieldsToFeatured={this.props.fillFieldsToFeatured}/>
         }
     }
 
     render() {
-        let error = [...this.props.error]
-        let errorMessage = error[0]
         if (this.props.error.length > 0){
+            let error = [...this.props.error]
+            let errorMessage = error[0]
             this.props.clearErrors()
             return (
                 <Container className="flight-offer-cards-container">
@@ -141,7 +142,7 @@ class FlightOffers extends Component {
                     {/* {this.props.response && !this.props.response.resolved ? <RefreshResults/> : null} */}
                     {!this.props.noRefresh ? <RefreshResults/> : null}
                     {/* {this.props.response.expected_flight_offer_count ? <RefreshResults/> : null} */}
-                    {this.props.flightOffers.length > 0 && this.props.page != 'trips' ? 
+                    {this.props.flightOffers.length > 0 && this.props.page !== 'trips' ? 
                         <FilterResults 
                             filterParams={this.state.filterParams}
                             setSortBy={this.setSortBy}

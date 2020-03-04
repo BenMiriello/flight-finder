@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
 import { Grid, Segment, Image, Header } from 'semantic-ui-react'
-import { Separator } from '../StyleComponents/Separator'
 
 export default class SegmentDetails extends Component {
     render() {
-        debugger
-        const FO = this.props.flightOffer
+        // debugger
+        // const FO = this.props.flightOffer
         const segment = this.props.segment
 
         let duration = segment.duration.substring(2).toLowerCase()

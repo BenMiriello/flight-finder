@@ -4,12 +4,24 @@ import { SearchBar, FlightOffers } from '../Containers'
 
 class Search extends Component {
 
+    state = {
+        featureSelection: null
+    }
+
+    fillFieldsToFeatured = (destination_code) => {
+        this.setState({featureSelection: destination_code})
+    }
+
+    resetFeatureSelectionToNull = () => {
+        this.setState({featureSelection: null})
+    }
+    
     render() {
         console.log(this.props.searchResults);
         return (
             <div>
-                <SearchBar/>
-                <FlightOffers page={'search'} response={this.props.response} flightOffers={this.props.searchResults} />
+                <SearchBar featureSelection={this.state.featureSelection} resetFeatureSelectionToNull={this.resetFeatureSelectionToNull} />
+                <FlightOffers fillFieldsToFeatured={this.fillFieldsToFeatured} page={'search'} response={this.props.response} flightOffers={this.props.searchResults} />
             </div>
         )
     }
