@@ -5,8 +5,16 @@ import { refreshResponse } from '../Redux/actions/searchAndResults'
 
 class RefreshResults extends Component {
 
+    state = {
+        loading: false
+    }
+    
     handleRefresh = () => {
         this.props.refreshResponse(this.props.response)
+        this.setState({loading: true})
+        setTimeout(() => {
+            this.setState({loading: false})
+        }, 1500);
     }
 
     showButton = () => {
@@ -15,9 +23,7 @@ class RefreshResults extends Component {
                 <Label as='a' pointing='right' basic>
                     {`Showing ${this.props.real? this.props.real : 0} of ${this.props.expected ? this.props.expected : 0} results.`}
                 </Label>
-                <Button>
-                    Show More Flights
-                </Button>
+                {this.state.loading ? <Button disabled>Show More Flights</Button> : <Button>Show More Flights</Button>}
             </Button>
         )
     }
