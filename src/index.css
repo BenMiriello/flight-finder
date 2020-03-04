@@ -5,6 +5,11 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: rgb(245,245,245);
+}
+
+html, body, #root, #root>div {
+  background-color: rgb(247,247,247)
 }
 
 code {

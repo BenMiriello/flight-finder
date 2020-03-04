@@ -119,7 +119,11 @@ class FlightOffers extends Component {
                 })
             )
         } else {
-            return <FeaturedCard fillFieldsToFeatured={this.props.fillFieldsToFeatured}/>
+            if (this.props.page === 'search'){
+                return <FeaturedCard fillFieldsToFeatured={this.props.fillFieldsToFeatured}/>
+            } else {
+                return ""
+            }
         }
     }
 

@@ -2,23 +2,22 @@ import React, { Component } from 'react'
 import { searchForFlights, queryTestFlights, refreshResponse } from '../Redux/actions/searchAndResults'
 import { connect } from 'react-redux'
 import { SelectNumberOfPeople } from '../Components/SearchBar'
-// import { debounce } from 'lodash'
-
+import { fetchAirports } from '../Redux/actions/searchAirports'
 import { 
     Button, 
     Form, 
     Input, 
     Card, 
     Dropdown,
+    Search,
+    Grid,
+    Header,
+    Segment
 } from 'semantic-ui-react'
-
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Separator } from '../StyleComponents/Separator'
-
-// import SemanticDatepicker from 'react-semantic-ui-datepickers';
-// import 'react-semantic-ui-datepickers/dist/react-semantic-ui-datepickers.css';
- 
+import _ from 'lodash'
 
 class SearchBar extends Component {
 
@@ -36,11 +35,20 @@ class SearchBar extends Component {
             maxPrice: 0
         },
         options: {
+            isLoading: false,
+            results: [],
+            value: '',
             switchRoundTripOneWay: 'Round Trip'
         }
     }
 
     state = this.defaultState
+
+    // getResults = () => (
+    //     _.times(5, () => ({
+            
+    //     }))
+    // )
 
     handleOnChange = e => {
         let param = e.target.name
@@ -51,6 +59,18 @@ class SearchBar extends Component {
                 [param]: value
             }
         }))
+    }
+
+    handleOnChangeLocation = e => {
+        let param = e.target.name
+        let value = e.target.value
+        this.setState(prevState => ({
+            searchParams: {
+                ...prevState.searchParams,
+                [param]: value
+            }
+        }))
+        fetchAirports(e.target.value)
     }
 
     handleDateChange = (time, type) => {
@@ -67,20 +87,11 @@ class SearchBar extends Component {
         let searchParams = this.state.searchParams
         // this.props.searchForFlights(searchParams)
         this.props.queryTestFlights(searchParams)
-        this.props.resetFeatureSelectionToNull()
+        this.props.resetFeatureSelectionToFalse()
 
-        // debugger
         // setTimeout(this.props.refreshResponse(this.props.response), 500)
         // setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 1000)
         // setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 1500)
-        // setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 2000)
-        // setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 3000)
-        // setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 5000)
-        // setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 10000)
-        // setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 15000)
-        // setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 20000)
-        // setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 30000)
-        // setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 60000)
     }
 
     handleSwitchTravelClass = e => {
@@ -153,16 +164,6 @@ class SearchBar extends Component {
     }
 
     render() {
-        // debugger
-        if (this.props.featureSelection !== null) {
-            this.setState(prevState => ({
-                searchParams: {
-                    ...prevState.searchParams,
-                    originLocationCode: 'JFK',
-                    destinationLocationCode: this.props.featureSelection
-                }
-            }), () => this.props.resetFeatureSelectionToNull())
-        }
         return(
             <>
                 <Separator px={20}/>
@@ -170,8 +171,8 @@ class SearchBar extends Component {
                     <Form onSubmit = {this.handleSubmit} style={{"margin": "15px", "marginLeft":"auto","marginRight":"auto"}}>
                         <Form.Group widths='equal'>
                             <Form.Field 
-                                onChange = {this.handleOnChange}
-                                value={this.state.searchParams.originLocationCode}
+                                onChange = {this.handleOnChangeLocation}
+                                value={this.props.featureSelection.active ? this.props.featureSelection.originLocationCode : this.state.searchParams.originLocationCode}
                                 control={Input}
                                 name='originLocationCode'
                                 label='Origin'
@@ -184,8 +185,8 @@ class SearchBar extends Component {
                                 style={{"height":"20px", "width":"20px","marginRight":"15px", "marginTop":"23px", "backgroundColor":"white"}}
                             />
                             <Form.Field 
-                                onChange = {this.handleOnChange}
-                                value={this.state.searchParams.destinationLocationCode}
+                                onChange = {this.handleOnChangeLocation}
+                                value={this.props.featureSelection.active ? this.props.featureSelection.destinationLocationCode : this.state.searchParams.destinationLocationCode}
                                 control={Input}
                                 name='destinationLocationCode'
                                 label='Destination'
@@ -195,7 +196,7 @@ class SearchBar extends Component {
                             <Form.Field control={Input} label='Departure Date'>
                                 <DatePicker
                                     name="departureDate"
-                                    value={this.state.searchParams.departureDate}
+                                    value={this.props.featureSelection.active ? this.props.featureSelection.departureDate : this.state.searchParams.departureDate}
                                     selected={this.state.searchParams.departureDate}
                                     dateFormat="yyyy-mm-dd"
                                     placeholder='Departure Date'
@@ -206,14 +207,13 @@ class SearchBar extends Component {
                             <Form.Field control={Input} label='Return Date'>
                                 <DatePicker
                                     name="returnDate"
-                                    value={this.state.searchParams.returnDate}
+                                    value={this.props.featureSelection.active ? this.props.featureSelection.returnDate : this.state.searchParams.returnDate}
                                     selected={this.state.searchParams.returnDate}
                                     dateFormat="yyyy-mm-dd"
                                     onChange={time => this.handleDateChange(time, 'returnDate')}
                                     autoComplete="off"
                                 />
                             </Form.Field>
-                            {/* <Label style={{"backgroundColor":"white", "opacity":"0", "width":"150px","marginTop":"4px"}}/> */}
                             <div style={{"textAlign": "center", "margin": "auto", "marginTop": "23px", "marginLeft": "4px"}}>
                                 <Button type="submit">Search</Button>
                             </div>
@@ -279,7 +279,6 @@ class SearchBar extends Component {
                         </Form.Group>
                     </Form>
                 </Card>
-                {/* <Separator px={20}/> */}
             </>
         )
     }
