@@ -18,12 +18,14 @@ export const searchForFlights = searchParams => {
         .then(r => r.json())
         .then(qandr => {
             console.log(qandr)
-            // debugger
             if (qandr.status === 500){
                 dispatch(handleErrorResponse(qandr))
             } else {
                 dispatch(mapQueryToState(qandr.query))
                 dispatch(mapResponseToState(qandr.response))
+                if (qandr.response?.flight_offers) {
+                    dispatch(mapSearchResultsToState(qandr.response?.flight_offers))
+                }
             }
         })
         .catch(console.log)
@@ -47,8 +49,8 @@ export const queryTestFlights = searchParams => {
         })
         .then(r => r.json())
         .then(qandr => {
+            console.log(qandr)
             if (qandr.status === 500){
-                // console.log("error received")
                 dispatch(handleErrorResponse(qandr))
             } else {
                 dispatch(mapQueryToState(qandr.query))

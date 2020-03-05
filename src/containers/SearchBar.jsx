@@ -268,10 +268,8 @@ class SearchBar extends Component {
         let searchParams = this.state.searchParams
         searchParams.originLocationCode = this.state.origin.originValue
         searchParams.destinationLocationCode = this.state.destination.destinationValue
-        // this.props.searchForFlights(searchParams)
-        console.log(searchParams)
-        // debugger
-        this.props.queryTestFlights(searchParams)
+        this.props.searchForFlights(searchParams)
+        // this.props.queryTestFlights(searchParams)
         this.props.resetFeatureSelectionToFalse()
 
         // setTimeout(this.props.refreshResponse(this.props.response), 500)
