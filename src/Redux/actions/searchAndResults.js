@@ -26,6 +26,9 @@ export const searchForFlights = searchParams => {
                 if (qandr.response?.flight_offers) {
                     dispatch(mapSearchResultsToState(qandr.response?.flight_offers))
                 }
+                if (qandr.response?.expected_flight_offers_length === 0) {
+                    dispatch(setNoResults(qandr.query, qandr.response))
+                }
             }
         })
         .catch(console.log)
@@ -58,6 +61,9 @@ export const queryTestFlights = searchParams => {
                 if (qandr.response?.flight_offers) {
                     dispatch(mapSearchResultsToState(qandr.response?.flight_offers))
                 }
+                if (qandr.response?.expected_flight_offers_length === 0) {
+                    dispatch(setNoResults(qandr.query, qandr.response))
+                }
             }
         })
         .catch(console.log)
@@ -70,7 +76,6 @@ export const refreshResponse = (response) => {
             return fetch(BASE + 'responses/' + response.id)
             .then(r => r.json())
             .then(updatedResponse => {
-                // debugger
                 dispatch(updateResponse(updatedResponse))
                 dispatch(mapSearchResultsToState(updatedResponse.flight_offers))
             })
@@ -81,6 +86,11 @@ export const refreshResponse = (response) => {
         }
     }
 }
+
+const setNoResults = (query, response) => ({
+    type: "NO_AVAILABLE_FLIGHTS",
+    payload: {query, response}
+})
 
 const mapSearchResultsToState = flight_offers => ({
     type: "MAP_SEARCH_RESULTS_TO_STATE",

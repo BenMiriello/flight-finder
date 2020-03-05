@@ -17,6 +17,7 @@ class FilterResults extends Component {
             console.log(this.props.response.airlines)
             return this.props.response.airlines.map(airline => 
                 <Checkbox 
+                    style={{"marginLeft":"8px"}}
                     label={airline.name} 
                     defaultChecked 
                     onChange={(e) => this.handleChangeAirlineOptions(e, airline.iata_code)}

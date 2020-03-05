@@ -290,10 +290,10 @@ class SearchBar extends Component {
     }
 
     handleSwitchRoundTripOneWay = e => {
-        let selection = e.target.textContent
-        this.setState({
-            switchRoundTripOneWay: selection
-        })
+        // let selection = e.target.textContent
+        // this.setState({
+        //     switchRoundTripOneWay: selection
+        // })
     }
 
     handleAddRemovePerson = (e, type, operation) => {

@@ -18,6 +18,7 @@ const FlightOfferCard = props => {
     }
     
     const handleClick = (e, {name}) => {
+        e.stopPropagation()
         switch(name) {
             case "add favorite":
                 dispatch(postFavorite(props.flightOffer))
@@ -141,6 +142,15 @@ const FlightOfferCard = props => {
         )
     }
 
+    const noPhotoBookButton = () => {
+        return(
+            <>
+                <Divider section />
+                {purchaseButton()}
+            </>
+        )
+    }
+
     const itineraryDetails = (direction) => {
         return props.flightOffer.itineraries[direction].segments.map(segment => {
             return(
@@ -157,7 +167,7 @@ const FlightOfferCard = props => {
         return(
             <>
                 {itineraryDetails(0)}
-                {image ? destinationPhoto(image) : null}
+                {image ? destinationPhoto(image) : noPhotoBookButton()}
                 {itineraryDetails(1)}
             </>
         )

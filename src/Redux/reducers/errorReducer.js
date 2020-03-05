@@ -10,6 +10,8 @@ const errorReducer = (state = initialState, action) => {
             return [`Unable to show any flights at the moment. ${error} error.`]
         case "CLEAR_ERRORS":
             return []
+        case "NO_AVAILABLE_FLIGHTS":
+            return [`No flights were found for those dates.`]
         default:
             return state
     }
