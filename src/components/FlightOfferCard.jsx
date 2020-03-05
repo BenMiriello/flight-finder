@@ -122,7 +122,8 @@ const FlightOfferCard = props => {
 
     const toggleSegmentDetailsButton = () => {
         return(
-            <div onClick={() => toggleSegmentDetails()}>
+            // <div onClick={() => toggleSegmentDetails()}>
+            <div>
                 <Icon name="dropdown" rotated={showSegmentDetails ? null : "counterclockwise"}/>
                 Details & Booking
             </div>
@@ -183,7 +184,7 @@ const FlightOfferCard = props => {
         )
     } else {
         return (
-            <Card className="flight-offer-card" style={{"margin": "auto", "width": "100%"}}>
+            <Card onClick={() => toggleSegmentDetails()} className="flight-offer-card" style={{"margin": "auto", "width": "100%", "color":"black"}}>
                 <Grid columns={2}>
                     <Grid.Column width={13}>
                         <div className="flight-offer-card-flex-container">
