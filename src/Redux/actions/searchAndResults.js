@@ -53,8 +53,8 @@ export const queryTestFlights = searchParams => {
             } else {
                 dispatch(mapQueryToState(qandr.query))
                 dispatch(mapResponseToState(qandr.response))
-                if (qandr.response.flight_offers) {
-                    dispatch(mapSearchResultsToState(qandr.response.flight_offers))
+                if (qandr.response?.flight_offers) {
+                    dispatch(mapSearchResultsToState(qandr.response?.flight_offers))
                 }
             }
         })

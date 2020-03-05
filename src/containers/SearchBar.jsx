@@ -24,10 +24,16 @@ class SearchBar extends Component {
     initialState = {
         switchRoundTripOneWay: 'Round Trip',
         origin: {
-            isLoading: false,
-            results: [],
-            value: '',
-            options: []
+            originIsLoading: false,
+            originResults: [],
+            originValue: '',
+            originOptions: []
+        },
+        destination: {
+            destinationIsLoading: false,
+            destinationResults: [],
+            destinationValue: '',
+            destinationOptions: []
         },
         searchParams: {
             originLocationCode: '',
@@ -45,41 +51,39 @@ class SearchBar extends Component {
 
     state = this.initialState
 
-    handleResultSelect = (e, { result }) => this.setState(prevState => ({ 
+    handleOriginResultSelect = (e, { result }) => this.setState(prevState => ({ 
         origin: {
             ...prevState.origin,
-            value: result.title
+            originValue: result.title
         }
     }))
 
-    handleSearchChange = (e, { value }) => {
+    handleOriginSearchChange = (e, { value }) => {
         this.setState(prevState => ({
             origin: {
                 ...prevState.origin,
-                value
+                originValue: value
             }
         }), () => {
-            if (this.state.origin.value.length < 1) {
+            if (this.state.origin.originValue.length < 1) {
                 return this.setState({
                     origin: {
                         ...this.initialState.origin
                     }
                 })
             }
-            if (!this.state.origin.isLoading){
+            if (!this.state.origin.originIsLoading){
                 this.setState(prevState => ({ 
                     origin: { 
                         ...prevState.origin,
-                        isLoading: true,
+                        originIsLoading: true,
                     }
                 }), () => {
-                    this.getAirports(value).then(() => {
-                        // debugger
+                    this.getOriginAirports(value).then(() => {
                         this.setState(prevState => ({
                             origin: {
                                 ...prevState.origin,
-                                isLoading: false
-                                // results: this.initialState.results
+                                originIsLoading: false
                             }
                         }))
                     })
@@ -88,8 +92,7 @@ class SearchBar extends Component {
         })
     }
 
-    getAirports = async (value) => {
-        // debugger
+    getOriginAirports = async (value) => {
         let raw_airports
         if (value) {
             raw_airports = await fetchAirports(value)
@@ -115,20 +118,110 @@ class SearchBar extends Component {
             resultsObject[city] = theCityObject
             return {[city]: theCityObject}
         })
-
+        
         airports.forEach(airport => {
             let target = airportsByCity.find(abc => Object.values(abc)[0].name === airport.city)
-            // debugger
+            
             Object.values(target)[0].results.push({
                 title: airport.code,
                 description: airport.name
             })
         })
 
+        // airportsByCity.sort((a,b) => b[Object.keys(b)[0]].results.length - a[Object.keys(a)[0]].results.length)
+
         this.setState(prevState => ({
             origin: {
                 ...prevState.origin,
-                results: resultsObject
+                originResults: resultsObject
+            }
+        }))
+        return airportsByCity
+    }
+
+    handleDestinationResultSelect = (e, { result }) => this.setState(prevState => ({ 
+        destination: {
+            ...prevState.destination,
+            destinationValue: result.title
+        }
+    }))
+
+    handleDestinationSearchChange = (e, { value }) => {
+        this.setState(prevState => ({
+            destination: {
+                ...prevState.destination,
+                destinationValue: value
+            }
+        }), () => {
+            if (this.state.destination.destinationValue.length < 1) {
+                return this.setState({
+                    destination: {
+                        ...this.initialState.destination
+                    }
+                })
+            }
+            if (!this.state.destination.destinationIsLoading){
+                this.setState(prevState => ({ 
+                    destination: { 
+                        ...prevState.destination,
+                        isLoading: true,
+                    }
+                }), () => {
+                    this.getDestinationAirports(value).then(() => {
+                        this.setState(prevState => ({
+                            destination: {
+                                ...prevState.destination,
+                                isLoading: false
+                            }
+                        }))
+                    })
+                })
+            }
+        })
+    }
+
+    getDestinationAirports = async (value) => {
+        let raw_airports
+        if (value) {
+            raw_airports = await fetchAirports(value)
+        } else {
+            raw_airports = []
+        }
+
+        let airports = raw_airports.map(airport => ({
+            code: airport.code,
+            name: airport.name,
+            city: airport.city
+        }))
+
+        let resultsObject = {}
+        let duplicate_cities = airports.map(airport => airport.city)
+        let unique_cities = duplicate_cities.filter(this.unique)
+        
+        let airportsByCity = unique_cities.map(city => {
+            let theCityObject = {  
+                name: city,
+                results: []
+            }
+            resultsObject[city] = theCityObject
+            return {[city]: theCityObject}
+        })
+        
+        airports.forEach(airport => {
+            let target = airportsByCity.find(abc => Object.values(abc)[0].name === airport.city)
+            
+            Object.values(target)[0].results.push({
+                title: airport.code,
+                description: airport.name
+            })
+        })
+
+        // airportsByCity.sort((a,b) => b[Object.keys(b)[0]].results.length - a[Object.keys(a)[0]].results.length)
+
+        this.setState(prevState => ({
+            destination: {
+                ...prevState.destination,
+                destinationResults: resultsObject
             }
         }))
         return airportsByCity
@@ -173,7 +266,11 @@ class SearchBar extends Component {
     handleSubmit = e => {
         e.preventDefault()
         let searchParams = this.state.searchParams
+        searchParams.originLocationCode = this.state.origin.originValue
+        searchParams.destinationLocationCode = this.state.destination.destinationValue
         // this.props.searchForFlights(searchParams)
+        console.log(searchParams)
+        // debugger
         this.props.queryTestFlights(searchParams)
         this.props.resetFeatureSelectionToFalse()
 
@@ -228,11 +325,19 @@ class SearchBar extends Component {
         e.stopPropagation() 
         this.setState(prevState => {
             return({
-                ...prevState,
-                searchParams: {
-                    ...prevState.searchParams,
-                    originLocationCode: prevState.searchParams.destinationLocationCode,
-                    destinationLocationCode: prevState.searchParams.originLocationCode
+                // ...prevState,
+                // searchParams: {
+                //     ...prevState.searchParams,
+                //     originLocationCode: prevState.searchParams.destinationLocationCode,
+                //     destinationLocationCode: prevState.searchParams.originLocationCode
+                // }
+                origin: {
+                    ...prevState.origin,
+                    originValue: prevState.destination.destinationValue
+                },
+                destination: {
+                    ...prevState.destination,
+                    destinationValue: prevState.origin.originValue
                 }
             })
         })
@@ -245,63 +350,63 @@ class SearchBar extends Component {
     }
 
     render() {
-        const { isLoading, value, results } = this.state.origin
-        // console.log(this.state.airports)
+        const { originIsLoading, originValue, originResults } = this.state.origin
+        const { destinationIsLoading, destinationValue, destinationResults } = this.state.destination
         return(
             <>
-                <Grid>
-                    <Grid.Column width={8}>
-                        <Search
-                            category
-                            loading={isLoading}
-                            onResultSelect={this.handleResultSelect}
-                            // onSearchChange={_.debounce(this.handleSearchChange, 500, {leading: true})}
-                            onSearchChange={this.handleSearchChange}
-                            results={results}
-                            value={value}
-                            // {...this.props}
-                        />
-                        </Grid.Column>
-                        <Grid.Column width={8}>
-                        <Segment>
-                            <Header>State</Header>
-                            <pre style={{ overflowX: 'auto' }}>
-                                {JSON.stringify(this.state, null, 2)}
-                            </pre>
-                            <Header>Options</Header>
-                            <pre style={{ overflowX: 'auto' }}>
-                                {JSON.stringify(this.state.origin.results, null, 2)}
-                            </pre>
-                        </Segment>
-                    </Grid.Column>
-                </Grid>
                 <Separator px={20}/>
                 <Card color='blue' style={{"width": "90%", "margin": "auto"}}>
                     <Form onSubmit = {this.handleSubmit} style={{"margin": "15px", "marginLeft":"auto","marginRight":"auto"}}>
                         <Form.Group widths='equal'>
-                            <Form.Field 
-                                onChange = {this.handleOnChangeLocation}
-                                value={this.props.featureSelection.active ? this.props.featureSelection.originLocationCode : this.state.searchParams.originLocationCode}
-                                control={Input}
-                                name='originLocationCode'
-                                label='Origin'
-                                placeholder='Origin'
-                                autoComplete="off"
-                            />
+                            <Form.Field
+                                    control={Input}
+                                    label='Origin'
+                                        // onChange = {this.handleOnChangeLocation}
+                                        // value={this.props.featureSelection.active ? this.props.featureSelection.originLocationCode : this.state.searchParams.originLocationCode}
+                                        // name='originLocationCode'
+                                        // placeholder='Origin'
+                                        // autoComplete="off"
+                                >
+                                <Search
+                                    category
+                                    placeholder='Origin'
+                                    label='Origin'
+                                    name='originLocationCode'
+                                    autoComplete='off'
+                                    loading={originIsLoading}
+                                    onResultSelect={this.handleOriginResultSelect}
+                                    onSearchChange={this.handleOriginSearchChange}
+                                    results={originResults}
+                                    value={this.props.featureSelection.active ? this.props.featureSelection.originLocationCode : originValue}
+                                />
+                            </Form.Field>
                             <Button
                                 onClick={this.handleSwapLocations} 
                                 icon={{name: "exchange", onClick:(e => e.preventDefault())}}
                                 style={{"height":"20px", "width":"20px","marginRight":"15px", "marginTop":"23px", "backgroundColor":"white"}}
                             />
-                            <Form.Field 
-                                onChange = {this.handleOnChangeLocation}
-                                value={this.props.featureSelection.active ? this.props.featureSelection.destinationLocationCode : this.state.searchParams.destinationLocationCode}
-                                control={Input}
-                                name='destinationLocationCode'
-                                label='Destination'
-                                placeholder='Destination'
-                                autoComplete="off"
-                            />
+                            <Form.Field
+                                    control={Input}
+                                    label='Destination'
+                                        // onChange = {this.handleOnChangeLocation}
+                                        // value={this.props.featureSelection.active ? this.props.featureSelection.destinationLocationCode : this.state.searchParams.destinationLocationCode}
+                                        // name='destinationLocationCode'
+                                        // placeholder='Destination'
+                                        // autoComplete="off"
+                                >
+                                <Search
+                                    category
+                                    placeholder='Destination'
+                                    label='Destination'
+                                    name='destinationLocationCode'
+                                    autoComplete='off'
+                                    loading={destinationIsLoading}
+                                    onResultSelect={this.handleDestinationResultSelect}
+                                    onSearchChange={this.handleDestinationSearchChange}
+                                    results={destinationResults}
+                                    value={this.props.featureSelection.active ? this.props.featureSelection.destinationLocationCode : destinationValue}
+                                />
+                            </Form.Field>
                             <Form.Field control={Input} label='Departure Date'>
                                 <DatePicker
                                     name="departureDate"

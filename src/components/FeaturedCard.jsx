@@ -19,10 +19,7 @@ export default class FeaturedCard extends Component {
                     </Card.Description> */}
                 </Card.Content>
                 <Card.Content extra>
-                    <a>
-                        {/* <Icon name='user' /> */}
-                        From $329
-                    </a>
+                    From $329
                 </Card.Content>
             </Card>
         )
