@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Grid, Card, Item, Image, Button, Icon, Divider } from 'semantic-ui-react'
+import { Grid, Card, Item, Image, Button, Icon, Divider, Placeholder } from 'semantic-ui-react'
 import { postPurchase, postFavorite, deletePurchase, deleteFavorite } from '../Redux/actions/favoriteAndPurchase'
 import { useState } from 'react'
 import SegmentDetails from './SegmentDetails'
@@ -37,7 +37,6 @@ const FlightOfferCard = props => {
     }
 
     const infoRow = (leg) => {
-        // debugger
         let segments = props.flightOffer.itineraries[leg].segments
 
         let stops = segments.length - 1
@@ -110,18 +109,13 @@ const FlightOfferCard = props => {
 
     const purchaseButton = () => {
         if (purchased_flight_offers && purchased_flight_offers.length > 0 && purchased_flight_offers.some(fo => fo.id === props.flightOffer.id)){
-            // return (
-            //     <>
-            //         <Divider section />
-            //         <Button onClick={handleClick} name="remove purchase" color='green'>Cancel Flight</Button>
-            //     </>
-            // )
             return(
-                <Button onClick={handleClick} name="remove purchase" color='green' style={{"width":"80%", "marginLeft":"10%"}}>You're booked for this flight! Click to cancel.</Button>
+                <Button onClick={handleClick} name="remove purchase" color='green' style={{"width":"80%", "marginLeft":"10%"}}>You're booked for this flight on {props.flightOffer.itineraries[0].segments[0].departure_time.substring(0,10)}! Click to cancel.</Button>
             )
         } else {
+            // debugger
             return(
-                <Button onClick={handleClick} name="add purchase" color='blue' style={{"width":"80%", "marginLeft":"10%"}}>Book Flight</Button>
+            <Button onClick={handleClick} name="add purchase" color='blue' style={{"width":"80%", "marginLeft":"10%"}}>Book Flight for {props.flightOffer.itineraries[0].segments[0].departure_time.substring(0,10)}</Button>
             )
         }
     }
@@ -130,7 +124,7 @@ const FlightOfferCard = props => {
         return(
             <div onClick={() => toggleSegmentDetails()}>
                 <Icon name="dropdown" rotated={showSegmentDetails ? null : "counterclockwise"}/>
-                Details
+                Details & Booking
             </div>
         )   
     }
@@ -170,32 +164,51 @@ const FlightOfferCard = props => {
 
     const [to, from] = ["0", "1"]
 
-    return (
-        <Card className="flight-offer-card" style={{"margin": "auto", "width": "100%"}}>
-            <Grid columns={2}>
-                <Grid.Column width={13}>
-                    <div className="flight-offer-card-flex-container">
-                        {infoRow(to)}
-                        {infoRow(from)}
-                    </div>
-                </Grid.Column>
-                <Grid.Column width={3}>
-                    <div className="flight-offer-card-right">
-                        <div className="flight-offer-card-right-item" style={{"top": "10px","position": "relative"}}>
-                            {favoriteButton()}
+    if (props.flightOffer === 'loading'){
+        return(
+            <Card className="flight-offer-card" style={{"margin": "auto", "width": "100%"}}>
+                <Placeholder style={{"margin":"20px"}}>
+                    <Placeholder.Header image>
+                        <Placeholder.Line />
+                        <Placeholder.Line />
+                    </Placeholder.Header>
+                </Placeholder>
+                <Placeholder style={{"margin":"20px"}}>
+                    <Placeholder.Header image>
+                        <Placeholder.Line />
+                        <Placeholder.Line />
+                    </Placeholder.Header>
+                </Placeholder>
+            </Card>
+        )
+    } else {
+        return (
+            <Card className="flight-offer-card" style={{"margin": "auto", "width": "100%"}}>
+                <Grid columns={2}>
+                    <Grid.Column width={13}>
+                        <div className="flight-offer-card-flex-container">
+                            {infoRow(to)}
+                            {infoRow(from)}
                         </div>
-                        <div className="flight-offer-card-right-item ">
-                            <p className="foci-text vertical-center">${props.flightOffer.grand_total}</p>
+                    </Grid.Column>
+                    <Grid.Column width={3}>
+                        <div className="flight-offer-card-right">
+                            <div className="flight-offer-card-right-item" style={{"top": "10px","position": "relative"}}>
+                                {favoriteButton()}
+                            </div>
+                            <div className="flight-offer-card-right-item ">
+                                <p className="foci-text vertical-center">${props.flightOffer.grand_total}</p>
+                            </div>
+                            <div className="flight-offer-card-right-item">
+                                {toggleSegmentDetailsButton()}
+                            </div>
                         </div>
-                        <div className="flight-offer-card-right-item">
-                            {toggleSegmentDetailsButton()}
-                        </div>
-                    </div>
-                </Grid.Column>
-            </Grid>
-            {showSegmentDetails ? segmentDetails() : null}
-        </Card>
-    )
+                    </Grid.Column>
+                </Grid>
+                {showSegmentDetails ? segmentDetails() : null}
+            </Card>
+        )
+    }
 }
 
 export default FlightOfferCard

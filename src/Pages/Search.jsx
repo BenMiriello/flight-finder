@@ -11,7 +11,8 @@ class Search extends Component {
             destinationLocationCode: '',
             departureDate: '',
             returnDate: ''
-        }
+        },
+        initialLoading: false
     }
 
     fillFieldsToFeatured = (destinationLocationCode) => {
@@ -29,6 +30,18 @@ class Search extends Component {
         }
     }
 
+    handleSetInitialLoading = () => {
+        this.setState({
+            initialLoading: true
+        })
+    }
+
+    handleStopInitialLoading = () => {
+        this.setState({
+            initialLoading: false
+        })
+    }
+
     resetFeatureSelectionToFalse = () => {
         this.setState(prevState => ({featureSelection: {
             ...prevState.featureSelection,
@@ -39,8 +52,19 @@ class Search extends Component {
     render() {
         return (
             <div>
-                <SearchBar featureSelection={this.state.featureSelection} resetFeatureSelectionToFalse={this.resetFeatureSelectionToFalse} />
-                <FlightOffers fillFieldsToFeatured={this.fillFieldsToFeatured} page={'search'} response={this.props.response} flightOffers={this.props.searchResults} />
+                <SearchBar 
+                    featureSelection={this.state.featureSelection} 
+                    resetFeatureSelectionToFalse={this.resetFeatureSelectionToFalse} 
+                    handleSetInitialLoading={this.handleSetInitialLoading}
+                />
+                <FlightOffers 
+                    fillFieldsToFeatured={this.fillFieldsToFeatured} 
+                    page={'search'}
+                    response={this.props.response} 
+                    flightOffers={this.props.searchResults} 
+                    initialLoading={this.state.initialLoading} 
+                    handleStopInitialLoading={this.handleStopInitialLoading}
+                />
             </div>
         )
     }

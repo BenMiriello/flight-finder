@@ -85,44 +85,68 @@ class FlightOffers extends Component {
     }
 
     showFlightOffers = () => {
-        if (this.props.flightOffers && this.props.flightOffers.length >= 1) {
-            let excluded = this.state.excludedAirlineCodes
-            return (
-                this.props.flightOffers.map(FO => {
-                    let iataArray = []
-                    FO.itineraries.forEach(itin => {
-                        itin.segments.forEach(seg => {
-                            iataArray.push(seg.airline.iata_code)
-                            iataArray.push(seg.operating_airline.iata_code)
-                        })
-                    }) 
-                    if (this.findCommonElement(iataArray, excluded)) {
-                        return null
-                    } else {
-                        if (this.props.page === 'trips'){
-                            return (
-                                <>
-                                    <FlightOfferCard key={uuidv1()} flightOffer={FO} fan/>
-                                    <Separator px={20} />
-                                </>
-                            )
-                        } else {
-                            return (
-                                <>
-                                    <FlightOfferCard key={uuidv1()} flightOffer={FO}/>
-                                    <Separator px={20} />
-                                </>
-                            )
-                        }
-
-                    }
-                })
-            )
-        } else {
-            if (this.props.page === 'search'){
-                return <FeaturedCard fillFieldsToFeatured={this.props.fillFieldsToFeatured}/>
+        if (this.props.initialLoading) {
+            if (this.props.flightOffers && this.props.flightOffers.length >= 1) {
+                this.props.handleStopInitialLoading()
             } else {
-                return ""
+                return(
+                    <>
+                        <FlightOfferCard key={uuidv1()} flightOffer={'loading'}/>
+                        <Separator px={20} />
+                        <FlightOfferCard key={uuidv1()} flightOffer={'loading'}/>
+                        <Separator px={20} />
+                        <FlightOfferCard key={uuidv1()} flightOffer={'loading'}/>
+                        <Separator px={20} />
+                        <FlightOfferCard key={uuidv1()} flightOffer={'loading'}/>
+                        <Separator px={20} />
+                        <FlightOfferCard key={uuidv1()} flightOffer={'loading'}/>
+                        <Separator px={20} />
+                    </>
+                )
+            }
+        } else {
+            if (this.props.flightOffers && this.props.flightOffers.length >= 1) {
+                if (this.props.initialLoading){
+                    this.props.handleStopInitialLoading()
+                }
+                let excluded = this.state.excludedAirlineCodes
+                return (
+                    this.props.flightOffers.map(FO => {
+                        let iataArray = []
+                        FO.itineraries.forEach(itin => {
+                            itin.segments.forEach(seg => {
+                                iataArray.push(seg.airline.iata_code)
+                                iataArray.push(seg.operating_airline.iata_code)
+                            })
+                        }) 
+                        if (this.findCommonElement(iataArray, excluded)) {
+                            return null
+                        } else {
+                            if (this.props.page === 'trips'){
+                                return (
+                                    <>
+                                        <FlightOfferCard key={uuidv1()} flightOffer={FO} fan/>
+                                        <Separator px={20} />
+                                    </>
+                                )
+                            } else {
+                                return (
+                                    <>
+                                        <FlightOfferCard key={uuidv1()} flightOffer={FO}/>
+                                        <Separator px={20} />
+                                    </>
+                                )
+                            }
+    
+                        }
+                    })
+                )
+            } else {
+                if (this.props.page === 'search'){
+                    return <FeaturedCard fillFieldsToFeatured={this.props.fillFieldsToFeatured}/>
+                } else {
+                    return ""
+                }
             }
         }
     }

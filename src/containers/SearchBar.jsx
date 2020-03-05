@@ -10,9 +10,9 @@ import {
     Card, 
     Dropdown,
     Search,
-    Grid,
-    Header,
-    Segment
+    // Grid,
+    // Header,
+    // Segment
 } from 'semantic-ui-react'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -268,9 +268,14 @@ class SearchBar extends Component {
         let searchParams = this.state.searchParams
         searchParams.originLocationCode = this.state.origin.originValue
         searchParams.destinationLocationCode = this.state.destination.destinationValue
-        this.props.searchForFlights(searchParams)
-        // this.props.queryTestFlights(searchParams)
+        if (this.props.featureSelection.active) {
+            this.props.queryTestFlights(searchParams)
+        } else {
+            this.props.searchForFlights(searchParams)
+        }
         this.props.resetFeatureSelectionToFalse()
+
+        this.props.handleSetInitialLoading()
 
         // setTimeout(this.props.refreshResponse(this.props.response), 500)
         // setTimeout(() => !this.props.response.resolved ? this.props.refreshResponse(this.props.response) : null, 1000)
