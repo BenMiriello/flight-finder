@@ -22,6 +22,13 @@ import _ from 'lodash'
 class SearchBar extends Component {
 
     initialState = {
+        switchRoundTripOneWay: 'Round Trip',
+        origin: {
+            isLoading: false,
+            results: [],
+            value: '',
+            options: []
+        },
         searchParams: {
             originLocationCode: '',
             destinationLocationCode: '',
@@ -34,110 +41,96 @@ class SearchBar extends Component {
             nonStop: false,
             maxPrice: 0
         },
-        options: {
-            isLoading: false,
-            // results: [],
-            value: '',
-            switchRoundTripOneWay: 'Round Trip'
-        },
-        results: []
     }
 
     state = this.initialState
 
     handleResultSelect = (e, { result }) => this.setState(prevState => ({ 
-        options: {
-            ...prevState.options,
-            value: result.code
+        origin: {
+            ...prevState.origin,
+            value: result.title
         }
     }))
 
     handleSearchChange = (e, { value }) => {
-        this.getAirports(e).then(() => {
-            
-            this.setState(prevState => ({ options: { ...prevState.options,
-                isLoading: true, value }
-            }))
-
-            console.log(this.state.options.value)
-            // debugger
-    
-            // setTimeout(() => {
-                if (this.state.options.value.length < 1) return this.setState({
-                    options: {
-                        ...this.initialState.options
+        this.setState(prevState => ({
+            origin: {
+                ...prevState.origin,
+                value
+            }
+        }), () => {
+            if (this.state.origin.value.length < 1) {
+                return this.setState({
+                    origin: {
+                        ...this.initialState.origin
                     }
                 })
-    
-                // const re = new RegExp(_.escapeRegExp(this.state.options.value), 'i')
-                // const isMatch = (result) => re.test(result.code)
-    
-                // const filteredResults = _.reduce(
-                //     this.state.airports, (memo, data, name) => {
-                //         debugger
-                //         const results = _.filter(data.airports, isMatch)
-                //         if (results.length) memo[data.city] = { name, results } // eslint-disable-line no-param-reassign
-    
-                //         return memo
-                //     },
-                //     {},
-                // )
-    
-                this.setState(prevState => ({
-                    options: {
-                        ...prevState.options,
-                        isLoading: false,
-                        results: this.initialState.options.results
+            }
+            if (!this.state.origin.isLoading){
+                this.setState(prevState => ({ 
+                    origin: { 
+                        ...prevState.origin,
+                        isLoading: true,
                     }
-                }))
-            // }, 300)
+                }), () => {
+                    this.getAirports(value).then(() => {
+                        // debugger
+                        this.setState(prevState => ({
+                            origin: {
+                                ...prevState.origin,
+                                isLoading: false
+                                // results: this.initialState.results
+                            }
+                        }))
+                    })
+                })
+            }
         })
-        // debugger
     }
 
-    getAirports = async (e) => {
+    getAirports = async (value) => {
+        // debugger
         let raw_airports
-        if (e.target) {
-            raw_airports = await fetchAirports(e.target.value)
+        if (value) {
+            raw_airports = await fetchAirports(value)
         } else {
             raw_airports = []
         }
+
         let airports = raw_airports.map(airport => ({
             code: airport.code,
             name: airport.name,
             city: airport.city
         }))
+
         let resultsObject = {}
         let duplicate_cities = airports.map(airport => airport.city)
         let unique_cities = duplicate_cities.filter(this.unique)
-
         
         let airportsByCity = unique_cities.map(city => {
             let theCityObject = {  
                 name: city,
                 results: []
             }
-            
             resultsObject[city] = theCityObject
-
             return {[city]: theCityObject}
         })
 
         airports.forEach(airport => {
-            let target = airportsByCity.find(abc => {
-                return Object.values(abc)[0].name === airport.city
-            })
+            let target = airportsByCity.find(abc => Object.values(abc)[0].name === airport.city)
             // debugger
             Object.values(target)[0].results.push({
                 title: airport.code,
                 description: airport.name
             })
         })
-        // console.log(airportsByCity);
-        // debugger
-        this.setState({
-            results: resultsObject
-        })
+
+        this.setState(prevState => ({
+            origin: {
+                ...prevState.origin,
+                results: resultsObject
+            }
+        }))
         return airportsByCity
     }
 
@@ -165,7 +158,7 @@ class SearchBar extends Component {
                 [param]: value
             }
         }))
-        this.getAirports(e)
+        // this.getAirports(e)
     }
 
     handleDateChange = (time, type) => {
@@ -198,12 +191,9 @@ class SearchBar extends Component {
 
     handleSwitchRoundTripOneWay = e => {
         let selection = e.target.textContent
-        this.setState(prevState => ({
-            options: {
-                ...prevState.options, 
-                switchRoundTripOneWay: selection
-            }
-        }))
+        this.setState({
+            switchRoundTripOneWay: selection
+        })
     }
 
     handleAddRemovePerson = (e, type, operation) => {
@@ -255,8 +245,8 @@ class SearchBar extends Component {
     }
 
     render() {
-        const { isLoading, value, results } = this.state.options
-        console.log(this.state.airports)
+        const { isLoading, value, results } = this.state.origin
+        // console.log(this.state.airports)
         return(
             <>
                 <Grid>
@@ -265,12 +255,11 @@ class SearchBar extends Component {
                             category
                             loading={isLoading}
                             onResultSelect={this.handleResultSelect}
-                            onSearchChange={_.debounce(this.handleSearchChange, 500, {
-                                leading: true,
-                            })}
-                            results={this.state.results}
+                            // onSearchChange={_.debounce(this.handleSearchChange, 500, {leading: true})}
+                            onSearchChange={this.handleSearchChange}
+                            results={results}
                             value={value}
-                            {...this.props}
+                            // {...this.props}
                         />
                         </Grid.Column>
                         <Grid.Column width={8}>
@@ -281,7 +270,7 @@ class SearchBar extends Component {
                             </pre>
                             <Header>Options</Header>
                             <pre style={{ overflowX: 'auto' }}>
-                                {JSON.stringify(this.state.airports, null, 2)}
+                                {JSON.stringify(this.state.origin.results, null, 2)}
                             </pre>
                         </Segment>
                     </Grid.Column>
@@ -342,7 +331,7 @@ class SearchBar extends Component {
                     <Form>
                         <Form.Group widths='equal'>
                             <Dropdown 
-                                text={this.state.options.switchRoundTripOneWay} 
+                                text={this.state.switchRoundTripOneWay} 
                                 style={{"marginLeft": "20px", "marginRight": "20px"}}>
                                 <Dropdown.Menu onClick={this.handleSwitchRoundTripOneWay}>
                                     <Dropdown.Item text='One Way' />
