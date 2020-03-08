@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import { Menu, Dropdown, Icon } from 'semantic-ui-react'
+import { Menu, Dropdown } from 'semantic-ui-react'
 import { NavLink } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { getProfileFetch, logoutUser } from '../Redux/actions/userSession'
 import { Route } from 'react-router-dom'
+import { Separator } from '../StyleComponents/Separator'
 
 class Nav extends Component {
     
@@ -42,7 +43,7 @@ class Nav extends Component {
 
     userMenu = () => (
         <Menu.Menu position='right'>
-            <Dropdown item icon="user outline" text={this.props.user?.username ? this.props.user.username : null}>
+            <Dropdown item icon="user outline" text={this.props.user?.username ? this.props.user.username : null} >
                 <Dropdown.Menu>
                     <Menu.Item 
                         as={NavLink} 
@@ -79,9 +80,12 @@ class Nav extends Component {
 
         return (
             <Route>
-                <Menu style={{"backgroundColor":"rgb(68,133,197)","background":"linear-gradient(90deg, rgba(68,133,197,0.95) 30%, rgba(186,97,250,1) 100%)"}}>
-                    <Menu.Item as={NavLink} to='/' >
-                        <img src='/planet-earth.png' alt='icon of planet earth' />
+                {/* <Menu style={{"backgroundColor":"rgb(68,133,197)","background":"linear-gradient(90deg, rgba(68,133,197,0.95) 30%, rgba(186,97,250,1) 100%)"}}> */}
+                <Menu style={{"height":"60px"}}>
+                    <Menu.Item as={NavLink} to='/' style={{"backgroundColor":"white"}} >
+                        <img src='/flight-finder-logo-cutout.png' alt='two arrows with plane icons' style={{"width":"50px"}} />
+                        <Separator px={5}/>
+                        <img src='/flight-finder-logo-text.png' alt='flight finder' style={{"width":"150px"}} />
                     </Menu.Item>
                     <Menu.Item as={NavLink} to='/favorites'
                         name='favorites'
