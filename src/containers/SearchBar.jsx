@@ -260,7 +260,12 @@ class SearchBar extends Component {
                 ...prevState.searchParams,
                 [type]: time
             }
-        }), () => console.log(this.state.searchParams))
+        })
+            // , () => {
+            //     console.log(this.state);
+            //     debugger
+            // }
+        )
     }
 
     handleSubmit = e => {
@@ -353,6 +358,7 @@ class SearchBar extends Component {
     }
 
     render() {
+        console.log(this.state.searchParams.departureDate)
         const { originIsLoading, originValue, originResults } = this.state.origin
         const { destinationIsLoading, destinationValue, destinationResults } = this.state.destination
         return(
@@ -361,15 +367,7 @@ class SearchBar extends Component {
                 <Card color='blue' style={{"width": "90%", "margin": "auto"}}>
                     <Form onSubmit = {this.handleSubmit} style={{"margin": "15px", "marginLeft":"auto","marginRight":"auto"}}>
                         <Form.Group widths='equal'>
-                            <Form.Field
-                                    control={Input}
-                                    label='Origin'
-                                        // onChange = {this.handleOnChangeLocation}
-                                        // value={this.props.featureSelection.active ? this.props.featureSelection.originLocationCode : this.state.searchParams.originLocationCode}
-                                        // name='originLocationCode'
-                                        // placeholder='Origin'
-                                        // autoComplete="off"
-                                >
+                            <Form.Field control={Input} label='Origin' >
                                 <Search
                                     category
                                     placeholder='Origin'
@@ -388,15 +386,7 @@ class SearchBar extends Component {
                                 icon={{name: "exchange", onClick:(e => e.preventDefault())}}
                                 style={{"height":"20px", "width":"20px","marginRight":"15px", "marginTop":"23px", "backgroundColor":"white"}}
                             />
-                            <Form.Field
-                                    control={Input}
-                                    label='Destination'
-                                        // onChange = {this.handleOnChangeLocation}
-                                        // value={this.props.featureSelection.active ? this.props.featureSelection.destinationLocationCode : this.state.searchParams.destinationLocationCode}
-                                        // name='destinationLocationCode'
-                                        // placeholder='Destination'
-                                        // autoComplete="off"
-                                >
+                            <Form.Field control={Input} label='Destination' >
                                 <Search
                                     category
                                     placeholder='Destination'
@@ -410,29 +400,32 @@ class SearchBar extends Component {
                                     value={this.props.featureSelection.active ? this.props.featureSelection.destinationLocationCode : destinationValue}
                                 />
                             </Form.Field>
-                            <Form.Field control={Input} label='Departure Date'>
+                            <Form.Field control={Input} style={{"marginLeft":"20px"}} label='&emsp;&ensp;Departure Date'>
                                 <DatePicker
                                     name="departureDate"
-                                    value={this.props.featureSelection.active ? this.props.featureSelection.departureDate : this.state.searchParams.departureDate}
+                                    value={this.props.featureSelection.active ? this.props.featureSelection.departureDate : this.state.searchParams.departureDate?.toString().substring(0,15)}
                                     selected={this.state.searchParams.departureDate}
                                     dateFormat="yyyy-mm-dd"
                                     placeholder='Departure Date'
                                     onChange={time => this.handleDateChange(time, 'departureDate')}
                                     autoComplete="off"
-                                    />
+                                />
                             </Form.Field>
                             <Form.Field control={Input} label='Return Date'>
                                 <DatePicker
                                     name="returnDate"
-                                    value={this.props.featureSelection.active ? this.props.featureSelection.returnDate : this.state.searchParams.returnDate}
+                                    value={this.props.featureSelection.active ? this.props.featureSelection.returnDate : this.state.searchParams.returnDate?.toString().substring(0,15)}
                                     selected={this.state.searchParams.returnDate}
                                     dateFormat="yyyy-mm-dd"
                                     onChange={time => this.handleDateChange(time, 'returnDate')}
                                     autoComplete="off"
                                 />
                             </Form.Field>
-                            <div style={{"textAlign": "center", "margin": "auto", "marginTop": "23px", "marginLeft": "4px"}}>
-                                <Button type="submit">Search</Button>
+                            {/* <div style={{"textAlign": "center", "margin": "auto", "marginTop": "23px", "marginLeft": "4px"}}> */}
+                            <div>
+                                <Button type="submit" style={{"background":"white"}}>
+                                    <img src='flight-finder-logo-and-find-cutout.png' style={{"height":"22px", "marginTop":"18px"}}/>
+                                </Button>
                             </div>
                         </Form.Group>
                     </Form>

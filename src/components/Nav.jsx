@@ -81,11 +81,12 @@ class Nav extends Component {
         return (
             <Route>
                 {/* <Menu style={{"backgroundColor":"rgb(68,133,197)","background":"linear-gradient(90deg, rgba(68,133,197,0.95) 30%, rgba(186,97,250,1) 100%)"}}> */}
-                <Menu style={{"height":"60px"}}>
+                <Menu style={{"height":"60px","backgroundColor":"white"}}>
                     <Menu.Item as={NavLink} to='/' style={{"backgroundColor":"white"}} >
-                        <img src='/flight-finder-logo-cutout.png' alt='two arrows with plane icons' style={{"width":"50px"}} />
+                        {/* <img src='/flight-finder-logo-cutout.png' alt='two arrows with plane icons' style={{"width":"50px"}} />
                         <Separator px={5}/>
-                        <img src='/flight-finder-logo-text.png' alt='flight finder' style={{"width":"150px"}} />
+                        <img src='/flight-finder-logo-text.png' alt='flight finder' style={{"width":"150px"}} /> */}
+                        <img src='/flight-finder-logo-and-text-cutout.png' alt='Flight Finder' style={{"width":"200px"}} />
                     </Menu.Item>
                     <Menu.Item as={NavLink} to='/favorites'
                         name='favorites'

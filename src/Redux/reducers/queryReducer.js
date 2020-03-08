@@ -5,6 +5,8 @@ const queryReducer = (state = initialState, { type, payload }) => {
         case "MAP_QUERY_TO_STATE":
             localStorage.setItem("query", payload)
             return { ...payload }
+        case "LOGOUT_CLEAR_QUERY":
+            return initialState
         default:
             return state
     }

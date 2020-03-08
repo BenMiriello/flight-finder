@@ -10,6 +10,8 @@ const searchReducer = (state = initialState, action) => {
                 show: true,
                 ...action.payload
             }
+        case "LOGOUT_CLEAR_SEARCH":
+            return initialState
         default:
             return state
     }

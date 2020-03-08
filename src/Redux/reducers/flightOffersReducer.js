@@ -6,6 +6,8 @@ const flightOffersReducer = (state = initialState, action) => {
             if (action.payload[0]){
                 return action.payload
             } return state
+        case "LOGOUT_CLEAR_FLIGHT_OFFERS":
+            return initialState
         default:
             return state
     }

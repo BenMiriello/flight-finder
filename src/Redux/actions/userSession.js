@@ -81,8 +81,34 @@ export const getProfileFetch = () => {
     }
 }
 
-export const logoutUser = () => ({
+export const logoutUser = () => {
+    return dispatch => {
+        dispatch(clearUserFromState())
+        dispatch(logoutClearQuery())
+        dispatch(logoutClearResponse())
+        dispatch(logoutClearSearch())
+        dispatch(logoutClearFlightOffers())
+    }
+}
+
+const clearUserFromState = () => ({
     type: 'LOGOUT_USER'
+})
+
+const logoutClearQuery = () => ({
+    type: "LOGOUT_CLEAR_QUERY"
+})
+
+const logoutClearResponse = () => ({
+    type: "LOGOUT_CLEAR_RESPONSE"
+})
+
+const logoutClearSearch = () => ({
+    type: "LOGOUT_CLEAR_SEARCH"
+})
+
+const logoutClearFlightOffers = () => ({
+    type: "LOGOUT_CLEAR_FLIGHT_OFFERS"
 })
 
 const slapNewUsername = newUsername => ({

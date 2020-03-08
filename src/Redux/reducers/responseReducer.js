@@ -14,6 +14,8 @@ const responseReducer = (state = initialState, { type, payload }) => {
                 airports: payload.airports,
                 airlines: payload.airlines
             }
+        case "LOGOUT_CLEAR_RESPONSE":
+            return initialState
         default:
             return state
     }
