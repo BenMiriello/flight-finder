@@ -6,7 +6,7 @@
 
 **Refresh and Filter Results**
 
-![](demos/FlightFinderRefreshAndFilterClip1.gif)
+![](demos/FlightFinderRefreshAndFilterClip.gif)
 
 **View Flight Details and Save Flights**
 
