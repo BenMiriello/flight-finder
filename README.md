@@ -1,18 +1,21 @@
 <h1><img src="public/flight-finder-logo-cutout.png" alt="flight finder logo" width="40" height="25">&nbsp;Flight Finder</h1>
 <!-- ![](public/flight-finder-logo-and-text-cutout.png) -->
 
-## *Note: This repo is for the front end. The back end can be found [here](https://github.com/BenMiriello/flight-finder-api).*
+### *Note: This repo is for the Flight Finder front end. The back end can be found [here](https://github.com/BenMiriello/flight-finder-api).*
 
 Search for flights and view the cheapest available offers with real and up-to-date ticket and pricing information based on search parameters. Flight offer details are viewable in a condensed format and expanded format with information on each leg of the flight. Allows user to save their favorited and booked flights to their secure account to view later.
 
+Built with React, Redux, Thunk.
+
 Required search parameters: 
-* originating airport
-* destination airport
-* departure date
-* return date
+* Originating airport
+* Destination airport
+* Departure date
+* Return date
 
 Optional search parameters: 
 * Search for one-way tickets
+* View non-stop flights only
 * Set preferred class:
   * Economy
   * Premium Economy
@@ -23,9 +26,14 @@ Optional search parameters:
   * Number of Adults
   * Number of Children
   * Number of Infants
-* Non-stop flights only
 
-Built with React, Redux, Thunk, [Cometari Airport Finder API](https://www.cometari.com/applications/airport-finder).
+### APIs
+
+* [Cometari Airport Finder API](https://www.cometari.com/applications/airport-finder)
+
+## Demo
+
+A video demo of Flight Finder is available on [YouTube](https://youtu.be/Px8IAOQFDKc).
 
 **Search for Airports by City Name**
 
@@ -39,72 +47,32 @@ Built with React, Redux, Thunk, [Cometari Airport Finder API](https://www.cometa
 
 ![](demos/FlightFinderFlightCardClip.gif)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<!-- Interested in giving Flight Finder a try? Great! Try out the [live app](url)! -->
 
-## Available Scripts
+## Frontend Installation Overview
 
-In the project directory, you can run:
+Once the Rails server is running, launch the frontend components on http://localhost:3001:
 
-### `yarn start`
+```
+cd ..
+cd flight-finder
+npm install && npm start
+```
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+*Note: when prompted, reply* `y` *when asked:* 
+```Something is already running on port 3000
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+Would you like to run the app on another port instead? (Y/n)  
+```
 
-### `yarn test`
+## License
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+The MIT License (MIT)
 
-### `yarn build`
+Copyright (c) 2020 Ben Miriello
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
-
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
