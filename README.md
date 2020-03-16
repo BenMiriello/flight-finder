@@ -1,5 +1,16 @@
-![](demos/FlightFinderSearchClipOriginalSize10fps.gif)
+# Flight Finder
+
+**Search for Airports by City Name**
+
+![](demos/FlightFinderSearchClip.gif)
+
+**Refresh and Filter Results**
+
 ![](demos/FlightFinderRefreshAndFilterClip1.gif)
+
+**View Flight Details and Save Flights**
+
+![](demos/FlightFinderFlightCardClip.gif)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
