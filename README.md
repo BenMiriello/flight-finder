@@ -1,4 +1,31 @@
-# Flight Finder
+<h1><img src="public/flight-finder-logo-cutout.png" alt="flight finder logo" width="40" height="25">&nbsp;Flight Finder</h1>
+<!-- ![](public/flight-finder-logo-and-text-cutout.png) -->
+
+## *Note: This repo is for the front end. The back end can be found [here](https://github.com/BenMiriello/flight-finder-api).*
+
+Search for flights and view the cheapest available offers with real and up-to-date ticket and pricing information based on search parameters. Flight offer details are viewable in a condensed format and expanded format with information on each leg of the flight. Allows user to save their favorited and booked flights to their secure account to view later.
+
+Required search parameters: 
+* originating airport
+* destination airport
+* departure date
+* return date
+
+Optional search parameters: 
+* Search for one-way tickets
+* Set preferred class:
+  * Economy
+  * Premium Economy
+  * Business
+  * First Class
+  * Any
+* Number of passengers:
+  * Number of Adults
+  * Number of Children
+  * Number of Infants
+* Non-stop flights only
+
+Built with React, Redux, Thunk, [Cometari Airport Finder API](https://www.cometari.com/applications/airport-finder).
 
 **Search for Airports by City Name**
 
@@ -11,19 +38,6 @@
 **View Flight Details and Save Flights**
 
 ![](demos/FlightFinderFlightCardClip.gif)
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-Commit Conventions:
-
-Type: refactor, example: "refactor: separated selectNumberOfPeople from SearchBar"
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-*Feature note: The app is able to show flight results several times faster because of new data flow: Back end creates a Query object which belongs to user and a Response object which belongs to the Query and to which belongs all models containing flight info. Because App receives a model it can use to request any existing Flight Offers in milliseconds instead of 10+ seconds, it is able to send a new query to the back end to receive all Flight Offers that have been created at that point and start showing them to the user in about 1 second or less instead of 5-30 seconds otherwise. This is partly facilitated by using multi-threading in the back end to return the reference objects (Query and Response) while the response from the external API is processed on a separate thread.
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
