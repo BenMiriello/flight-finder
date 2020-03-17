@@ -3,10 +3,13 @@
 
 ### *Note: This repo is for the Flight Finder front end. The back end can be found [here](https://github.com/BenMiriello/flight-finder-api).*
 
+## Usage and Features
+
 Search for flights and view the cheapest offers and the latest price.
 * Customize search by selecting: one-way, non-stop only, preferred class, number of passengers.
+* Filter results by airline.
 * View results in condensed and expanded formats with detailed information for each leg of the flight.
-* Save and review flights in their secure user account.
+* Save and review flights in secure user account.
 
 Built with: React, Redux, Thunk, Semantic UI React, [Cometari Airport Finder API](https://www.cometari.com/applications/airport-finder).
 
