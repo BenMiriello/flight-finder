@@ -35,7 +35,7 @@ Optional search parameters:
 
 A video demo of Flight Finder is available on [YouTube](https://youtu.be/Px8IAOQFDKc).
 
-![](demos/flight-finder-clip)
+![](demos/flight-finder-clip.gif)
 
 <!-- **Search for Airports by City Name**
 
@@ -49,7 +49,7 @@ A video demo of Flight Finder is available on [YouTube](https://youtu.be/Px8IAOQ
 
 ![](demos/FlightFinderFlightCardClip.gif) -->
 
-<!-- Interested in giving Flight Finder a try? Great! Try out the [live app](url)! -->
+<!-- Interested in giving Flight Finder a try? Try out the [live app](url)! -->
 
 ## Frontend Installation Overview
 
@@ -59,12 +59,6 @@ Once the Rails server is running, launch the frontend components on http://local
 cd ..
 cd flight-finder
 npm install && npm start
-```
-
-*Note: when prompted, reply* `y` *when asked:* 
-```Something is already running on port 3000
-
-Would you like to run the app on another port instead? (Y/n)  
 ```
 
 ## License
