@@ -11,7 +11,10 @@ Search for flights and view the cheapest offers and the latest price.
 * View results in condensed and expanded formats with detailed information for each leg of the flight.
 * Save and review flights in secure user account.
 
-Built with: React, Redux, Thunk, Semantic UI React, [Cometari Airport Finder API](https://www.cometari.com/applications/airport-finder).
+## Built With
+**Front End:** React, Redux, Thunk, Semantic UI React, [Cometari Airport Finder API](https://www.cometari.com/applications/airport-finder).
+
+**[Back End](https://github.com/BenMiriello/flight-finder-api):** Rails, Bcrypt, JWT, Spawnling, Amadeus Travel API
 
 <!-- Back end stack: -->
 
@@ -61,7 +64,13 @@ A video demo of Flight Finder is available on [YouTube](https://youtu.be/Px8IAOQ
 
 ## Frontend Installation Overview
 
-Once the Rails server is running, launch the frontend components on http://localhost:3001:
+*Note: Without an Amadeus API key, the project will only be able to serve a sample response, which can be rendered by clicking the 'Featured Destination' card on the home page and clicking search.*
+
+*For full live search functionality, an [Amadeus API Key](https://developers.amadeus.com/register) is required. More API key instructions available in the [back-end repo](https://github.com/BenMiriello/flight-finder-api).*
+
+*A live hosted version of the site will be available soon.*
+<br><br><br>
+Launch the app on http://localhost:3001:
 
 ```
 cd ..
@@ -69,9 +78,11 @@ cd flight-finder
 npm install && npm start
 ```
 
-## License
+<!-- ## License -->
 
-The MIT License (MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
+<!-- The MIT License (MIT)
 
 Copyright (c) 2020 Ben Miriello
 
