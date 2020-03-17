@@ -35,7 +35,9 @@ Optional search parameters:
 
 A video demo of Flight Finder is available on [YouTube](https://youtu.be/Px8IAOQFDKc).
 
-**Search for Airports by City Name**
+![](demos/flight-finder-clip)
+
+<!-- **Search for Airports by City Name**
 
 ![](demos/FlightFinderSearchClip.gif)
 
@@ -45,7 +47,7 @@ A video demo of Flight Finder is available on [YouTube](https://youtu.be/Px8IAOQ
 
 **View Flight Details and Save Flights**
 
-![](demos/FlightFinderFlightCardClip.gif)
+![](demos/FlightFinderFlightCardClip.gif) -->
 
 <!-- Interested in giving Flight Finder a try? Great! Try out the [live app](url)! -->
 
