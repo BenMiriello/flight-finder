@@ -100,43 +100,45 @@ class SearchBar extends Component {
             raw_airports = []
         }
 
-        let airports = raw_airports.map(airport => ({
-            code: airport.code,
-            name: airport.name,
-            city: airport.city
-        }))
-
-        let resultsObject = {}
-        let duplicate_cities = airports.map(airport => airport.city)
-        let unique_cities = duplicate_cities.filter(this.unique)
-        
-        let airportsByCity = unique_cities.map(city => {
-            let theCityObject = {  
-                name: city,
-                results: []
-            }
-            resultsObject[city] = theCityObject
-            return {[city]: theCityObject}
-        })
-        
-        airports.forEach(airport => {
-            let target = airportsByCity.find(abc => Object.values(abc)[0].name === airport.city)
+        if (raw_airports) {
+            let airports = raw_airports.map(airport => ({
+                code: airport.code,
+                name: airport.name,
+                city: airport.city
+            }))
+    
+            let resultsObject = {}
+            let duplicate_cities = airports.map(airport => airport.city)
+            let unique_cities = duplicate_cities.filter(this.unique)
             
-            Object.values(target)[0].results.push({
-                title: airport.code,
-                description: airport.name
+            let airportsByCity = unique_cities.map(city => {
+                let theCityObject = {  
+                    name: city,
+                    results: []
+                }
+                resultsObject[city] = theCityObject
+                return {[city]: theCityObject}
             })
-        })
-
-        // airportsByCity.sort((a,b) => b[Object.keys(b)[0]].results.length - a[Object.keys(a)[0]].results.length)
-
-        this.setState(prevState => ({
-            origin: {
-                ...prevState.origin,
-                originResults: resultsObject
-            }
-        }))
-        return airportsByCity
+            
+            airports.forEach(airport => {
+                let target = airportsByCity.find(abc => Object.values(abc)[0].name === airport.city)
+                
+                Object.values(target)[0].results.push({
+                    title: airport.code,
+                    description: airport.name
+                })
+            })
+    
+            // airportsByCity.sort((a,b) => b[Object.keys(b)[0]].results.length - a[Object.keys(a)[0]].results.length)
+    
+            this.setState(prevState => ({
+                origin: {
+                    ...prevState.origin,
+                    originResults: resultsObject
+                }
+            }))
+            return airportsByCity
+        }
     }
 
     handleDestinationResultSelect = (e, { result }) => this.setState(prevState => ({ 
