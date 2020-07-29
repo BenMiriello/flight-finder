@@ -3,17 +3,28 @@
 
 ### *Note: This repo is for the Flight Finder front end. The back end can be found [here](https://github.com/BenMiriello/flight-finder-api).*
 
-Search for flights and view the cheapest available offers with real and up-to-date ticket and pricing information based on search parameters. Flight offer details are viewable in a condensed format and expanded format with information on each leg of the flight. Allows user to save their favorited and booked flights to their secure account to view later.
+## Usage and Features
 
-Built with React, Redux, Thunk.
+Search for flights and view the cheapest offers and the latest price.
+* Customize search by selecting: one-way, non-stop only, preferred class, number of passengers.
+* Filter results by airline.
+* View results in condensed and expanded formats with detailed information for each leg of the flight.
+* Save and review flights in secure user account.
 
-Required search parameters: 
+## Built With
+**Front End:** React, Redux, Thunk, Semantic UI React, [Cometari Airport Finder API](https://www.cometari.com/applications/airport-finder).
+
+**[Back End](https://github.com/BenMiriello/flight-finder-api):** Rails, Bcrypt, JWT, Spawnling, Amadeus Travel API
+
+<!-- Back end stack: -->
+
+<!-- Required search parameters: 
 * Originating airport
 * Destination airport
 * Departure date
-* Return date
+* Return date -->
 
-Optional search parameters: 
+<!-- Optional search parameters: 
 * Search for one-way tickets
 * View non-stop flights only
 * Set preferred class:
@@ -25,17 +36,17 @@ Optional search parameters:
 * Number of passengers:
   * Number of Adults
   * Number of Children
-  * Number of Infants
+  * Number of Infants -->
 
-### APIs
+<!-- ### APIs
 
-* [Cometari Airport Finder API](https://www.cometari.com/applications/airport-finder)
+* [Cometari Airport Finder API](https://www.cometari.com/applications/airport-finder) -->
 
 ## Demo
 
 A video demo of Flight Finder is available on [YouTube](https://youtu.be/Px8IAOQFDKc).
 
-![](demos/flight-finder-clip)
+![](demos/flight-finder-clip.gif)
 
 <!-- **Search for Airports by City Name**
 
@@ -49,11 +60,17 @@ A video demo of Flight Finder is available on [YouTube](https://youtu.be/Px8IAOQ
 
 ![](demos/FlightFinderFlightCardClip.gif) -->
 
-<!-- Interested in giving Flight Finder a try? Great! Try out the [live app](url)! -->
+<!-- Interested in giving Flight Finder a try? Try out the [live app](url)! -->
 
 ## Frontend Installation Overview
 
-Once the Rails server is running, launch the frontend components on http://localhost:3001:
+*Note: Without an Amadeus API key, the project will only be able to serve a sample response, which can be rendered by clicking the 'Featured Destination' card on the home page and clicking search.*
+
+*For full live search functionality, an [Amadeus API Key](https://developers.amadeus.com/register) is required. More API key instructions available in the [back-end repo](https://github.com/BenMiriello/flight-finder-api).*
+
+*A live hosted version of the site will be available soon.*
+<br><br><br>
+Launch the app on http://localhost:3001:
 
 ```
 cd ..
@@ -61,15 +78,11 @@ cd flight-finder
 npm install && npm start
 ```
 
-*Note: when prompted, reply* `y` *when asked:* 
-```Something is already running on port 3000
+<!-- ## License -->
 
-Would you like to run the app on another port instead? (Y/n)  
-```
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-## License
-
-The MIT License (MIT)
+<!-- The MIT License (MIT)
 
 Copyright (c) 2020 Ben Miriello
 
