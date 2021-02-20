@@ -103,7 +103,7 @@ class Nav extends Component {
             </Route>
         )
     }
-}
+};
 
 const MSTP = state => (
     {

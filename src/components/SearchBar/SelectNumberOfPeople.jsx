@@ -30,4 +30,4 @@ const SelectNumberOfPeople = props => {
     )
 }
 
-export default SelectNumberOfPeople
+export default SelectNumberOfPeople;

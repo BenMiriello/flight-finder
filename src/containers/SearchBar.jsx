@@ -106,7 +106,7 @@ class SearchBar extends Component {
                 name: airport.name,
                 city: airport.city
             }))
-    
+
             let resultsObject = {}
             let duplicate_cities = airports.map(airport => airport.city)
             let unique_cities = duplicate_cities.filter(this.unique)
